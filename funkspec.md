@@ -22,3 +22,14 @@ A jelenlegi quiz alkalmazások jellemzően statikus adatbázisokon alapulnak, hi
 ## 10. Funkció – Követelmény Megfeleltetés
 
 ## 11. Fogalomszótár
+* **AI generálás:** Kérdések és válaszok automatikus előállítása mesterséges intelligencia (OpenAI API) segítségével.
+* **Quiz:** Kérdésekből álló játék vagy teszt, amely pontszám alapján értékeli a felhasználót.
+* **Admin:** Olyan felhasználói szerepkör (`is_admin=True` az `users` táblában), aki a rendszer működését és tartalmát kezelheti (pl. témakörök).
+* **GDPR:** Általános adatvédelmi rendelet.
+* **Frontend:** A felhasználó által látott, böngészőben futó alkalmazásrész (React).
+* **Backend:** A szerveroldali logika, adatbázis-kezelés és AI integráció (Flask).
+* **API (Application Programming Interface):** A Frontend és Backend közötti kommunikációs csatorna. Jellemzően RESTful API (JSON).
+* **SQLite:** Egy szerver nélküli, fájl-alapú adatbázis-kezelő. Az adatbázis egyetlen `.db` fájlban tárolódik.
+* **JWT (JSON Web Token):** A felhasználói bejelentkezés állapotának (session) kezelésére szolgáló token, amit a Flask generál és a React tárol (pl. LocalStorage).
+* **CRUD:** Create, Read, Update, Delete. Az adatbázis-műveletek alapvető csoportja (pl. témák kezelésénél).
+* **Prompt:** Az AI-nak (OpenAI) adott szöveges utasítás, amely leírja, hogy milyen kimenetet (pl. milyen kvízkérdéseket) várunk tőle.
