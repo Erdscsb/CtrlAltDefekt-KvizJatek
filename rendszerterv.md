@@ -115,6 +115,28 @@ A rendszer két fő szerepkört különböztet meg (a users tábla is\_admin jel
 ![Menü-hierarchiák](./assets/menu_hierarchia.png)
 
 # 6. Fizikai környezet
+-------------------------
+
+
+*   Az alkalmazás **webalkalmazásként** működik, amely modern böngészőkben (Chrome, Firefox, Safari) fut (desktop, tablet, mobil). Natív (pl. Android, IOS) alkalmazás nem készül.
+    
+*   A szerver oldali alkalmazás (Flask) egy szabványos webszerver (pl. Gunicorn) mögött fut. A hálózaton a **HTTP (80)** és **HTTPS (443)** portok engedélyezése szükséges a kliensek számára.
+    
+*   Külső, díjköteles szolgáltatás: **OpenAI API** (GPT modell) a kvízgeneráláshoz (K02).
+    
+*   Nincsenek további megvásárolt komponenseink.
+    
+*   **Fejlesztői eszközök és technológiák:**
+    
+    *   **Backend:** Python 3.x, Flask keretrendszer, Flask-SQLAlchemy
+        
+    *   **Frontend:** React (Create React App vagy Vite), JavaScript (ES6+), HTML5, CSS3
+        
+    *   **Adatbázis:** SQLite
+        
+    *   **API Integráció:** OpenAI Python kliens, Axios (React)
+        
+    *   **Verziókezelés:** Git
 
 # 7. Absztrakt domain modell
 
