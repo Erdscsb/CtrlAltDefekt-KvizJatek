@@ -45,6 +45,74 @@ A rendszernek az alábbi főbb követelményeknek kell megfelelnie:
 *   **K06:** Felhasználói adatok (e-mail, jelszó-hash) kezelése a GDPR szabályainak megfelelően.
 
 # 5. Funkcionális terv
+-------------------------
+
+
+### **Rendszerszereplők:**
+
+
+A rendszer két fő szerepkört különböztet meg (a users tábla is\_admin jelzője alapján):
+
+
+1.  **Felhasználó (Regisztrált):**
+    
+    *   Regisztrálhat (UC-01) és be/kijelentkezhet (UC-02, UC-03).
+        
+    *   Konfigurálhat új kvízt (előre definiált vagy egyedi téma, nehézség) (UC-04).
+        
+    *   Kérhet AI kvízgenerálást (UC-05).
+        
+    *   Kitöltheti a generált kvízt (UC-06).
+        
+    *   Megkapja a kiértékelést (UC-07) és az elmentésre kerül (UC-08).
+        
+    *   Megtekintheti korábbi eredményeit a profil oldalán (UC-09).
+
+![Felhasználó-jogok](./assets/user.png)
+        
+2.  **Adminisztrátor:**
+    
+    *   Minden, amit a Felhasználó.
+        
+    *   Bejelentkezhet az admin felületre (UC-10).
+        
+    *   Kezelheti (létrehozás, módosítás, törlés) az előre definiált témaköröket (UC-11).
+        
+    *   Megtekinthet aggregált statisztikákat (pl. felhasználók száma) (UC-12).
+        
+![Admin-jogok](./assets/admin.png)
+
+### **Menü-hierarchiák (Oldalstruktúra):**
+
+
+(A Funkcióspecifikáció 8. pontja alapján)
+
+
+*   /login (Bejelentkezés)
+    
+*   /register (Regisztráció)
+    
+*   / (Főoldal/Dashboard - Csak bejelentkezve)
+    
+    *   "Új Quiz Indítása" gomb -> /quiz/new
+        
+    *   "Korábbi Eredményeim" lista
+        
+*   /quiz/new (Új Quiz Konfigurációs Oldal)
+    
+*   /quiz/{quiz\_id} (Quiz Lejátszási Oldal)
+    
+*   /quiz/{quiz\_id}/result (Eredmény Oldal)
+    
+*   /profile (Profil Oldal - Korábbi Eredmények listája)
+    
+*   /admin (Admin Dashboard - Csak adminoknak)
+    
+    *   /admin/topics (Admin Téma Kezelő)
+        
+    *   /admin/stats (Admin Statisztikák)
+
+![Menü-hierarchiák](./assets/menu_hierarchia.png)
 
 # 6. Fizikai környezet
 
