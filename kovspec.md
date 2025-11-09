@@ -16,5 +16,15 @@
 - A rendszer reszponzív legyen.
 
 ## 6. Követelménylista
+| Kód  | Követelmény |
+|------|-------------|
+| K01  | Felhasználói regisztráció és bejelentkezés |
+| K02  | AI-generált quiz kérdések és válaszok |
+| K03  | Quiz eredmények mentése és visszajelzés |
+| K04  | Admin felület a témák kezelésére és statisztikákra |
+| K05  | Reszponzív és mobilbarát felület |
+| K06  | GDPR és adatvédelmi szabályok betartása |
+| K07  | Könnyen üzemeltethető rendszer |
+| K08  | Quiz kérdések mentése |
 
 ## 7. Fogalomszótár
