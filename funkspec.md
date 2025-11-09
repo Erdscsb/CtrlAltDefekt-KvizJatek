@@ -1,6 +1,7 @@
 # Funkcionális specifikáció -- Kvízjáték
 
 ## 1. Jelenlegi helyzet
+A jelenlegi quiz alkalmazások jellemzően statikus adatbázisokon alapulnak, hiányzik a dinamikus, AI-alapú tartalomgenerálás és a személyre szabott élmény. A regisztráció nélküli használat korlátozott, az adminisztráció manuális és időigényes.
 
 ## 2. Vágyálomrendszer
 
