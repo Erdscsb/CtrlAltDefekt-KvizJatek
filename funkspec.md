@@ -29,6 +29,26 @@ A jelenlegi, piacon lévő (vagy a fejlesztendő rendszer elődjének tekintett)
 3.  **Karbantartás:** A folyamat időigényes, rugalmatlan, és nem biztosít dinamikusan generált, személyre szabott tartalmat.
 
 ## 5. Igényelt üzleti folyamatok modellje
+(A követelményspecifikáció 4.1 pontja alapján)
+Az új rendszer a következő fő funkcionális folyamatokat valósítja meg:
+
+1.  **Felhasználókezelés:**
+    * Vendég → Regisztrációs űrlap kitöltése → Regisztrált felhasználó.
+    * Felhasználó → Bejelentkezési űrlap kitöltése → Bejelentkezett felhasználó (Session/Token kezelés).
+2.  **Quiz Generálás:**
+    * Felhasználó → Téma és nehézség kiválasztása (vagy egyedi téma megadása) → Backend kérés → OpenAI API hívás → AI generálja a kérdéseket/válaszokat.
+3.  **Quiz Lejátszás és Értékelés:**
+    * Backend → Kérdések és válaszok mentése adatbázisba (K08) → Kérdések megjelenítése a felhasználónak.
+    * Felhasználó → Válaszok megadása → Beküldés.
+    * Backend → Válaszok kiértékelése → Pontszám generálása → Eredmény mentése a felhasználó profiljához (K03).
+    * Frontend → Eredmény és visszajelzés megjelenítése.
+4.  **Eredmények Nyomon követése:**
+    * Felhasználó → Profil oldal megtekintése → Korábbi quizek és pontszámok listázása.
+5.  **Adminisztráció:**
+    * Admin → Bejelentkezés → Admin felület elérése.
+    * Admin → Témakörök listázása, létrehozása, módosítása, törlése (CRUD).
+    * Admin → Statisztikák megtekintése (pl. felhasználói aktivitás).
+    * Admin → AI által generált kérdések minőségének ellenőrzése (opcionális).
 
 ## 6. Követelménylista
 
