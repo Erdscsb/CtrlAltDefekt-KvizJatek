@@ -8,7 +8,7 @@ Egy modern, reszponzív AI quiz webalkalmazás React frontenddel, Flask backendd
   - A projekt célja, érintettek, funkcionális és nem-funkcionális követelmények, jogi/szabványos háttér, valamint a rendszerre vonatkozó szabályok és a követelménylista.
 - Funkcionális specifikáció: [funkspec.md](./funkspec.md)
   - Részletes működés, beleértve a jelenlegi és igényelt üzleti folyamatok modelljét, használati eseteket és képernyőterveket.
-- Rendszerterv: TODO
+- Rendszerterv: [rendszerterv.md](./rendszerterv.md)
   - Műszaki terv: architektúra, adatbázis séma, komponensek közötti kapcsolatok.
   - Tervek: tesztelési folyamat, telepítési környezet, karbantartási és üzemeltetési stratégia.
 
