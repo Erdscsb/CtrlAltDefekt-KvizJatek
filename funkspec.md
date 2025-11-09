@@ -16,6 +16,7 @@ A cél egy modern, reszponzív webalkalmazás (React/Flask/SQLite stacken), amel
 * **Média:** Képek (ha a quizek tartalmaznak) JPEG vagy PNG formátumban.
 
 ## 4. Jelenlegi üzleti folyamatok modellje
+A jelenlegi, piacon lévő (vagy a fejlesztendő rendszer elődjének tekintett) alkalmazások üzleti folyamatai jellemzően statikusak és manuális adminisztráción alapulnak.
 
 ## 5. Igényelt üzleti folyamatok modellje
 
