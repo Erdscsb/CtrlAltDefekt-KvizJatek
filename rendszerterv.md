@@ -176,6 +176,66 @@ A rendszer backendje egy **Python** alapú **Flask** alkalmazás. Ez szolgálja 
 A webalkalmazás egy **React** (Single Page Application - SPA) keretrendszerrel készül. A felhasználói felület komponensekből épül fel (a Funkcióspecifikáció 8. pontja szerint). Az API-hoz a felhasználó bejelentését követően a kapott **JWT token** (vagy session cookie) segítségével fér hozzá, ez biztosítja az authentikált végpontok védelmét. A React felelős az állapotkezelésért, a reszponzív megjelenítésért (K05) és az API hívások asszinkron kezeléséért.
 
 # 9. Adatbázis terv
+Az adatbázis (SQLite) a Funkcióspecifikáció 10. pontjában említett főbb táblákból épül fel:
+
+
+1.  **users**
+    
+    *   id (PK, Integer)
+        
+    *   username (String, Unique)
+        
+    *   email (String, Unique)
+        
+    *   password\_hash (String) - A jelszót hash-elve tároljuk (K06)
+        
+    *   is\_admin (Boolean, Default: False)
+        
+2.  **topics** (Admin által kezelt témák)
+    
+    *   id (PK, Integer)
+        
+    *   name (String, Unique)
+        
+3.  **quizzes** (A generált kvízek "fejléce")
+    
+    *   id (PK, Integer)
+        
+    *   topic\_id (FK, topics.id, Nullable) - Ha előre definiált téma
+        
+    *   custom\_topic (String, Nullable) - Ha egyedi téma
+        
+    *   difficulty (String) - pl. 'Könnyű', 'Közepes', 'Nehéz'
+        
+    *   created\_by\_user\_id (FK, users.id)
+        
+    *   created\_at (DateTime)
+        
+4.  **questions** (A kvízhez generált kérdések)
+    
+    *   id (PK, Integer)
+        
+    *   quiz\_id (FK, quizzes.id)
+        
+    *   question\_text (String)
+        
+    *   options (String/JSON) - A válaszlehetőségek (pl. \["A", "B", "C", "D"\])
+        
+    *   correct\_option\_index (Integer) - A helyes válasz indexe (pl. 0)
+        
+5.  **results** (Felhasználók eredményei)
+    
+    *   id (PK, Integer)
+        
+    *   user\_id (FK, users.id)
+        
+    *   quiz\_id (FK, quizzes.id)
+        
+    *   score (Integer) - Elért pontok (pl. 3)
+        
+    *   total\_questions (Integer) - Kvíz kérdésszáma (pl. 5)
+        
+    *   completed\_at (DateTime)
 
 # 10. Implementációs terv
 
