@@ -28,3 +28,7 @@
 | K08  | Quiz kérdések mentése |
 
 ## 7. Fogalomszótár
+- **AI generálás:** Kérdések és válaszok automatikus előállítása mesterséges intelligencia segítségével.
+- **Quiz:** Kérdésekből álló játék vagy teszt, amely pontszám alapján értékeli a felhasználót.
+- **Admin:** Olyan felhasználói szerepkör, aki a rendszer működését és tartalmát kezelheti.
+- **GDPR:** Általános adatvédelmi rendelet, amely a felhasználói adatok védelmét szabályozza.
