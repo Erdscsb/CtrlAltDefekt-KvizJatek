@@ -153,6 +153,27 @@ A rendszer fő entitásai és kapcsolataik (a 9. Adatbázis tervben részletezve
 *   **Result (Eredmény):** Egy User adott Quiz-re elért eredményét (pontszámát) tárolja.
 
 # 8. Architekturális terv
+A rendszer egy kliens-szerver architektúrára épül (SPA + REST API).
+
+
+### **Backend (Python/Flask):**
+
+
+A rendszer backendje egy **Python** alapú **Flask** alkalmazás. Ez szolgálja ki a RESTful API végpontokat a frontend számára. Az adatbázis-kezelés **Flask-SQLAlchemy** ORM segítségével történik, amely egy **SQLite** adatbázishoz csatlakozik (K07). A backend felelős:
+
+
+1.  A felhasználó-authentikációért (Regisztráció, Bejelentkezés, pl. **JWT token** vagy Session-alapú).
+    
+2.  Az **OpenAI API** hívások menedzseléséért (Prompt generálás, JSON válasz feldolgozás).
+    
+3.  Az üzleti logikáért (pl. kvíz kiértékelése, eredmény mentése).A klienssel JSON objektumokkal kommunikál.
+    
+
+
+### **Frontend (React):**
+
+
+A webalkalmazás egy **React** (Single Page Application - SPA) keretrendszerrel készül. A felhasználói felület komponensekből épül fel (a Funkcióspecifikáció 8. pontja szerint). Az API-hoz a felhasználó bejelentését követően a kapott **JWT token** (vagy session cookie) segítségével fér hozzá, ez biztosítja az authentikált végpontok védelmét. A React felelős az állapotkezelésért, a reszponzív megjelenítésért (K05) és az API hívások asszinkron kezeléséért.
 
 # 9. Adatbázis terv
 
