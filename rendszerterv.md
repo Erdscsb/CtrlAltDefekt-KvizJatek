@@ -140,7 +140,7 @@ A rendszer két fő szerepkört különböztet meg (a users tábla is\_admin jel
 
 # 7. Absztrakt domain modell
 A rendszer fő entitásai és kapcsolataik (a 9. Adatbázis tervben részletezve):
-
+[absztrakt-domain-modell](./assets/absztrakt-domain-modell.png)
 
 *   **User (Felhasználó):** A rendszer felhasználója. Lehet is\_admin jogosultsága. Egy felhasználónak több Result (eredménye) lehet.
     
@@ -177,7 +177,7 @@ A webalkalmazás egy **React** (Single Page Application - SPA) keretrendszerrel 
 
 # 9. Adatbázis terv
 Az adatbázis (SQLite) a Funkcióspecifikáció 10. pontjában említett főbb táblákból épül fel:
-
+[adatbazisterv](./assets/adatbazisterv.png)
 
 1.  **users**
     
