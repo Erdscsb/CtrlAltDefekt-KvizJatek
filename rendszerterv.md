@@ -139,6 +139,18 @@ A rendszer két fő szerepkört különböztet meg (a users tábla is\_admin jel
     *   **Verziókezelés:** Git
 
 # 7. Absztrakt domain modell
+A rendszer fő entitásai és kapcsolataik (a 9. Adatbázis tervben részletezve):
+
+
+*   **User (Felhasználó):** A rendszer felhasználója. Lehet is\_admin jogosultsága. Egy felhasználónak több Result (eredménye) lehet.
+    
+*   **Topic (Témakör):** Admin által kezelt, előre definiált témakör (pl. "Földrajz").
+    
+*   **Quiz (Kvíz):** Egy konkrét, legenerált kvíz esemény. Egy User hozza létre, kapcsolódhat egy Topic-hoz (vagy custom\_topic szöveggel rendelkezik) és egy nehézségi szinthez. Egy kvíz több Question-ből áll.
+    
+*   **Question (Kérdés):** A kvíz egyedi kérdése, a válaszlehetőségekkel és a helyes válasz indexével. Egy Quiz-hez tartozik.
+    
+*   **Result (Eredmény):** Egy User adott Quiz-re elért eredményét (pontszámát) tárolja.
 
 # 8. Architekturális terv
 
