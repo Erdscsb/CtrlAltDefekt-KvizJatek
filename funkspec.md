@@ -17,6 +17,16 @@ A cél egy modern, reszponzív webalkalmazás (React/Flask/SQLite stacken), amel
 
 ## 4. Jelenlegi üzleti folyamatok modellje
 A jelenlegi, piacon lévő (vagy a fejlesztendő rendszer elődjének tekintett) alkalmazások üzleti folyamatai jellemzően statikusak és manuális adminisztráción alapulnak.
+### 4.1. Felhasználói folyamat (Statikus Quiz)
+1.  **Regisztráció/Bejelentkezés (Korlátozott):** A felhasználó regisztráció nélkül csak limitált quizeket ér el. A teljes hozzáféréshez regisztrálni és bejelentkezni szükséges.
+2.  **Témaválasztás:** A felhasználó egy **előre definiált, statikus listából** választ témakört (pl. "Történelem - Középkor").
+3.  **Quiz Kitöltése:** A rendszer betölti az adott témához manuálisan rögzített kérdéseket (pl. 10 db) a központi adatbázisból. A felhasználó megválaszolja a kérdéseket.
+4.  **Értékelés:** A rendszer a statikusan rögzített helyes válaszok alapján kiértékeli a felhasználó teljesítményét.
+
+### 4.2. Adminisztrációs folyamat (Manuális)
+1.  **Kérdésbank Kezelése:** Az adminisztrátor manuálisan rögzíti az új kérdéseket, a válaszlehetőségeket és a helyes választ az adatbázisba.
+2.  **Témakörök Kezelése:** Az adminisztrátor hozza létre és rendszerezi a témaköröket (pl. új kategória felvétele).
+3.  **Karbantartás:** A folyamat időigényes, rugalmatlan, és nem biztosít dinamikusan generált, személyre szabott tartalmat.
 
 ## 5. Igényelt üzleti folyamatok modellje
 
