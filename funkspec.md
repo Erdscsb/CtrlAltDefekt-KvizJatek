@@ -5,7 +5,15 @@ A jelenlegi quiz alkalmazások jellemzően statikus adatbázisokon alapulnak, hi
 
 ## 2. Vágyálomrendszer
 A cél egy modern, reszponzív webalkalmazás (React/Flask/SQLite stacken), amely biztosít felhasználói regisztrációt és bejelentkezést. A rendszer képes AI (OpenAI API) segítségével dinamikusan quiz-eket generálni különböző témákban és nehézségi szinteken. A felhasználók teljesítményét (pontszámait) nyomon követi és menti. Adminisztrációs felületet biztosít a rendszer paramétereinek (pl. témakörök) kezelésére és statisztikák megtekintésére.
+
 ## 3. A rendszerre vonatkozó pályázat, törvények, rendeletek
+* **Technológia (Frontend):** Szabványos HTML/CSS/JavaScript, React keretrendszer használatával.
+* **Technológia (Backend):** Python, Flask keretrendszer használatával.
+* **Adatbázis:** SQLite.
+* **AI Integráció:** OpenAI API (GPT modell) használata.
+* **Adatvédelem:** GDPR szabályok betartása a felhasználói adatok (e-mail, jelszó-hash, eredmények) kezelésében.
+* **Design:** Reszponzív kialakítás (mobil, tablet, desktop).
+* **Média:** Képek (ha a quizek tartalmaznak) JPEG vagy PNG formátumban.
 
 ## 4. Jelenlegi üzleti folyamatok modellje
 
