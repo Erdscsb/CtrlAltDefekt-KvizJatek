@@ -53,7 +53,18 @@ Kiemelt cél a **reszponzív (K05)**, mobilon és asztali gépen is egyaránt j�
 | Tesztelés | Integrációs és Alfa teszt | Magas | 24 | 24 | 0 | 24 |
 
 # 3. Üzleti folyamatok modellje
+A rendszer igényelt üzleti folyamatait (a Funkcióspecifikáció 5. pontja alapján) a következő ábra (vagy annak szöveges leírása) szemlélteti:
 
+
+1.  **Felhasználókezelés:** A vendég a /register oldalon regisztrál. A regisztrált felhasználó a /login oldalon bejelentkezik, ahol a rendszer (pl. JWT tokennel) azonosítja.
+    
+2.  **Quiz Generálás:** A bejelentkezett felhasználó a /quiz/new oldalon témát (definiált vagy egyedi) és nehézséget választ. A kérés a Flask backendre érkezik, ami hívja az OpenAI API-t.
+    
+3.  **Quiz Lejátszás és Értékelés:** Az AI által generált kvíz (pl. /quiz/101) betöltődik. A felhasználó kitölti, majd a válaszokat elküldi (pl. /api/quiz/101/submit). A backend kiértékeli, elmenti az eredményt a results táblába, és visszaküldi a pontszámot.
+    
+4.  **Adminisztráció:** Az "admin" jogosultságú felhasználó eléri a /admin felületet, ahol a /admin/topics oldalon kezelheti a témaköröket.
+
+![Üzleti folyamatok](./assets/uzletifoly.jpg)
 # 4. Követelmények
 ---------------------
 
