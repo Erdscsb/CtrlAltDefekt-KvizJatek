@@ -375,6 +375,7 @@ Ezt a tesztet nem a fejlesztők végzik (pl. Product Owner). A tesztelő felhasz
 # 12. Telepítési terv
 
 A rendszer egy webalkalmazás, amely egy szerver oldali (backend) és egy kliens oldali (frontend) komponensből áll.
+![telepitesiterv](./assets/telepitesiterv.png)
 
 ### **Backend (Flask):**
 
