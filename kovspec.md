@@ -1,6 +1,9 @@
 # Követelményspecifikáció -- Kvízjáték
 
 ## 1. Jelenlegi helyzet
+Jelenleg a piacon egyre jobban elterjednek a AI megoldások, de felhasználók számára elérhető quiz appok általában statikus kérdésadatbázist használnak, és nem kínálnak személyre szabott, dinamikusan generált tartalmat.  
+
+A felhasználók regisztráció és bejelentkezés nélkül csak korlátozott módon tudják használni a rendszert. Az adminisztráció és a kérdésbank kezelése manuálisan történik, ami időigényes és rugalmatlan.
 
 ## 2. Vágyálom rendszer
 
