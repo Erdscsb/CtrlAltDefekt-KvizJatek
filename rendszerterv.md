@@ -401,6 +401,7 @@ A felhasználóknak **nincs szükségük telepítésre**. A rendszer eléréséh
 # 13. Karbantartási terv
 
 Az alkalmazás folyamatos üzemeltetése és karbantartása, mely magában foglalja a programhibák elhárítását és a jövőbeli változások kezelését.
+![karbantartasiterv](./assets/karbantartasiterv.png)
 
 *   Corrective Maintenance (Javító karbantartás):A felhasználók vagy az adminisztrátorok által felfedezett és jelentett hibák kijavítása (pl. hibás pontszámítás, UI hiba mobilon, API hiba).
     
