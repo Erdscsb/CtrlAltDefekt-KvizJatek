@@ -55,6 +55,49 @@ Az új rendszer a következő fő funkcionális folyamatokat valósítja meg:
 ## 7. Használati esetek
 
 ## 8. Képernyőtervek (Logikai felépítés)
+A rendszer a következő főbb képernyőkből (React komponensek/oldalak) épül fel:
+
+1.  **Bejelentkező Oldal (`/login`):**
+    * Űrlap: E-mail / Felhasználónév, Jelszó.
+    * Gomb: "Bejelentkezés".
+    * Link: "Nincs még fiókod? Regisztrálj itt!"
+2.  **Regisztrációs Oldal (`/register`):**
+    * Űrlap: Felhasználónév, E-mail cím, Jelszó, Jelszó megerősítése.
+    * Gomb: "Regisztráció".
+    * Link: "Már van fiókod? Jelentkezz be!"
+3.  **Főoldal / Dashboard (Bejelentkezve) (`/`):**
+    * Navigációs sáv (Header): Profil link, Kijelentkezés gomb, (ha admin: "Admin" link).
+    * Gomb: "Új Quiz Indítása".
+    * Szekció: "Korábbi Eredményeim" (lista a legutóbbi 5-10 eredményről, linkelve az eredmény oldalra).
+4.  **Új Quiz Konfigurációs Oldal (`/quiz/new`):**
+    * Űrlap:
+        * Témakör választó (lenyíló lista az admin által definiált `topics` táblából, pl. "Földrajz", "Irodalom").
+        * Szöveges beviteli mező: "Vagy adj meg egyedi témát..." (ha ezt kitölti, a lenyíló lista inaktívvá válik).
+        * Nehézségi szint (rádiógombok: Könnyű, Közepes, Nehéz).
+        * Kérdésszám (opcionális, pl. csúszka: 5-10).
+    * Gomb: "Quiz Generálása". (Kattintáskor töltőképernyő jelenik meg, amíg az AI dolgozik).
+5.  **Quiz Lejátszási Oldal (`/quiz/{quiz_id}`):**
+    * Quiz címe (Téma).
+    * Haladásjelző (pl. "Kérdés 2/5").
+    * Aktuális kérdés szövege.
+    * Válaszlehetőségek (rádiógombok vagy checkboxok).
+    * Navigációs gombok: "Következő kérdés" / "Quiz Beküldése" (az utolsó kérdésnél).
+6.  **Eredmény Oldal (`/quiz/{quiz_id}/result`):**
+    * Elért pontszám (pl. "Eredményed: 4/5").
+    * Visszajelzés (pl. "Szép munka!").
+    * (Opcionális: Részletes kiértékelés - kérdések, adott válasz, helyes válasz).
+    * Gombok: "Új Quiz", "Vissza a Főoldalra".
+7.  **Profil Oldal (`/profile`):**
+    * Felhasználói adatok (név, e-mail).
+    * (Opcionális: Jelszóváltoztatás űrlap).
+    * Táblázat/Lista: "Korábbi Quizek" (Téma, Dátum, Pontszám, Link az Eredmény Oldalra).
+8.  **Admin Dashboard (`/admin`):**
+    * Védett útvonal, csak adminoknak.
+    * Navigáció: "Témák Kezelése", "Statisztikák".
+    * Dashboard modulok (pl. "Összes felhasználó: 150", "Lejátszott quizek: 430").
+9.  **Admin Téma Kezelő (`/admin/topics`):**
+    * Űrlap: "Új téma hozzáadása" (szöveges mező, Mentés gomb).
+    * Táblázat: Meglévő témák (ID, Név, Műveletek [Szerkesztés, Törlés]).
 
 ## 9. Forgatókönyvek
 
