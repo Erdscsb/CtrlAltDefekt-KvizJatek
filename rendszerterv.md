@@ -306,8 +306,70 @@ A Flask alkalmazás Python 3.x nyelven készül. Az **SQLAlchemy** ORM-et haszn�
 
 A Webes felület **React** komponensekkel készül (HTML, CSS, JavaScript). A **React Router** könyvtár felel az oldalak (Képernyőtervek) közötti navigációért. Az állapotkezeléshez (pl. bejelentkezett felhasználó adatai, kvíz állapota) a beépített **Context API** vagy egy egyszerűbb globális állapotkezelő (pl. Zustand) kerül felhasználásra. Az API hívásokhoz az axios klienst használjuk, amely kezeli a JWT tokenek automatikus csatolását a kérésekhez. A reszponzív kialakítást (K05) CSS **Media Queries** vagy egy minimalista CSS keretrendszer (pl. TailwindCSS) biztosítja.
 
-
 # 11. Tesztterv
+
+A tesztelések célja a rendszer és komponensei funkcionalitásának (K01-K08) és a nem funkcionális követelményeknek (K05) való megfelelés ellenőrzése.
+
+### **Tesztelési eljárások**
+
+Unit teszt (Egységteszt):
+
+A fejlesztési idő alatt a backend (Flask) és a frontend (React) logikáját is egységtesztekkel kell lefedni.
+
+*   _Backend (pytest):_ API végpontok válaszainak tesztelése (pl. /login), OpenAI service kigúnyolása (mock), adatbázis CRUD műveletek helyességének ellenőrzése.
+    
+*   _Frontend (Jest, React Testing Library):_ Komponensek renderelésének tesztelése (pl. megjelenik-e a 4 válaszlehetőség), eseménykezelők (pl. gombnyomás) működésének ellenőrzése.
+    
+
+Integrációs teszt:
+
+A frontend és a backend együttes működésének tesztelése. A teljes felhasználói folyamat (forgatókönyvek) ellenőrzése: Regisztráció -> Bejelentkezés -> Kvíz generálás (valós, de 'development' API kulccsal) -> Kitöltés -> Eredmény mentés -> Eredmény megtekintése a profilban.
+
+Alfa teszt:
+
+A tesztet a fejlesztői csapat végzi a rendszer főbb funkcióinak ellenőrzésére éleshez hasonló környezetben. Cél a reszponzív viselkedés ellenőrzése.
+
+*   _Tesztelendő böngészők:_ Google Chrome, Firefox, Safari (desktop).
+    
+*   _Tesztelendő mobil böngészők:_ Chrome (Android), Safari (iOS).
+    
+*   _Tesztelendő kijelző méretek:_ 1920x1080 (Desktop), 390x844 (Mobil).
+    
+
+Béta teszt:
+
+Ezt a tesztet nem a fejlesztők végzik (pl. Product Owner). A tesztelő felhasználók visszajelzéseket küldhetnek a fejlesztőknek, probléma/hiba felmerülése esetén.
+
+### **Tesztelendő funkciók (Kiemelt esetek)**
+
+*   **Regisztrációs felület (UC-01):**
+    
+    *   Lehet-e regisztrálni érvényes adatokkal?
+        
+    *   Kap-e hibaüzenetet a felhasználó, ha az e-mail már foglalt?
+        
+    *   A jelszó hash-elve kerül-e az users táblába? (K06)
+        
+*   **Bejelentkező felület (UC-02):**
+    
+    *   Sikerül-e bejelentkezni érvényes adatokkal?
+        
+    *   Kap-e hibaüzenetet a felhasználó hibás jelszó esetén?
+        
+*   **Kvíz Generálás (UC-05):**
+    
+    *   Generál-e a rendszer kvízt előre definiált téma (pl. "Földrajz") és nehézség alapján?
+        
+    *   Generál-e a rendszer kvízt egyedi téma ("Forma 1") alapján?
+        
+    *   Mi történik, ha az OpenAI API hibát ad vissza? (Megfelelő hibaüzenet a felhasználónak)
+        
+*   **Admin felület (UC-11):**
+    
+    *   Nem-admin felhasználó eléri-e a /admin útvonalat? (Nem szabadna)
+        
+    *   Sikerül-e admin felhasználóval új témát felvinni a topics táblába?
+
 
 # 12. Telepítési terv
 
