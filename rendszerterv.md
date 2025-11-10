@@ -373,4 +373,17 @@ Ezt a tesztet nem a fejlesztők végzik (pl. Product Owner). A tesztelő felhasz
 
 # 12. Telepítési terv
 
+A rendszer egy webalkalmazás, amely egy szerver oldali (backend) és egy kliens oldali (frontend) komponensből áll.
+
+### **Backend (Flask):**
+
+1.  A Python függőségek telepítése egy virtuális környezetbe (pip install -r requirements.txt).
+    
+2.  Az adatbázis inicializálása (pl. flask db upgrade). Az SQLite adatbázis (.db fájl) a szerver fájlrendszerében jön létre.
+    
+3.  Az OpenAI API kulcs és egyéb konfigurációk beállítása környezeti változóként.
+    
+4.  A Flask alkalmazás futtatása egy WSGI szerver (pl. **Gunicorn**) segítségével, egy reverse proxy (pl. **Nginx**) mögött, amely a statikus fájlokat is kiszolgálja és a HTTPS-t kezeli.
+
+
 # 13. Karbantartási terv
