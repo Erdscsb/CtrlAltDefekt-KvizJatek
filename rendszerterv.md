@@ -385,5 +385,11 @@ A rendszer egy webalkalmazás, amely egy szerver oldali (backend) és egy kliens
     
 4.  A Flask alkalmazás futtatása egy WSGI szerver (pl. **Gunicorn**) segítségével, egy reverse proxy (pl. **Nginx**) mögött, amely a statikus fájlokat is kiszolgálja és a HTTPS-t kezeli.
 
+### **Frontend (React):**
+
+1.  A React alkalmazás "buildelése" (npm run build), ami statikus HTML/CSS/JS fájlokat generál a build mappába.
+    
+2.  Ezek a statikus fájlok áthelyezhetők az Nginx által kiszolgált mappába.
+
 
 # 13. Karbantartási terv
