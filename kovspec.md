@@ -16,6 +16,22 @@ A cél egy modern webalkalmazás létrehozása, amely:
 - Reszponzív, mobilon és tableten is jól használható.
 
 ## 3. Jelenlegi üzleti folyamatok
+### 3.1. Regisztráció és bejelentkezés
+- Felhasználó regisztrál a weboldalon e-mail cím és jelszó megadásával.
+- Bejelentkezés után a felhasználó hozzáfér az quizekhez.
+
+### 3.2. Quiz játék
+- Felhasználó kiválaszt egy témát és nehézségi szintet.
+- A rendszer AI segítségével generál 5-10 kérdést és válaszlehetőséget.
+- Felhasználó válaszol a kérdésekre, majd a rendszer kiértékeli a teljesítményt.
+- Eredmények mentése a felhasználó profiljába.
+- A generált kvíz mentésre kerül, és újra kitölthető.
+
+### 3.3. Adminisztráció
+- Adminisztrátor témaköröket hoz létre vagy módosít, de a felhasználó is megadhat egyedi témákat.
+- Admin felületen ellenőrizhető az AI-generált kérdések és válaszok minősége.
+- Statisztikák megtekintése a felhasználók aktivitásáról és teljesítményéről.
+
 
 ## 4. Igényelt üzleti folyamatok
 
