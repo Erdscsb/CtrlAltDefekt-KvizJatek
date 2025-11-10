@@ -392,4 +392,9 @@ A rendszer egy webalkalmazás, amely egy szerver oldali (backend) és egy kliens
 2.  Ezek a statikus fájlok áthelyezhetők az Nginx által kiszolgált mappába.
 
 
+### **Felhasználói hozzáférés:**
+
+A felhasználóknak **nincs szükségük telepítésre**. A rendszer eléréséhez csak egy ajánlott, modern webböngésző (Google Chrome, Firefox, Opera, Safari) telepítése és internetkapcsolat szükséges a szerver publikus címén.
+
+
 # 13. Karbantartási terv
