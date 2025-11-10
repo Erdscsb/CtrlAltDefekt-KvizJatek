@@ -11,6 +11,47 @@ Kiemelt cél a **reszponzív (K05)**, mobilon és asztali gépen is egyaránt j�
 
 # 2. Projektterv
 
+
+### **Projektszerepkörök, felelőségek:**
+
+
+*   **Scrum Master:** Tusnádi Szabolcs
+    
+*   **Product Owner:** Erdős Csaba
+    
+*   **Projektmunkások és felelőségek:**
+    
+    *   **Backend fejlesztés (Python/Flask):** Lovas Gergő
+        
+        *   _Feladata:_ Adatmodell és adatbázis kialakítása (SQLite), RESTful API végpontok fejlesztése, felhasználói authentikáció (JWT/Session) implementálása, OpenAI API integráció.
+            
+    *   **Frontend fejlesztés (React):** Jóni Attila
+        
+        *   _Feladata:_ Reszponzív felhasználói felület (UI) és komponensek (Képernyőtervek alapján) fejlesztése, API hívások kezelése, kliens oldali állapotkezelés.
+            
+
+
+### **Ütemterv:**
+
+
+| Funkció / Story | Feladat / Task | Prioritás | Becslés (óra) | Aktuális becslés | Eltelt idő | Hátralévő idő |
+|---|---|---|---|---|---|---|
+| Specifikáció | Követelmény specifikáció | 0 | 12 | 12 | 12 | 0 |
+| Specifikáció | Funkcionális specifikáció | 0 | 12 | 12 | 12 | 0 |
+| Tervezés | Rendszerterv | 0 | 16 | 16 | 16 | 0 |
+| Adattárolás | Adatmodell megtervezése (SQLite) | 0 | 4 | 4 | 4 | 0 |
+| Adattárolás | Adatbázis séma implementálása (Flask-SQLAlchemy) | 1 | 4 | 4 | 0 | 4 |
+| Backend | Felhasználói modul (Regisztráció, Login API) (K01) | Magas | 16 | 16 | 0 | 16 |
+| Backend | AI Generátor modul (OpenAI API integráció) (K02) | Magas | 12 | 12 | 0 | 12 |
+| Backend | Kiértékelő és mentő modul (K03, K08) | Magas | 8 | 8 | 0 | 8 |
+| Backend | Admin API (Témák CRUD, Statisztika) (K04) | Közepes | 12 | 12 | 0 | 12 |
+| Frontend | Alap UI és navigáció (Login, Register, Dashboard) (K05) | Magas | 16 | 16 | 0 | 16 |
+| Frontend | Quiz Konfiguráló oldal (UC-04) | Magas | 8 | 8 | 0 | 8 |
+| Frontend | Quiz Lejátszó és Eredmény oldal (UC-06, UC-07) | Magas | 16 | 16 | 0 | 16 |
+| Frontend | Profil oldal (Korábbi eredmények) (UC-09) | Közepes | 8 | 8 | 0 | 8 |
+| Frontend | Admin felület (Témák, Statisztika) (K04) | Közepes | 12 | 12 | 0 | 12 |
+| Tesztelés | Integrációs és Alfa teszt | Magas | 24 | 24 | 0 | 24 |
+
 # 3. Üzleti folyamatok modellje
 
 # 4. Követelmények
