@@ -1,6 +1,13 @@
 # Rendszerterv
 
 # 1. A rendszer célja
+A rendszer célja egy modern, AI-alapú webalkalmazás létrehozása, amely a felhasználók számára dinamikusan generált, személyre szabott kvízeket biztosít. A piacon lévő, jellemzően statikus kérdésbankokkal ellentétben ez a rendszer az **OpenAI API** segítségével hoz létre valós időben új kérdéseket, különböző témákban és nehézségi szinteken (K02).
+
+
+A felhasználók **regisztráció és bejelentkezés (K01)** után tudják használni a rendszer teljes funkcionalitását, és nyomon követhetik teljesítményüket, pontszámaikat a saját profiljuk alatt (K03). A rendszer egy adminisztrációs felületet is biztosít az előre definiált témakörök kezelésére (CRUD) és a felhasználói aktivitásról szóló statisztikák megtekintésére (K04).
+
+
+Kiemelt cél a **reszponzív (K05)**, mobilon és asztali gépen is egyaránt jól használható felület kialakítása. A rendszer a megadott **React** (frontend) és **Flask** (backend) technológiákra épül, az adatokat egy központi **SQLite** adatbázisból, egy API-n keresztül éri el.
 
 # 2. Projektterv
 
