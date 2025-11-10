@@ -63,6 +63,25 @@ Az új rendszer a következő fő funkcionális folyamatokat valósítja meg:
 | K08 | Quiz kérdések mentése | Közepes |
 
 ## 7. Használati esetek
+A rendszer funkciói a következő fő használati esetekre bonthatók:
+
+### 7.1. Felhasználói modul
+* **UC-01: Regisztráció:** A vendég felhasználó e-mail cím, felhasználónév és jelszó megadásával fiókot hoz létre. A rendszer ellenőrzi az adatok érvényességét (pl. e-mail formátum, egyedi e-mail) és a jelszót hash-elve tárolja az SQLite `users` táblában.
+* **UC-02: Bejelentkezés:** A regisztrált felhasználó e-mail/felhasználónév és jelszó párossal bejelentkezik. A Flask backend validálja az adatokat, és sikeres azonosítás esetén egy JWT tokent (vagy session cookie-t) állít ki, amit a React frontend tárol.
+* **UC-03: Kijelentkezés:** A bejelentkezett felhasználó kijelentkezik. A frontend törli a tokent/sessiont.
+
+### 7.2. Quiz Modul
+* **UC-04: Új Quiz Konfigurálása:** A bejelentkezett felhasználó kiválaszt egy előre definiált témát (amit az admin kezel, pl. "Történelem") VAGY megad egy egyedi témát (szöveges beviteli mező). Kiválasztja a nehézségi szintet (pl. Könnyű, Közepes, Nehéz).
+* **UC-05: Quiz Generálása (AI):** A felhasználó elindítja a generálást. A React frontend kérést küld a Flask backendnek. A backend (az OpenAI API kulccsal) hívást indít az OpenAI API felé a megadott téma és nehézség alapján, specifikus prompttal (pl. "Generálj 5 db közepes nehézségű kvízkérdést... JSON formátumban...").
+* **UC-06: Quiz Kitöltése:** Az AI által generált és a backend által validált kérdések megjelennek a React felületen (pl. egyenként vagy egy oldalon). A felhasználó kiválasztja a válaszokat.
+* **UC-07: Quiz Kiértékelése:** A felhasználó beküldi a válaszait. A Flask backend kiértékeli azokat (összevetve a generáláskor kapott helyes válaszokkal), kiszámolja a pontszámot (pl. 3/5).
+* **UC-08: Eredmény Mentése és Megtekintése:** A rendszer a kvízt (generált kérdések, válaszok) elmenti a `quizzes` és `questions` táblákba (K08), az elért eredményt (pontszám, dátum, user_id, quiz_id) pedig egy `results` táblába (K03). A felhasználó azonnali visszajelzést kap a pontszámáról.
+* **UC-09: Korábbi Eredmények Megtekintése:** A felhasználó a profil oldalán listázhatja és megtekintheti korábbi kvízjeinek eredményeit (téma, dátum, pontszám).
+
+### 7.3. Adminisztrációs Modul
+* **UC-10: Admin Bejelentkezés:** Az "admin" jogosultsággal (pl. `is_admin` flag a `users` táblában) rendelkező felhasználó bejelentkezik.
+* **UC-11: Témák Kezelése (CRUD):** Az admin felületen létrehozhat, módosíthat és törölhet előre definiált témaköröket (melyek megjelennek az UC-04-ben a legördülő listában). Ezek a `topics` táblában tárolódnak.
+* **UC-12: Statisztikák Megtekintése:** Az admin dashboardon aggregált adatokat lát (pl. regisztrált felhasználók száma, lejátszott quizek száma, átlagpontszám témánként).
 
 ## 8. Képernyőtervek (Logikai felépítés)
 A rendszer a következő főbb képernyőkből (React komponensek/oldalak) épül fel:
