@@ -166,8 +166,20 @@ A rendszer a következő főbb képernyőkből (React komponensek/oldalak) épü
     7.  A Flask backend (ellenőrizve az admin jogosultságot a JWT token alapján) beszúrja az új témát az SQLite `topics` táblába.
     8.  A React felület frissíti a témák listáját, ahol már látszik az új "Filmművészet" téma.
 
+## 10. Funkció – Követelmény Megfeleltetés (Mátrix)
 
-## 10. Funkció – Követelmény Megfeleltetés
+| Funkció (vagy modul) | Funkcionális leírás | Követelmény Kód(ok) |
+|---|---|---|
+| **Felhasználói Modul** (Flask-Login / Flask-Security-Too) | Regisztráció, Bejelentkezés, Kijelentkezés, Jogosultságkezelés (JWT/Session). | K01, K06 |
+| **AI Generátor Modul** (Flask, OpenAI Python kliens) | Prompt generálás a téma és nehézség alapján, API hívás, JSON válasz feldolgozása. | K02 |
+| **Quiz Lejátszó Modul** (React) | Kérdések megjelenítése, válaszok fogadása, beküldés API hívása. | K02, K05 |
+| **Kiértékelő és Mentő Modul** (Flask) | Beküldött válaszok összevetése a helyes válasszal, pontszám számítása, eredmény mentése az adatbázisba. | K03, K08 |
+| **Adatbázis Modell** (Flask-SQLAlchemy, SQLite) | `users`, `topics`, `quizzes`, `questions`, `results` táblák sémája és kapcsolatai. | K01, K03, K04, K08 |
+| **Admin Modul** (React védett útvonalak, Flask védett API végpontok) | Témakörök CRUD műveletei, statisztikák lekérdezése és megjelenítése. | K04 |
+| **Frontend UI/UX** (React, CSS/Media Queries) | Reszponzív felépítés, komponens-alapú struktúra. | K05 |
+| **Üzemeltetés** (Flask, SQLite) | A stack (fájl-alapú DB, egyszerű Python backend) támogatja a könnyű telepítést és karbantartást. | K07 |
+| **Adatvédelem** (Flask) | Jelszavak hash-elése (pl. Werkzeug), felhasználói adatok minimalizálása és védelme. | K06 |
+
 
 ## 11. Fogalomszótár
 * **AI generálás:** Kérdések és válaszok automatikus előállítása mesterséges intelligencia (OpenAI API) segítségével.
