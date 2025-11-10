@@ -6,6 +6,14 @@ Jelenleg a piacon egyre jobban elterjednek a AI megoldások, de felhasználók s
 A felhasználók regisztráció és bejelentkezés nélkül csak korlátozott módon tudják használni a rendszert. Az adminisztráció és a kérdésbank kezelése manuálisan történik, ami időigényes és rugalmatlan.
 
 ## 2. Vágyálom rendszer
+A cél egy modern webalkalmazás létrehozása, amely:
+
+- Felhasználói regisztrációt és bejelentkezést biztosít.
+- AI-generált quiz kérdéseket és válaszokat jelenít meg.
+- Dinamikusan generál új quizeket, különböző témákban és nehézségi szinten.
+- A felhasználók pontszámait és teljesítményét nyomon követi.
+- Adminisztrációs felületet kínál a rendszer paramétereinek és témáinak kezelésére.
+- Reszponzív, mobilon és tableten is jól használható.
 
 ## 3. Jelenlegi üzleti folyamatok
 
