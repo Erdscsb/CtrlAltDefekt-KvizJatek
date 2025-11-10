@@ -309,6 +309,7 @@ A Webes felület **React** komponensekkel készül (HTML, CSS, JavaScript). A **
 # 11. Tesztterv
 
 A tesztelések célja a rendszer és komponensei funkcionalitásának (K01-K08) és a nem funkcionális követelményeknek (K05) való megfelelés ellenőrzése.
+![tesztterv](./assets/tesztterv.png)
 
 ### **Tesztelési eljárások**
 
