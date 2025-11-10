@@ -51,6 +51,16 @@ Az új rendszer a következő fő funkcionális folyamatokat valósítja meg:
     * Admin → AI által generált kérdések minőségének ellenőrzése (opcionális).
 
 ## 6. Követelménylista
+| Kód | Követelmény | Prioritás |
+|---|---|---|
+| K01 | Felhasználói regisztráció és bejelentkezés | Magas |
+| K02 | AI-generált quiz kérdések és válaszok | Magas |
+| K03 | Quiz eredmények mentése és visszajelzés | Magas |
+| K04 | Admin felület a témák kezelésére és statisztikákra | Közepes |
+| K05 | Reszponzív és mobilbarát felület | Magas |
+| K06 | GDPR és adatvédelmi szabályok betartása | Magas |
+| K07 | Könnyen üzemeltethető rendszer | Magas |
+| K08 | Quiz kérdések mentése | Közepes |
 
 ## 7. Használati esetek
 
