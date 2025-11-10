@@ -153,6 +153,20 @@ A rendszer a következő főbb képernyőkből (React komponensek/oldalak) épü
     17. A React átirányít a `/quiz/101/result` oldalra.
     18. Péter látja az eredményt: "Eredményed: 3/5".
 
+### 9.2. Forgatókönyv: Admin témát ad hozzá
+1.  **Aktor:** Adminisztrátor (AdminBela)
+2.  **Előfeltétel:** AdminBela be van jelentkezve és `is_admin=True` jogosultsággal rendelkezik.
+3.  **Leírás:**
+    1.  AdminBela a navigációs sávban az "Admin" linkre kattint (`/admin`).
+    2.  Az Admin Dashboardon a "Témák Kezelése" menüpontra kattint (`/admin/topics`).
+    3.  Látja a meglévő témák listáját (pl. "Történelem", "Földrajz").
+    4.  Az "Új téma hozzáadása" űrlapba beírja: "Filmművészet".
+    5.  A "Mentés" gombra kattint.
+    6.  A React kérést (POST) küld a Flask `/api/admin/topics` végpontjára.
+    7.  A Flask backend (ellenőrizve az admin jogosultságot a JWT token alapján) beszúrja az új témát az SQLite `topics` táblába.
+    8.  A React felület frissíti a témák listáját, ahol már látszik az új "Filmművészet" téma.
+
+
 ## 10. Funkció – Követelmény Megfeleltetés
 
 ## 11. Fogalomszótár
