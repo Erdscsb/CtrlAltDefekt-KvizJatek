@@ -298,6 +298,11 @@ Az adatbázis (SQLite) a Funkcióspecifikáció 10. pontjában említett főbb t
 
 # 10. Implementációs terv
 
+### **Backend (Flask):**
+
+A Flask alkalmazás Python 3.x nyelven készül. Az **SQLAlchemy** ORM-et használjuk az adatbázis-műveletekhez (a 9. pontban leírt modell alapján). A felhasználókezeléshez (bejelentkezés, regisztráció) **Flask-JWT-Extended** (JWT tokenekhez) vagy **Flask-Login** (session-höz) könyvtárat használunk. A jelszavakat a **Werkzeug** security moduljával hash-eljük (K06). Az OpenAI API hívások egy külön 'service' modulba kerülnek, amely felelős a promptok biztonságos összeállításáért (a Funkcióspecifikáció 7.2. pontja alapján) és a JSON válaszok validálásáért.
+
+
 # 11. Tesztterv
 
 # 12. Telepítési terv
