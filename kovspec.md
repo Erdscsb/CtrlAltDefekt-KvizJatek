@@ -34,6 +34,13 @@ A cél egy modern webalkalmazás létrehozása, amely:
 
 
 ## 4. Igényelt üzleti folyamatok
+### 4.1. Online megjelenés
+1. **Felhasználói regisztráció:** új felhasználó adatai megadása → regisztráció
+2. **Bejelentkezés:** felhasználónév/jelszó megadása → belépés a rendszerbe.
+3. **Quiz generálás:** téma és nehézség kiválasztása → AI generálja a kérdéseket és válaszokat.
+4. **Quiz kitöltése:** felhasználó válaszol → rendszer kiértékeli → pontszám mentése.
+5. **Eredmények megtekintése:** felhasználó profilján belül a korábbi quizek és pontszámok megtekintése.
+6. **Admin felület:** témák kezelése, kérdések minőségének ellenőrzése, statisztikák megtekintése.
 
 ## 5. A rendszerre vonatkozó szabályok
 - A webfelület szabványos eszközökkel készüljön (HTML/CSS/JavaScript).
