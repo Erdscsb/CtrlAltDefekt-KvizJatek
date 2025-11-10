@@ -396,5 +396,15 @@ A rendszer egy webalkalmazás, amely egy szerver oldali (backend) és egy kliens
 
 A felhasználóknak **nincs szükségük telepítésre**. A rendszer eléréséhez csak egy ajánlott, modern webböngésző (Google Chrome, Firefox, Opera, Safari) telepítése és internetkapcsolat szükséges a szerver publikus címén.
 
-
 # 13. Karbantartási terv
+
+Az alkalmazás folyamatos üzemeltetése és karbantartása, mely magában foglalja a programhibák elhárítását és a jövőbeli változások kezelését.
+
+*   Corrective Maintenance (Javító karbantartás):A felhasználók vagy az adminisztrátorok által felfedezett és jelentett hibák kijavítása (pl. hibás pontszámítás, UI hiba mobilon, API hiba).
+    
+*   Adaptive Maintenance (Alkalmazkodó karbantartás):A program naprakészen tartása. Ide tartozik az OpenAI modellfrissítések kezelése (ha pl. egy újabb GPT modell válik elérhetővé és a promptokat módosítani kell), vagy a böngésző-kompatibilitási problémák javítása.
+    
+*   Perfective Maintenance (Tökéletesítő karbantartás):A szoftver továbbfejlesztése a felhasználói visszajelzések alapján. Például: új statisztikai kimutatások az admin felületen, a kvízgenerálási 'prompt'-ok finomhangolása a jobb kérdésminőség érdekében.
+    
+
+Preventive Maintenance (Megelőző karbantartás):Olyan problémák elhárítása, amelyek még nem tűnnek fontosnak. Ide tartozik az adatbázis (SQLite) méretének monitorozása, rendszeres biztonsági mentések készítése, és az OpenAI API használati kvótáinak és költségeinek figyelése.
