@@ -128,7 +128,30 @@ A rendszer a következő főbb képernyőkből (React komponensek/oldalak) épü
     * Űrlap: "Új téma hozzáadása" (szöveges mező, Mentés gomb).
     * Táblázat: Meglévő témák (ID, Név, Műveletek [Szerkesztés, Törlés]).
 
-## 9. Forgatókönyvek
+## 9. Forgatókönyvek (Scenarios)
+
+### 9.1. Forgatókönyv: Új felhasználó egyedi témájú kvízt tölt ki
+1.  **Aktor:** Vendég Felhasználó (Péter)
+2.  **Előfeltétel:** Péter a `/login` oldalon van.
+3.  **Leírás:**
+    1.  Péter a "Regisztrálj itt!" linkre kattint, átirányít a `/register` oldalra.
+    2.  Kitölti az űrlapot (user: "Peti88", email: "peter@email.com", jelszo: "Jelszo123!").
+    3.  A Flask backend validálja az adatokat, létrehozza a felhasználót az SQLite `users` táblában (jelszót hash-elve, `is_admin=False`), és visszaküld egy JWT tokent.
+    4.  A React automatikusan bejelentkezteti és a Főoldalra (`/`) irányítja.
+    5.  Péter a "Új Quiz Indítása" gombra kattint (`/quiz/new`).
+    6.  Az "Egyedi téma" mezőbe beírja: "Forma 1 2000-es évek".
+    7.  Kiválasztja a "Nehéz" nehézségi szintet.
+    8.  A "Quiz Generálása" gombra kattint.
+    9.  A React kérést küld a Flask `/api/quiz/generate` végpontjára (Téma: "Forma 1...", Nehézség: "Nehéz").
+    10. A Flask backend hívja az OpenAI API-t a prompttal.
+    11. Az AI visszaad 5 kérdést és választ JSON formátumban.
+    12. A Flask elmenti a kérdéseket (`questions` tábla) és a kvíz definíciót (`quizzes` tábla, pl. ID: 101), majd visszaküldi a kérdéseket a frontendnek.
+    13. A React átirányít a `/quiz/101` oldalra.
+    14. Péter megválaszolja az 5 kérdést, majd az "Quiz Beküldése" gombra kattint.
+    15. A React elküldi a válaszait a Flask `/api/quiz/101/submit` végpontjára.
+    16. A Flask kiértékeli a válaszokat (pl. 3 helyes), és elmenti az eredményt a `results` táblába (user_id: Péter ID-ja, quiz_id: 101, score: 3).
+    17. A React átirányít a `/quiz/101/result` oldalra.
+    18. Péter látja az eredményt: "Eredményed: 3/5".
 
 ## 10. Funkció – Követelmény Megfeleltetés
 
