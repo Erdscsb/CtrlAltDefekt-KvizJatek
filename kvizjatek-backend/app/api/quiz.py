@@ -7,7 +7,7 @@ from app.permission import admin_required
 # Create a Blueprint for quizzes
 quiz_bp = Blueprint('quiz', __name__, url_prefix='/quiz')
 
-@quizzes_bp.route('/', methods=['POST'])
+@quiz_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_quiz():
     """
@@ -91,3 +91,25 @@ def create_quiz():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to create quiz", "details": str(e)}), 500
+    
+@quiz_bp.route('/', methods=['GET'])
+def get_all_quizzes():
+    """
+    Get a list of all quizzes. (Public)
+    This route does NOT return the questions, just quiz metadata.
+    """
+    try:
+        quizzes = Quiz.query.all()
+        result = []
+        for quiz in quizzes:
+            topic_name = quiz.custom_topic or (quiz.topic.name if quiz.topic else None)
+            result.append({
+                "id": quiz.id,
+                "topic_name": topic_name,
+                "difficulty": quiz.difficulty,
+                "created_by_user_id": quiz.created_by_user_id,
+                "created_at": quiz.created_at.isoformat()
+            })
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to retrieve quizzes", "details": str(e)}), 500
