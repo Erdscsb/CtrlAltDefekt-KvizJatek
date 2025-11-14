@@ -14,12 +14,12 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     ma.init_app(app)
     
-    #from .api.auth import auth_bp
+    from .api.auth import auth_bp
     #from .api.quiz import quiz_bp
     #from .api.admin import admin_bp
     #from .api.profile import profile_bp
 
-    #app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
     #app.register_blueprint(quiz_bp, url_prefix='/api/quiz')
     #app.register_blueprint(admin_bp, url_prefix='/api/admin')
     #app.register_blueprint(profile_bp, url_prefix='/api/profile')
