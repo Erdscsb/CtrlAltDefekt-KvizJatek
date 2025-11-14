@@ -113,3 +113,36 @@ def get_all_quizzes():
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": "Failed to retrieve quizzes", "details": str(e)}), 500
+    
+@quiz_bp.route('/<int:quiz_id>', methods=['GET'])
+def get_quiz_details(quiz_id):
+    """
+    Get full details for a single quiz, including its questions. (Public)
+    """
+    try:
+        quiz = Quiz.query.get(quiz_id)
+        if not quiz:
+            return jsonify({"error": "Quiz not found"}), 404
+
+        topic_name = quiz.custom_topic or (quiz.topic.name if quiz.topic else None)
+        
+        quiz_data = {
+            "id": quiz.id,
+            "topic_name": topic_name,
+            "difficulty": quiz.difficulty,
+            "created_by_user_id": quiz.created_by_user_id,
+            "created_at": quiz.created_at.isoformat(),
+            "questions": []
+        }
+        
+        for q in quiz.questions:
+            quiz_data["questions"].append({
+                "id": q.id,
+                "question_text": q.question_text,
+                "options": q.options
+                # We do NOT return correct_option_index to the client here
+            })
+            
+        return jsonify(quiz_data), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to retrieve quiz details", "details": str(e)}), 500
