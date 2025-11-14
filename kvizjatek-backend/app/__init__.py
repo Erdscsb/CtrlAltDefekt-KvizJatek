@@ -15,13 +15,13 @@ def create_app(config_class=Config):
     
     from .api.auth import auth_bp
     from .api.topics import topics_bp
-    #from .api.quiz import quiz_bp
+    from .api.quiz import quiz_bp
     #from .api.admin import admin_bp
     #from .api.profile import profile_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(topics_bp, url_prefix='/api/topics')
-    #app.register_blueprint(quiz_bp, url_prefix='/api/quiz')
+    app.register_blueprint(quiz_bp, url_prefix='/api/quiz')
     #app.register_blueprint(admin_bp, url_prefix='/api/admin')
     #app.register_blueprint(profile_bp, url_prefix='/api/profile')
 
