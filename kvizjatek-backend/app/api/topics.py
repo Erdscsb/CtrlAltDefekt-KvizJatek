@@ -40,3 +40,13 @@ def get_all_topics():
         return jsonify([{"id": topic.id, "name": topic.name} for topic in topics]), 200
     except Exception as e:
         return jsonify({"error": "Failed to retrieve topics", "details": str(e)}), 500
+    
+@topics_bp.route('/<int:topic_id>', methods=['GET'])
+def get_topic(topic_id):
+    """
+    Get a single topic by its ID. (Public)
+    """
+    topic = Topic.query.get(topic_id)
+    if not topic:
+        return jsonify({"error": "Topic not found"}), 404
+    return jsonify({"id": topic.id, "name": topic.name}), 200
