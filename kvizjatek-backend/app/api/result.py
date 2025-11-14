@@ -52,3 +52,37 @@ def submit_result():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to submit result", "details": str(e)}), 500
+    
+@result_bp.route('/', methods=['GET'])
+@jwt_required()
+def get_results():
+    """
+    Get results.
+    - Admins get all results.
+    - Regular users get only their own results.
+    """
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    try:
+        if user.is_admin:
+            # Admin: Get all results
+            results = Result.query.all()
+        else:
+            # Regular user: Get only their own results
+            results = Result.query.filter_by(user_id=current_user_id).all()
+        
+        result_list = []
+        for res in results:
+            result_list.append({
+                "id": res.id,
+                "user_id": res.user_id,
+                "quiz_id": res.quiz_id,
+                "score": res.score,
+                "total_questions": res.total_questions,
+                "completed_at": res.completed_at.isoformat()
+            })
+            
+        return jsonify(result_list), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to retrieve results", "details": str(e)}), 500
