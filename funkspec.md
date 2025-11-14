@@ -128,9 +128,58 @@ A rendszer a következő főbb képernyőkből (React komponensek/oldalak) épü
     * Űrlap: "Új téma hozzáadása" (szöveges mező, Mentés gomb).
     * Táblázat: Meglévő témák (ID, Név, Műveletek [Szerkesztés, Törlés]).
 
-## 9. Forgatókönyvek
+## 9. Forgatókönyvek (Scenarios)
 
-## 10. Funkció – Követelmény Megfeleltetés
+### 9.1. Forgatókönyv: Új felhasználó egyedi témájú kvízt tölt ki
+1.  **Aktor:** Vendég Felhasználó (Péter)
+2.  **Előfeltétel:** Péter a `/login` oldalon van.
+3.  **Leírás:**
+    1.  Péter a "Regisztrálj itt!" linkre kattint, átirányít a `/register` oldalra.
+    2.  Kitölti az űrlapot (user: "Peti88", email: "peter@email.com", jelszo: "Jelszo123!").
+    3.  A Flask backend validálja az adatokat, létrehozza a felhasználót az SQLite `users` táblában (jelszót hash-elve, `is_admin=False`), és visszaküld egy JWT tokent.
+    4.  A React automatikusan bejelentkezteti és a Főoldalra (`/`) irányítja.
+    5.  Péter a "Új Quiz Indítása" gombra kattint (`/quiz/new`).
+    6.  Az "Egyedi téma" mezőbe beírja: "Forma 1 2000-es évek".
+    7.  Kiválasztja a "Nehéz" nehézségi szintet.
+    8.  A "Quiz Generálása" gombra kattint.
+    9.  A React kérést küld a Flask `/api/quiz/generate` végpontjára (Téma: "Forma 1...", Nehézség: "Nehéz").
+    10. A Flask backend hívja az OpenAI API-t a prompttal.
+    11. Az AI visszaad 5 kérdést és választ JSON formátumban.
+    12. A Flask elmenti a kérdéseket (`questions` tábla) és a kvíz definíciót (`quizzes` tábla, pl. ID: 101), majd visszaküldi a kérdéseket a frontendnek.
+    13. A React átirányít a `/quiz/101` oldalra.
+    14. Péter megválaszolja az 5 kérdést, majd az "Quiz Beküldése" gombra kattint.
+    15. A React elküldi a válaszait a Flask `/api/quiz/101/submit` végpontjára.
+    16. A Flask kiértékeli a válaszokat (pl. 3 helyes), és elmenti az eredményt a `results` táblába (user_id: Péter ID-ja, quiz_id: 101, score: 3).
+    17. A React átirányít a `/quiz/101/result` oldalra.
+    18. Péter látja az eredményt: "Eredményed: 3/5".
+
+### 9.2. Forgatókönyv: Admin témát ad hozzá
+1.  **Aktor:** Adminisztrátor (AdminBela)
+2.  **Előfeltétel:** AdminBela be van jelentkezve és `is_admin=True` jogosultsággal rendelkezik.
+3.  **Leírás:**
+    1.  AdminBela a navigációs sávban az "Admin" linkre kattint (`/admin`).
+    2.  Az Admin Dashboardon a "Témák Kezelése" menüpontra kattint (`/admin/topics`).
+    3.  Látja a meglévő témák listáját (pl. "Történelem", "Földrajz").
+    4.  Az "Új téma hozzáadása" űrlapba beírja: "Filmművészet".
+    5.  A "Mentés" gombra kattint.
+    6.  A React kérést (POST) küld a Flask `/api/admin/topics` végpontjára.
+    7.  A Flask backend (ellenőrizve az admin jogosultságot a JWT token alapján) beszúrja az új témát az SQLite `topics` táblába.
+    8.  A React felület frissíti a témák listáját, ahol már látszik az új "Filmművészet" téma.
+
+## 10. Funkció – Követelmény Megfeleltetés (Mátrix)
+
+| Funkció (vagy modul) | Funkcionális leírás | Követelmény Kód(ok) |
+|---|---|---|
+| **Felhasználói Modul** (Flask-Login / Flask-Security-Too) | Regisztráció, Bejelentkezés, Kijelentkezés, Jogosultságkezelés (JWT/Session). | K01, K06 |
+| **AI Generátor Modul** (Flask, OpenAI Python kliens) | Prompt generálás a téma és nehézség alapján, API hívás, JSON válasz feldolgozása. | K02 |
+| **Quiz Lejátszó Modul** (React) | Kérdések megjelenítése, válaszok fogadása, beküldés API hívása. | K02, K05 |
+| **Kiértékelő és Mentő Modul** (Flask) | Beküldött válaszok összevetése a helyes válasszal, pontszám számítása, eredmény mentése az adatbázisba. | K03, K08 |
+| **Adatbázis Modell** (Flask-SQLAlchemy, SQLite) | `users`, `topics`, `quizzes`, `questions`, `results` táblák sémája és kapcsolatai. | K01, K03, K04, K08 |
+| **Admin Modul** (React védett útvonalak, Flask védett API végpontok) | Témakörök CRUD műveletei, statisztikák lekérdezése és megjelenítése. | K04 |
+| **Frontend UI/UX** (React, CSS/Media Queries) | Reszponzív felépítés, komponens-alapú struktúra. | K05 |
+| **Üzemeltetés** (Flask, SQLite) | A stack (fájl-alapú DB, egyszerű Python backend) támogatja a könnyű telepítést és karbantartást. | K07 |
+| **Adatvédelem** (Flask) | Jelszavak hash-elése (pl. Werkzeug), felhasználói adatok minimalizálása és védelme. | K06 |
+
 
 ## 11. Fogalomszótár
 * **AI generálás:** Kérdések és válaszok automatikus előállítása mesterséges intelligencia (OpenAI API) segítségével.

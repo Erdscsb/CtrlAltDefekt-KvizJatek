@@ -298,8 +298,116 @@ Az adatbázis (SQLite) a Funkcióspecifikáció 10. pontjában említett főbb t
 
 # 10. Implementációs terv
 
+### **Backend (Flask):**
+
+A Flask alkalmazás Python 3.x nyelven készül. Az **SQLAlchemy** ORM-et használjuk az adatbázis-műveletekhez (a 9. pontban leírt modell alapján). A felhasználókezeléshez (bejelentkezés, regisztráció) **Flask-JWT-Extended** (JWT tokenekhez) vagy **Flask-Login** (session-höz) könyvtárat használunk. A jelszavakat a **Werkzeug** security moduljával hash-eljük (K06). Az OpenAI API hívások egy külön 'service' modulba kerülnek, amely felelős a promptok biztonságos összeállításáért (a Funkcióspecifikáció 7.2. pontja alapján) és a JSON válaszok validálásáért.
+
+### **Frontend (React):**
+
+A Webes felület **React** komponensekkel készül (HTML, CSS, JavaScript). A **React Router** könyvtár felel az oldalak (Képernyőtervek) közötti navigációért. Az állapotkezeléshez (pl. bejelentkezett felhasználó adatai, kvíz állapota) a beépített **Context API** vagy egy egyszerűbb globális állapotkezelő (pl. Zustand) kerül felhasználásra. Az API hívásokhoz az axios klienst használjuk, amely kezeli a JWT tokenek automatikus csatolását a kérésekhez. A reszponzív kialakítást (K05) CSS **Media Queries** vagy egy minimalista CSS keretrendszer (pl. TailwindCSS) biztosítja.
+
 # 11. Tesztterv
+
+A tesztelések célja a rendszer és komponensei funkcionalitásának (K01-K08) és a nem funkcionális követelményeknek (K05) való megfelelés ellenőrzése.
+![tesztterv](./assets/tesztterv.png)
+
+### **Tesztelési eljárások**
+
+Unit teszt (Egységteszt):
+
+A fejlesztési idő alatt a backend (Flask) és a frontend (React) logikáját is egységtesztekkel kell lefedni.
+
+*   _Backend (pytest):_ API végpontok válaszainak tesztelése (pl. /login), OpenAI service kigúnyolása (mock), adatbázis CRUD műveletek helyességének ellenőrzése.
+    
+*   _Frontend (Jest, React Testing Library):_ Komponensek renderelésének tesztelése (pl. megjelenik-e a 4 válaszlehetőség), eseménykezelők (pl. gombnyomás) működésének ellenőrzése.
+    
+
+Integrációs teszt:
+
+A frontend és a backend együttes működésének tesztelése. A teljes felhasználói folyamat (forgatókönyvek) ellenőrzése: Regisztráció -> Bejelentkezés -> Kvíz generálás (valós, de 'development' API kulccsal) -> Kitöltés -> Eredmény mentés -> Eredmény megtekintése a profilban.
+
+Alfa teszt:
+
+A tesztet a fejlesztői csapat végzi a rendszer főbb funkcióinak ellenőrzésére éleshez hasonló környezetben. Cél a reszponzív viselkedés ellenőrzése.
+
+*   _Tesztelendő böngészők:_ Google Chrome, Firefox, Safari (desktop).
+    
+*   _Tesztelendő mobil böngészők:_ Chrome (Android), Safari (iOS).
+    
+*   _Tesztelendő kijelző méretek:_ 1920x1080 (Desktop), 390x844 (Mobil).
+    
+
+Béta teszt:
+
+Ezt a tesztet nem a fejlesztők végzik (pl. Product Owner). A tesztelő felhasználók visszajelzéseket küldhetnek a fejlesztőknek, probléma/hiba felmerülése esetén.
+
+### **Tesztelendő funkciók (Kiemelt esetek)**
+
+*   **Regisztrációs felület (UC-01):**
+    
+    *   Lehet-e regisztrálni érvényes adatokkal?
+        
+    *   Kap-e hibaüzenetet a felhasználó, ha az e-mail már foglalt?
+        
+    *   A jelszó hash-elve kerül-e az users táblába? (K06)
+        
+*   **Bejelentkező felület (UC-02):**
+    
+    *   Sikerül-e bejelentkezni érvényes adatokkal?
+        
+    *   Kap-e hibaüzenetet a felhasználó hibás jelszó esetén?
+        
+*   **Kvíz Generálás (UC-05):**
+    
+    *   Generál-e a rendszer kvízt előre definiált téma (pl. "Földrajz") és nehézség alapján?
+        
+    *   Generál-e a rendszer kvízt egyedi téma ("Forma 1") alapján?
+        
+    *   Mi történik, ha az OpenAI API hibát ad vissza? (Megfelelő hibaüzenet a felhasználónak)
+        
+*   **Admin felület (UC-11):**
+    
+    *   Nem-admin felhasználó eléri-e a /admin útvonalat? (Nem szabadna)
+        
+    *   Sikerül-e admin felhasználóval új témát felvinni a topics táblába?
+
 
 # 12. Telepítési terv
 
+A rendszer egy webalkalmazás, amely egy szerver oldali (backend) és egy kliens oldali (frontend) komponensből áll.
+![telepitesiterv](./assets/telepitesiterv.png)
+
+### **Backend (Flask):**
+
+1.  A Python függőségek telepítése egy virtuális környezetbe (pip install -r requirements.txt).
+    
+2.  Az adatbázis inicializálása (pl. flask db upgrade). Az SQLite adatbázis (.db fájl) a szerver fájlrendszerében jön létre.
+    
+3.  Az OpenAI API kulcs és egyéb konfigurációk beállítása környezeti változóként.
+    
+4.  A Flask alkalmazás futtatása egy WSGI szerver (pl. **Gunicorn**) segítségével, egy reverse proxy (pl. **Nginx**) mögött, amely a statikus fájlokat is kiszolgálja és a HTTPS-t kezeli.
+
+### **Frontend (React):**
+
+1.  A React alkalmazás "buildelése" (npm run build), ami statikus HTML/CSS/JS fájlokat generál a build mappába.
+    
+2.  Ezek a statikus fájlok áthelyezhetők az Nginx által kiszolgált mappába.
+
+
+### **Felhasználói hozzáférés:**
+
+A felhasználóknak **nincs szükségük telepítésre**. A rendszer eléréséhez csak egy ajánlott, modern webböngésző (Google Chrome, Firefox, Opera, Safari) telepítése és internetkapcsolat szükséges a szerver publikus címén.
+
 # 13. Karbantartási terv
+
+Az alkalmazás folyamatos üzemeltetése és karbantartása, mely magában foglalja a programhibák elhárítását és a jövőbeli változások kezelését.
+![karbantartasiterv](./assets/karbantartasiterv.png)
+
+*   Corrective Maintenance (Javító karbantartás):A felhasználók vagy az adminisztrátorok által felfedezett és jelentett hibák kijavítása (pl. hibás pontszámítás, UI hiba mobilon, API hiba).
+    
+*   Adaptive Maintenance (Alkalmazkodó karbantartás):A program naprakészen tartása. Ide tartozik az OpenAI modellfrissítések kezelése (ha pl. egy újabb GPT modell válik elérhetővé és a promptokat módosítani kell), vagy a böngésző-kompatibilitási problémák javítása.
+    
+*   Perfective Maintenance (Tökéletesítő karbantartás):A szoftver továbbfejlesztése a felhasználói visszajelzések alapján. Például: új statisztikai kimutatások az admin felületen, a kvízgenerálási 'prompt'-ok finomhangolása a jobb kérdésminőség érdekében.
+    
+
+Preventive Maintenance (Megelőző karbantartás):Olyan problémák elhárítása, amelyek még nem tűnnek fontosnak. Ide tartozik az adatbázis (SQLite) méretének monitorozása, rendszeres biztonsági mentések készítése, és az OpenAI API használati kvótáinak és költségeinek figyelése.
