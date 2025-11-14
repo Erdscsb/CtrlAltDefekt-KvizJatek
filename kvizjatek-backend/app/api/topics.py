@@ -50,3 +50,30 @@ def get_topic(topic_id):
     if not topic:
         return jsonify({"error": "Topic not found"}), 404
     return jsonify({"id": topic.id, "name": topic.name}), 200
+
+@topics_bp.route('/<int:topic_id>', methods=['PUT'])
+@admin_required
+def update_topic(topic_id):
+    """
+    Update a topic's name. (Admin only)
+    """
+    topic = Topic.query.get(topic_id)
+    if not topic:
+        return jsonify({"error": "Topic not found"}), 404
+
+    data = request.get_json()
+    if not data or 'name' not in data:
+        return jsonify({"error": "Missing topic name"}), 400
+
+    # Check if new name already exists (and it's not this topic)
+    existing = Topic.query.filter_by(name=data['name']).first()
+    if existing and existing.id != topic_id:
+        return jsonify({"error": "Topic name already in use"}), 409
+
+    try:
+        topic.name = data['name']
+        db.session.commit()
+        return jsonify({"id": topic.id, "name": topic.name}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to update topic", "details": str(e)}), 500
