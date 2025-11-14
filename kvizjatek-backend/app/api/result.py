@@ -86,3 +86,32 @@ def get_results():
         return jsonify(result_list), 200
     except Exception as e:
         return jsonify({"error": "Failed to retrieve results", "details": str(e)}), 500
+    
+@results_bp.route('/<int:result_id>', methods=['GET'])
+@jwt_required()
+def get_result_by_id(result_id):
+    """
+    Get a specific result by its ID.
+    Admins can see any result.
+    Regular users can only see their own.
+    """
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    result = Result.query.get(result_id)
+    
+    if not result:
+        return jsonify({"error": "Result not found"}), 404
+        
+    # Check permission
+    if not user.is_admin and result.user_id != current_user_id:
+        return jsonify({"error": "You do not have permission to view this result"}), 403
+        
+    return jsonify({
+        "id": result.id,
+        "user_id": result.user_id,
+        "quiz_id": result.quiz_id,
+        "score": result.score,
+        "total_questions": result.total_questions,
+        "completed_at": result.completed_at.isoformat()
+    }), 200
