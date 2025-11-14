@@ -172,3 +172,67 @@ def delete_quiz(quiz_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to delete quiz", "details": str(e)}), 500
+    
+@quiz_bp.route('/<int:quiz_id>', methods=['PUT'])
+@jwt_required()
+def update_quiz(quiz_id):
+    """
+    Update a quiz. (Owner or Admin)
+    This will replace the quiz metadata and ALL associated questions.
+    This is a full overwrite, not a partial patch.
+    """
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    quiz = Quiz.query.get(quiz_id)
+
+    if not quiz:
+        return jsonify({"error": "Quiz not found"}), 404
+
+    # Check permission: must be admin or the user who created the quiz
+    if not user.is_admin and quiz.created_by_user_id != current_user_id:
+        return jsonify({"error": "You do not have permission to edit this quiz"}), 403
+
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
+    try:
+        # --- Update Quiz Metadata ---
+        quiz.topic_id = data.get('topic_id', quiz.topic_id)
+        quiz.custom_topic = data.get('custom_topic', quiz.custom_topic)
+        quiz.difficulty = data.get('difficulty', quiz.difficulty)
+        
+        if not (quiz.topic_id or quiz.custom_topic):
+             raise ValueError("Quiz must have either 'topic_id' or 'custom_topic'")
+
+        # --- Replace Questions ---
+        questions_data = data.get('questions')
+        if questions_data is not None: # Allow updating metadata without changing questions
+            
+            # 1. Delete all existing questions for this quiz
+            # The 'delete-orphan' cascade on the relationship handles this
+            quiz.questions.clear() 
+            db.session.flush() # Apply the clear operation
+
+            # 2. Add new questions
+            for q_data in questions_data:
+                if not all(k in q_data for k in ('question_text', 'options', 'correct_option_index')):
+                    raise ValueError("Each new question must have 'question_text', 'options', and 'correct_option_index'")
+                
+                new_question = Question(
+                    quiz_id=quiz.id, # Explicitly set quiz_id
+                    question_text=q_data['question_text'],
+                    options=q_data['options'],
+                    correct_option_index=q_data['correct_option_index']
+                )
+                db.session.add(new_question) # Add new question to session
+        
+        db.session.commit()
+        return jsonify({"message": "Quiz updated successfully", "quiz_id": quiz.id}), 200
+
+    except ValueError as ve:
+        db.session.rollback()
+        return jsonify({"error": f"Invalid data: {ve}"}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to update quiz", "details": str(e)}), 500
