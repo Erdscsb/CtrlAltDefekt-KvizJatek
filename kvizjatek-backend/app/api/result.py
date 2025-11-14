@@ -87,7 +87,7 @@ def get_results():
     except Exception as e:
         return jsonify({"error": "Failed to retrieve results", "details": str(e)}), 500
     
-@results_bp.route('/<int:result_id>', methods=['GET'])
+@result_bp.route('/<int:result_id>', methods=['GET'])
 @jwt_required()
 def get_result_by_id(result_id):
     """
@@ -116,7 +116,7 @@ def get_result_by_id(result_id):
         "completed_at": result.completed_at.isoformat()
     }), 200
 
-@results_bp.route('/user/<int:user_id>', methods=['GET'])
+@result_bp.route('/user/<int:user_id>', methods=['GET'])
 @admin_required
 def get_results_for_user(user_id):
     """
