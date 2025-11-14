@@ -77,3 +77,29 @@ def update_topic(topic_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to update topic", "details": str(e)}), 500
+    
+@topics_bp.route('/<int:topic_id>', methods=['DELETE'])
+@admin_required
+def delete_topic(topic_id):
+    """
+    Delete a topic. (Admin only)
+    Note: This might fail if quizzes are referencing this topic,
+    unless cascading delete is set up or you handle it here.
+    """
+    topic = Topic.query.get(topic_id)
+    if not topic:
+        return jsonify({"error": "Topic not found"}), 404
+
+    try:
+        # Check if any quizzes are using this topic
+        if topic.quizzes:
+             return jsonify({
+                 "error": "Cannot delete topic, it is being used by one or more quizzes."
+             }), 409
+
+        db.session.delete(topic)
+        db.session.commit()
+        return jsonify({"message": "Topic deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to delete topic", "details": str(e)}), 500
