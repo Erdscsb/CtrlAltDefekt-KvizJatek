@@ -1,6 +1,3 @@
-"""
-run.py - A Flask alkalmazás indítópontja.
-"""
 from app import create_app
 
 app = create_app()
