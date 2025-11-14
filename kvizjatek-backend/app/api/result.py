@@ -115,3 +115,27 @@ def get_result_by_id(result_id):
         "total_questions": result.total_questions,
         "completed_at": result.completed_at.isoformat()
     }), 200
+
+@results_bp.route('/user/<int:user_id>', methods=['GET'])
+@admin_required
+def get_results_for_user(user_id):
+    """
+    Get all results for a specific user. (Admin only)
+    """
+    if not User.query.get(user_id):
+        return jsonify({"error": "User not found"}), 404
+        
+    try:
+        results = Result.query.filter_by(user_id=user_id).all()
+        result_list = []
+        for res in results:
+            result_list.append({
+                "id": res.id,
+                "quiz_id": res.quiz_id,
+                "score": res.score,
+                "total_questions": res.total_questions,
+                "completed_at": res.completed_at.isoformat()
+            })
+        return jsonify(result_list), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to retrieve user's results", "details": str(e)}), 500
