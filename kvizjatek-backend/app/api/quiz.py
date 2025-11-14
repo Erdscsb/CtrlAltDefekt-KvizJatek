@@ -146,3 +146,29 @@ def get_quiz_details(quiz_id):
         return jsonify(quiz_data), 200
     except Exception as e:
         return jsonify({"error": "Failed to retrieve quiz details", "details": str(e)}), 500
+    
+@quiz_bp.route('/<int:quiz_id>', methods=['DELETE'])
+@jwt_required()
+def delete_quiz(quiz_id):
+    """
+    Delete a quiz. (Owner or Admin)
+    """
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    quiz = Quiz.query.get(quiz_id)
+
+    if not quiz:
+        return jsonify({"error": "Quiz not found"}), 404
+        
+    # Check permission: must be admin or the user who created the quiz
+    if not user.is_admin and quiz.created_by_user_id != current_user_id:
+        return jsonify({"error": "You do not have permission to delete this quiz"}), 403
+        
+    try:
+        # Deletion will cascade to Questions and Results as per your model definition
+        db.session.delete(quiz)
+        db.session.commit()
+        return jsonify({"message": "Quiz deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to delete quiz", "details": str(e)}), 500
