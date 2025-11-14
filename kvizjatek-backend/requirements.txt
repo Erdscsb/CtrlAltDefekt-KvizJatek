@@ -1,0 +1,22 @@
+# --- Alap Flask keretrendszer ---
+Flask
+Flask-Cors
+
+# --- Adatbázis (K07) ---
+Flask-SQLAlchemy
+Flask-Migrate
+
+# --- Authentikáció (K01) és Biztonság (K06) ---
+Flask-JWT-Extended
+Flask-Bcrypt
+
+# --- API és Konfiguráció ---
+python-dotenv
+Flask-Marshmallow
+marshmallow-sqlalchemy
+
+# --- Külső API (K02) ---
+#openai
+
+# --- Produkciós WSGI Szerver (Telepítési terv) ---
+#gunicorn

@@ -1,0 +1,70 @@
+# --- Python & Flask (Backend) ---
+
+# Virtuális környezetek
+venv/
+.venv/
+env/
+.env/
+*env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask & Adatbázis (K07)
+# A 'site.db' adatbázis fájl (a config.py alapján)
+*.db
+*.sqlite
+*.sqlite3
+
+# Flask-Migrate (Alembic)
+migrations/versions/
+
+# --- Titkos kulcsok (K02, K06) ---
+# A .env fájl, ami az API kulcsokat és titkokat tárolja
+.env
+.env.*
+*.env
+
+# --- Frontend (React / Node.js) ---
+
+# Node.js függőségek
+node_modules/
+
+# Produkciós build mappa
+build/
+dist/
+
+# NPM/Yarn naplófájlok
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Helyi .env fájlok (React)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Operációs rendszer & IDE ---
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# IDE specifikus (pl. VSCode, PyCharm)
+.vscode/
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
