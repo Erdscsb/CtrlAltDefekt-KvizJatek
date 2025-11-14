@@ -29,3 +29,14 @@ def create_topic():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to create topic", "details": str(e)}), 500
+    
+@topics_bp.route('/', methods=['GET'])
+def get_all_topics():
+    """
+    Get a list of all available topics. (Public)
+    """
+    try:
+        topics = Topic.query.all()
+        return jsonify([{"id": topic.id, "name": topic.name} for topic in topics]), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to retrieve topics", "details": str(e)}), 500
