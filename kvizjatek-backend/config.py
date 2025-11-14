@@ -16,4 +16,5 @@ class Config:
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'ez_egy_eros_jwt_kulcs'
     
 
-    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') 
+    OPENAI_BASE_URL = os.environ.get('OPENAI_BASE_URL') 
