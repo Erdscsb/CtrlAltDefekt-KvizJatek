@@ -19,6 +19,7 @@ def create_app(config_class=Config):
     from .api.result import result_bp
     from .api.admin import admin_bp
     from .api.profile import profile_bp
+    from .api.leaderboard import leaderboard_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(topics_bp, url_prefix='/api/topics')
@@ -26,6 +27,7 @@ def create_app(config_class=Config):
     app.register_blueprint(result_bp, url_prefix='/api/result')
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
     app.register_blueprint(profile_bp, url_prefix='/api/profile')
+    app.register_blueprint(leaderboard_bp, url_prefix='/api/leaderboard')
 
     @app.route('/api/health')
     def health_check():
