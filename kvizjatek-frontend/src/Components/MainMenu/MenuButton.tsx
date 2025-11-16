@@ -16,7 +16,7 @@ const MenuButton: React.FC<Props> = ({
 }) => {
   const styles =
     variant === 'primary'
-      ? { className: 'button-primary' }
+      ? { variant: 'contained' as const, color: 'primary' as const }
       : { variant: 'outlined' as const, color: 'secondary' as const };
 
   return (
@@ -26,8 +26,9 @@ const MenuButton: React.FC<Props> = ({
       {...styles}
       sx={{ py: 1.5, borderWidth: 1.5 }}
       onClick={onClick}
+      startIcon={icon}
     >
-      {icon} &nbsp; {label}
+      {label}
     </Button>
   );
 };
