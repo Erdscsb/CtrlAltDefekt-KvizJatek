@@ -74,6 +74,7 @@ const ProfileIconMenu: React.FC = () => {
         <MenuItem
           onClick={() => {
             logout(); // <-- Call logout from auth context
+            navigate('/');
             handleClose();
           }}
         >
