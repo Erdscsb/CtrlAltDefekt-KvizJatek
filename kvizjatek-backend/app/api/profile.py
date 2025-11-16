@@ -9,7 +9,7 @@ profile_bp = Blueprint('profile', __name__)
 @profile_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_my_profile():
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get_or_404(user_id)
     
     return jsonify({
@@ -23,7 +23,7 @@ def get_my_profile():
 @jwt_required()
 def delete_my_profile():
     """Saját profil törlése (Delete)."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get_or_404(user_id)
 
     try:
