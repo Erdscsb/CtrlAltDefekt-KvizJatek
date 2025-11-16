@@ -1,4 +1,4 @@
-/* ====== Változók ====== */
+/* Alap (purple) – fallback a :root-ban */
 :root {
   --bg1: #0f0a1f;
   --bg2: #1a1233;
@@ -8,6 +8,51 @@
   --accent-2: #7a4df3;
   --text: #f3eefc;
   --muted: #bfb3e6;
+}
+
+/* Téma scope-ok a body data-theme attribútumával váltva */
+body[data-theme='purple'] {
+  --bg1: #0f0a1f;
+  --bg2: #1a1233;
+  --glass-bg: rgba(120, 70, 180, 0.22);
+  --glass-border: rgba(180, 120, 240, 0.38);
+  --accent: #b27cff;
+  --accent-2: #7a4df3;
+  --text: #f3eefc;
+  --muted: #bfb3e6;
+}
+
+body[data-theme='green'] {
+  --bg1: #061a15;
+  --bg2: #0d2b24;
+  --glass-bg: rgba(70, 180, 140, 0.18);
+  --glass-border: rgba(70, 220, 170, 0.35);
+  --accent: #38e4a8;
+  --accent-2: #18b37f;
+  --text: #eafff8;
+  --muted: #b4e6d7;
+}
+
+body[data-theme='blue'] {
+  --bg1: #0a1330;
+  --bg2: #0e1e53;
+  --glass-bg: rgba(70, 120, 220, 0.18);
+  --glass-border: rgba(120, 170, 255, 0.35);
+  --accent: #7ab3ff;
+  --accent-2: #3a78ff;
+  --text: #eef5ff;
+  --muted: #b7c9ef;
+}
+
+body[data-theme='red'] {
+  --bg1: #1a0a0f;
+  --bg2: #2c0f1a;
+  --glass-bg: rgba(220, 70, 120, 0.18);
+  --glass-border: rgba(255, 140, 180, 0.35);
+  --accent: #ff7aa6;
+  --accent-2: #f34d7a;
+  --text: #fff0f4;
+  --muted: #f1b7c9;
 }
 
 /* ====== Globális reset a középre helyezéshez ====== */

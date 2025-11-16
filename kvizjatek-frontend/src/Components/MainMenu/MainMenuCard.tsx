@@ -1,15 +1,19 @@
-import React from 'react';
-import { Button, Typography, Stack, Divider } from '@mui/material';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import MenuButton from './MenuButton';
-import ProfileIconMenu from './ProfileMenuIcon';
+import React from "react";
+import { Button, Typography, Stack, Divider } from "@mui/material";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import MenuButton from "./MenuButton";
+import ProfileIconMenu from "./ProfileMenuIcon";
 
 const MainMenuCard: React.FC = () => {
   return (
     <div className="menu-panel">
       <Stack spacing={3}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography variant="h4" component="h1" fontWeight={700}>
             Kvízjáték
           </Typography>
@@ -35,7 +39,12 @@ const MainMenuCard: React.FC = () => {
           <Button size="small" variant="text" color="secondary">
             Súgó
           </Button>
-          <Button size="small" variant="text" color="secondary">
+          <Button
+            size="small"
+            variant="text"
+            color="secondary"
+            onClick={() => (window.location.href = "/settings")}
+          >
             Beállítások
           </Button>
         </Stack>
