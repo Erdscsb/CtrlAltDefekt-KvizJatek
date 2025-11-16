@@ -232,6 +232,16 @@ body {
 .menu-panel::-webkit-scrollbar-thumb {
   background: var(--glass-border);
   border-radius: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(178,124,255,0.45) transparent;
+}
+.menu-panel::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.menu-panel::-webkit-scrollbar-thumb {
+  background: rgba(178,124,255,0.45);
+  border-radius: 8px;
 }
 
 /*
