@@ -18,6 +18,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import CenterStage from '../../Components/Layout/CenterStage';
 import GlassBackground from '../../Components/Layout/GlassBackground';
 import { useAuth } from '../../lib/useAuth';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 type Topic = {
   id: number;
@@ -98,7 +99,20 @@ const NewGamePage: React.FC = () => {
   };
 
   return (
+    
     <CenterStage>
+      <Button
+          startIcon={<ArrowBackIcon />}
+          variant="text"
+          color="secondary"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+          sx={{ mb: { xs: 1, sm: 2 } }}
+        >
+          Vissza
+        </Button>
       <GlassBackground className="menu-surface">
         <Box sx={{ width: '100%', maxWidth: 600, p: 2 }}>
           <Typography variant="h4" fontWeight={700} mb={3} textAlign="center">

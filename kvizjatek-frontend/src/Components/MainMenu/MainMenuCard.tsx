@@ -50,7 +50,7 @@ const MainMenuCard: React.FC = () => {
         <Divider light />
 
         <Stack direction="row" spacing={1}>
-          <Button size="small" variant="text" color="secondary" disabled>
+          <Button size="small" variant="text" color="secondary" onClick={() => navigate('/help')}>
             Súgó
           </Button>
           <Button size="small" variant="text" color="secondary" onClick={() => navigate('/profile')} >

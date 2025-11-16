@@ -7,6 +7,7 @@ import RegisterPage from '../Pages/Authentication/RegisterPage';
 import ProfilePage from '../Pages/Profile/ProfilePage';
 import NewGamePage from '../Pages/NewGame/NewGame';
 import SettingsPage from '../Pages/Settings/SettingsPage';
+import HelpPage from '../Pages/Help/Help';
 
 const Router: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const Router: React.FC = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/help" element={<HelpPage />} />
     </Routes>
   );
 };
