@@ -202,6 +202,7 @@ const NewGamePage: React.FC = () => {
 
             <Button
               variant="contained"
+              color="primary"
               size="large"
               onClick={handleStart}
               disabled={loading}
@@ -211,8 +212,6 @@ const NewGamePage: React.FC = () => {
               sx={{
                 mt: 2,
                 py: 1.5,
-                background:
-                  'linear-gradient(45deg, var(--accent), var(--accent-2))',
                 fontSize: '1.1rem',
                 fontWeight: 'bold',
               }}

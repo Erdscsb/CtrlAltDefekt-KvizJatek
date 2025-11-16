@@ -5,7 +5,6 @@ import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import MuiTheme from './styles/theme';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css';
 import { ThemeProvider } from './lib/useTheme';
 import { AuthProvider } from './lib/useAuth';

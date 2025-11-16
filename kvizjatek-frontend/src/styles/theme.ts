@@ -35,7 +35,7 @@ const theme = createTheme({
 
   // --- Global Component Shape ---
   shape: {
-    borderRadius: 12,
+    borderRadius: 'var(--radius-md)',
   },
 
   // --- DYNAMIC COMPONENT OVERRIDES ---
@@ -61,7 +61,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: 12,
+          borderRadius: 'var(--radius-md)',
           borderWidth: '1.5px',
           '&:hover': {
             borderWidth: '1.5px',

@@ -14,6 +14,9 @@
   --accent-2: #7a4df3;
   --text: #f3eefc;
   --muted: #bfb3e6;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
 }
 
 /*
@@ -123,6 +126,11 @@ body {
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
     Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -175,7 +183,7 @@ body {
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   box-shadow: 0 14px 40px rgba(40, 10, 65, 0.38),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   transition: background 300ms ease, border 300ms ease;
 }
 
@@ -206,7 +214,6 @@ body {
 .menu-surface {
   width: 100%;
   max-width: 44rem; /* 704px */
-  min-height: 42rem; /* 676px */
   padding: 2rem; /* 32px */
   display: grid;
   place-items: center;
@@ -217,7 +224,6 @@ body {
 .menu-panel {
   width: 100%;
   max-width: 40rem; /* 640px */
-  min-height: 34rem; /* 546px */
   padding: 2rem; /* 32px */
   background: rgba(15, 10, 31, 0.46);
   border: 1px solid rgba(255, 255, 255, 0.06);
