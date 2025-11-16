@@ -45,7 +45,7 @@ def generate_quiz_questions(topic, difficulty, num_questions=5):
 
     # This system prompt is crucial for forcing the AI to return *only* JSON
     # in the exact format we need.
-    system_prompt = """
+    system_prompt = f"""
         You are an expert quiz generator. Your task is to generate {num_questions} multiple-choice quiz questions
         on the topic of "{topic}" with a difficulty of "{difficulty}".
         
@@ -67,8 +67,7 @@ def generate_quiz_questions(topic, difficulty, num_questions=5):
     
     try:
         completion = client.chat.completions.create(
-            # Using deepseek-chat model as requested
-            model="deepseek-chat", 
+            model="gpt-5-nano", 
             messages=[
                 {"role": "system", "content": system_prompt}
             ],
