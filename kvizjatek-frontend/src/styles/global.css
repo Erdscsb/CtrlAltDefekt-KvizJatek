@@ -1,0 +1,82 @@
+:root {
+  --bg1: #0f0a1f;
+  --bg2: #1a1233;
+  --glass-bg: rgba(120, 70, 180, 0.18);
+  --glass-border: rgba(180, 120, 240, 0.35);
+  --accent: #b27cff;
+  --accent-2: #7a4df3;
+  --text: #f3eefc;
+  --muted: #bfb3e6;
+}
+
+html, body, #root {
+  height: 100%;
+  background: radial-gradient(60% 60% at 50% 40%, var(--bg2), var(--bg1)) fixed;
+  color: var(--text);
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(40, 10, 65, 0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+  border-radius: 18px;
+}
+
+.neon-border {
+  position: relative;
+}
+
+.neon-border::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(178, 124, 255, 0.35), rgba(122, 77, 243, 0.2) 40%, transparent 70%);
+  filter: blur(12px);
+  z-index: -1;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.button-primary {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  color: #fff;
+  border: none;
+}
+
+.button-primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.subtle {
+  color: var(--muted);
+}
+
+.center-stage {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.menu-surface {
+  max-width: 740px;
+  width: 100%;
+  padding: 28px;
+}
+
+.menu-panel {
+  padding: 28px;
+  background: rgba(15, 10, 31, 0.4);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
