@@ -11,32 +11,61 @@ result_bp = Blueprint('result', __name__, url_prefix='/result')
 @jwt_required()
 def submit_result():
     """
-    Submit a new result for a quiz. (Logged-in users)
-    Expects JSON:
+    Beküldi egy kitöltött kvíz válaszait, kiértékeli,
+    és elmenti az eredményt. (Bejelentkezett felhasználó)
+    Várt JSON:
     {
         "quiz_id": 1,
-        "score": 8,
-        "total_questions": 10
+        "answers": [
+            { "question_id": 10, "selected_answer": "Válasz A" },
+            { "question_id": 11, "selected_answer": "Válasz C" }
+        ]
     }
     """
     data = request.get_json()
     current_user_id = get_jwt_identity()
 
     if not data:
-        return jsonify({"error": "No data provided"}), 400
+        return jsonify({"error": "Nincsenek adatok"}), 400
         
     quiz_id = data.get('quiz_id')
-    score = data.get('score')
-    total_questions = data.get('total_questions')
+    answers = data.get('answers') # A frontend által küldött válaszok listája
 
-    if not all([quiz_id, score is not None, total_questions is not None]):
-        return jsonify({"error": "Missing 'quiz_id', 'score', or 'total_questions'"}), 400
+    if not quiz_id or not isinstance(answers, list):
+        return jsonify({"error": "Hiányzó 'quiz_id' vagy 'answers' lista"}), 400
 
-    # Validate quiz existence
-    if not Quiz.query.get(quiz_id):
-        return jsonify({"error": "Quiz not found"}), 404
-        
+    quiz = Quiz.query.get(quiz_id)
+    if not quiz:
+        return jsonify({"error": "Kvíz nem található"}), 404
+
     try:
+        score = 0
+        total_questions = len(answers)
+        
+        # A kvízhez tartozó összes helyes válasz lekérése
+        correct_questions = {q.id: q for q in quiz.questions}
+        
+        if total_questions != len(correct_questions):
+             return jsonify({"error": "A válaszok száma nem egyezik a kérdések számával"}), 400
+
+        # --- Kiértékelés a szerveren ---
+        for answer in answers:
+            question_id = answer.get('question_id')
+            selected_answer = answer.get('selected_answer')
+            
+            question = correct_questions.get(question_id)
+            
+            if not question:
+                continue # Hiba, a kérdés nem ehhez a kvízhez tartozik
+
+            # A helyes válasz kikeresése az index alapján
+            correct_answer_text = question.options[question.correct_option_index]
+            
+            if selected_answer == correct_answer_text:
+                score += 1
+        # --- Kiértékelés vége ---
+
+        # Új eredmény mentése az adatbázisba
         new_result = Result(
             user_id=current_user_id,
             quiz_id=quiz_id,
@@ -47,11 +76,11 @@ def submit_result():
         db.session.add(new_result)
         db.session.commit()
         
-        return jsonify({"message": "Result submitted successfully", "result_id": new_result.id}), 201
+        return jsonify({"message": "Eredmény sikeresen mentve", "result_id": new_result.id}), 201
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "Failed to submit result", "details": str(e)}), 500
+        return jsonify({"error": "Eredmény mentése sikertelen", "details": str(e)}), 500
     
 @result_bp.route('/', methods=['GET'])
 @jwt_required()

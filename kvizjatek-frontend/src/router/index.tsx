@@ -9,6 +9,8 @@ import NewGamePage from '../Pages/NewGame/NewGame';
 import SettingsPage from '../Pages/Settings/SettingsPage';
 import HelpPage from '../Pages/Help/Help';
 import ProtectedRoute from './ProtectedRoute';
+import QuizGamePage from '../Pages/Game/QuizGamePage';
+import QuizResultPage from '../Pages/Result/QuizResultPage';
 
 const Router: React.FC = () => {
   return (
@@ -25,6 +27,8 @@ const Router: React.FC = () => {
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/quiz/:quizId" element={<QuizGamePage />} />
+        <Route path="/result/:resultId" element={<QuizResultPage />} />
       </Route>
     </Routes>
   );
