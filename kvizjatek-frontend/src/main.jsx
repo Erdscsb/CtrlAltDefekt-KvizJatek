@@ -8,13 +8,16 @@ import MuiTheme from './styles/theme';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css';
 import { ThemeProvider } from './lib/useTheme';
+import { AuthProvider } from './lib/useAuth';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
       <MuiThemeProvider theme={MuiTheme}>
         <BrowserRouter>
+        <AuthProvider>
           <App />
+          </AuthProvider>
         </BrowserRouter>
     </MuiThemeProvider>
     </ThemeProvider>
