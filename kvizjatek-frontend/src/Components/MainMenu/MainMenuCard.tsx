@@ -53,6 +53,9 @@ const MainMenuCard: React.FC = () => {
           <Button size="small" variant="text" color="secondary" disabled>
             Súgó
           </Button>
+          <Button size="small" variant="text" color="secondary" onClick={() => navigate('/profile')} >
+            Profil
+          </Button>
         </Stack>
       </Stack>
     </div>
