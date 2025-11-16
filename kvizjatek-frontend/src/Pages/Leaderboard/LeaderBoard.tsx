@@ -50,9 +50,9 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
       sx={{
         display: 'grid',
         gridTemplateColumns: '56px 1fr 120px',
-        gap: 12,
+        gap: 10,
         alignItems: 'center',
-        padding: '10px 14px',
+        padding: '8px 12px',
         borderRadius: 12,
         border: '1px solid rgba(255,255,255,0.06)',
         background: top3 ? 'rgba(255,255,255,0.03)' : 'transparent',
@@ -102,17 +102,23 @@ const LeaderboardPage: React.FC = () => {
   const [q, setQ] = React.useState('');
 
   const rows = React.useMemo(() => {
-    const filtered = q.trim()
-      ? MOCK.filter((r) =>
-          r.name.toLowerCase().includes(q.trim().toLowerCase())
-        )
+    const term = q.trim().toLowerCase();
+    const filtered = term
+      ? MOCK.filter((r) => r.name.toLowerCase().includes(term))
       : MOCK;
     return filtered;
   }, [q]);
 
   return (
-    <Stack alignItems="center" sx={{ mt: 4, width: '100%' }}>
-      <Box sx={{ width: '100%', maxWidth: 1040, px: 2 }}>
+    <Stack
+      className="page-allow-scroll"
+      alignItems="center"
+      sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}
+    >
+      <Box
+        className="leaderboard-wrapper"
+        sx={{ width: '100%', maxWidth: 1040, px: { xs: 0, sm: 2 } }}
+      >
         <Button
           startIcon={<ArrowBackIcon />}
           variant="text"
@@ -121,7 +127,7 @@ const LeaderboardPage: React.FC = () => {
             e.preventDefault();
             navigate(-1);
           }}
-          sx={{ mb: 2 }}
+          sx={{ mb: { xs: 1, sm: 2 } }}
         >
           Vissza
         </Button>
@@ -129,16 +135,17 @@ const LeaderboardPage: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Paper
-              className="glass neon-border"
+              className="glass neon-border leaderboard-card"
               elevation={0}
-              sx={{ p: 3 }}
+              sx={{}}
             >
+              {/* Fejléc */}
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
                 alignItems={{ xs: 'stretch', sm: 'center' }}
                 justifyContent="space-between"
-                spacing={2}
-                sx={{ mb: 2 }}
+                spacing={1.5}
+                sx={{ mb: 1.5 }}
               >
                 <Stack direction="row" spacing={1} alignItems="center">
                   <EmojiEventsIcon color="primary" />
@@ -165,16 +172,9 @@ const LeaderboardPage: React.FC = () => {
                 />
               </Stack>
 
-              {/* Lista kártya a glass felületen belül */}
-              <Box
-                className="menu-panel"
-                sx={{
-                  p: 2,
-                  maxHeight: 520,
-                  overflow: 'auto',
-                }}
-              >
-                <Stack spacing={1.2}>
+              {/* Lista */}
+              <Box className="menu-panel leaderboard-list-panel">
+                <Stack spacing={1.0}>
                   {rows.map((r) => (
                     <RowItem key={r.rank} row={r} />
                   ))}
@@ -184,7 +184,7 @@ const LeaderboardPage: React.FC = () => {
               <Stack
                 direction="row"
                 justifyContent="space-between"
-                sx={{ mt: 2 }}
+                sx={{ mt: 1.25 }}
               >
                 <Typography variant="caption" className="subtle">
                   Összes játékos: {MOCK.length}
@@ -196,6 +196,8 @@ const LeaderboardPage: React.FC = () => {
             </Paper>
           </Grid>
         </Grid>
+
+        <Box sx={{ height: 24 }} />
       </Box>
     </Stack>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Typography, Stack, Divider } from '@mui/material';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import SettingsIcon from '@mui/icons-material/Settings';
 import MenuButton from './MenuButton';
 import ProfileIconMenu from './ProfileMenuIcon';
 import { useNavigate } from 'react-router-dom';
@@ -38,6 +39,12 @@ const MainMenuCard: React.FC = () => {
             variant="secondary"
             onClick={() => navigate('/leaderboard')} // <-- Navigate to /leaderboard
           />
+          <MenuButton
+            icon={<SettingsIcon />}
+            label="Beállítások"
+            variant="secondary"
+            onClick={() => navigate('/settings')} // <-- Navigate to /leaderboard
+          />
         </Stack>
 
         <Divider light />
@@ -45,17 +52,6 @@ const MainMenuCard: React.FC = () => {
         <Stack direction="row" spacing={1}>
           <Button size="small" variant="text" color="secondary" disabled>
             Súgó
-          </Button>
-          <Button
-            size="small"
-            variant="text"
-            color="secondary"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('/settings');
-            }}
-          >
-            Beállítások
           </Button>
         </Stack>
       </Stack>
