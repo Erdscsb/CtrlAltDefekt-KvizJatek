@@ -19,7 +19,7 @@ def create_quiz():
     2. AI generation (if 'ai_generate': true, 'num_questions' is used to call AI).
     """
     data = request.get_json()
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
     questions_data = [] # This list will hold questions, whether manual or AI-generated
     
     # --- Data Extraction ---
@@ -178,7 +178,7 @@ def delete_quiz(quiz_id):
     """
     Delete a quiz. (Owner or Admin)
     """
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
     user = User.query.get(current_user_id)
     quiz = Quiz.query.get(quiz_id)
 
@@ -206,7 +206,7 @@ def update_quiz(quiz_id):
     This will replace the quiz metadata and ALL associated questions.
     This is a full overwrite, not a partial patch.
     """
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
     user = User.query.get(current_user_id)
     quiz = Quiz.query.get(quiz_id)
 
