@@ -1,10 +1,10 @@
-import React from "react";
-import { Button, Typography, Stack, Divider } from "@mui/material";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import MenuButton from "./MenuButton";
-import ProfileIconMenu from "./ProfileMenuIcon";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { Button, Typography, Stack, Divider } from '@mui/material';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import MenuButton from './MenuButton';
+import ProfileIconMenu from './ProfileMenuIcon';
+import { useNavigate } from 'react-router-dom';
 
 const MainMenuCard: React.FC = () => {
   const navigate = useNavigate();
@@ -27,18 +27,23 @@ const MainMenuCard: React.FC = () => {
         </Typography>
 
         <Stack spacing={2}>
-          <MenuButton icon={<SportsEsportsIcon />} label="Új játék" />
+          <MenuButton
+            icon={<SportsEsportsIcon />}
+            label="Új játék"
+            onClick={() => navigate('/new')} // <-- Navigate to /new
+          />
           <MenuButton
             icon={<EmojiEventsIcon />}
             label="Ranglétra"
             variant="secondary"
+            onClick={() => navigate('/leaderboard')} // <-- Navigate to /leaderboard
           />
         </Stack>
 
         <Divider light />
 
         <Stack direction="row" spacing={1}>
-          <Button size="small" variant="text" color="secondary">
+          <Button size="small" variant="text" color="secondary" disabled>
             Súgó
           </Button>
           <Button
@@ -47,7 +52,7 @@ const MainMenuCard: React.FC = () => {
             color="secondary"
             onClick={(e) => {
               e.preventDefault();
-              navigate("/settings");
+              navigate('/settings');
             }}
           >
             Beállítások

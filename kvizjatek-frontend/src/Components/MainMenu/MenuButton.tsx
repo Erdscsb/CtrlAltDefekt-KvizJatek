@@ -5,16 +5,28 @@ type Props = {
   icon?: React.ReactNode;
   label: string;
   variant?: 'primary' | 'secondary';
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const MenuButton: React.FC<Props> = ({ icon, label, variant = 'primary' }) => {
+const MenuButton: React.FC<Props> = ({
+  icon,
+  label,
+  variant = 'primary',
+  onClick,
+}) => {
   const styles =
     variant === 'primary'
       ? { className: 'button-primary' }
       : { variant: 'outlined' as const, color: 'secondary' as const };
 
   return (
-    <Button fullWidth size="large" {...styles} sx={{ py: 1.5, borderWidth: 1.5 }}>
+    <Button
+      fullWidth
+      size="large"
+      {...styles}
+      sx={{ py: 1.5, borderWidth: 1.5 }}
+      onClick={onClick}
+    >
       {icon} &nbsp; {label}
     </Button>
   );
