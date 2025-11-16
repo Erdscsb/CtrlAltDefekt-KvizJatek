@@ -1,12 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Router from './router';
 import './App.css'
 
 function App() {
 
   return (
-    <h1>Szírszar</h1>
+     <Router />
   )
 }
 
