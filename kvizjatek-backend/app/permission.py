@@ -11,7 +11,7 @@ def admin_required(fn):
     @jwt_required()  # Ensures a valid JWT is present
     def wrapper(*args, **kwargs):
         # Get the user ID from the JWT
-        current_user_id = get_jwt_identity()
+        current_user_id = int(get_jwt_identity())
         
         # Fetch the user from the database
         user = User.query.get(current_user_id)
