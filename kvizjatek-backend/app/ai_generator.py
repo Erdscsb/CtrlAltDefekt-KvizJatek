@@ -5,28 +5,23 @@ from flask import current_app
 def get_ai_client():
     """
     Initializes and returns the OpenAI client configured 
-    with custom base_url and api_key from the app config.
+    with the api_key from the app config.
     """
     api_key = current_app.config.get('OPENAI_API_KEY')
-    base_url = current_app.config.get('OPENAI_BASE_URL') # For DeepSeek/other models
     
-    # Check for required configurations
+    # Check for required configuration
     if not api_key:
         raise ValueError("OPENAI_API_KEY is not configured in the application config.")
-    if not base_url:
-        # Default to the recommended DeepSeek URL if not set
-        base_url = 'https://api.deepseek.com/v1'
-        current_app.logger.warning(f"OPENAI_BASE_URL not set, defaulting to {base_url}")
         
     client = OpenAI(
-        api_key=api_key,
-        base_url=base_url
+        api_key=api_key
+        # No base_url is needed, client defaults to OpenAI's API
     )
     return client
 
 def generate_quiz_questions(topic, difficulty, num_questions=5):
     """
-    Generates a list of quiz questions using the configured AI model.
+    Generates a list of quiz questions using the configured OpenAI model.
     
     Args:
         topic (str): The topic for the quiz (e.g., "Roman History").
@@ -41,18 +36,22 @@ def generate_quiz_questions(topic, difficulty, num_questions=5):
     try:
         client = get_ai_client()
     except ValueError as e:
+        # This catches the missing API key error
         return {"error": "Configuration Error", "details": str(e)}
 
-    # This system prompt is crucial for forcing the AI to return *only* JSON
-    # in the exact format we need.
+    # This system prompt is optimized for JSON mode.
+    # It asks for a JSON object with a specific key ("questions")
+    # which aligns perfectly with response_format={"type": "json_object"}.
     system_prompt = f"""
         You are an expert quiz generator. Your task is to generate {num_questions} multiple-choice quiz questions
         on the topic of "{topic}" with a difficulty of "{difficulty}".
         
-        You MUST return ONLY a valid JSON array (a list of objects) and nothing else.
-        Do not include ```json, preambles, introductions, or any text other than the JSON array itself.
+        You MUST return ONLY a valid JSON object and nothing else.
+        Do not include ```json, preambles, introductions, or any text other than the JSON object itself.
         
-        Each object in the array MUST follow this exact JSON schema, matching the database model:
+        The JSON object MUST contain a single key "questions", which holds a JSON array (a list) of question objects.
+        
+        The schema for the question objects inside the "questions" array MUST be:
         {{
         "question_text": "The text of the question.",
         "options": ["Option A", "Option B", "Option C", "Option D"],
@@ -60,40 +59,45 @@ def generate_quiz_questions(topic, difficulty, num_questions=5):
         }}
         
         - "question_text" MUST be a string.
-        - "options" MUST be an array of exactly 4 strings: one correct answer and three incorrect answers.
-        - "correct_option_index" MUST be the integer index (0, 1, 2, or 3) of the correct answer in the "options" array.
+        - "options" MUST be an array of exactly 4 strings.
+        - "correct_option_index" MUST be the integer index (0, 1, 2, or 3) of the correct answer.
         - Ensure the correct answer's position is varied across questions.
     """
     
     try:
         completion = client.chat.completions.create(
+            # This is the model you requested
             model="gpt-5-nano", 
             messages=[
                 {"role": "system", "content": system_prompt}
             ],
-            temperature=0.7,
-            # Force JSON output if the model supports it
+            temperature=1,
+            # This forces the model to output a valid JSON object
             response_format={"type": "json_object"}, 
         )
         
         raw_response = completion.choices[0].message.content
         data = json.loads(raw_response)
         
-        # Robustly extract the list of questions, whether it's the root object or nested
-        if isinstance(data, dict):
-            for value in data.values():
-                if isinstance(value, list):
-                    return value
-            raise json.JSONDecodeError("AI response was a dict but contained no list of questions.", raw_response, 0)
+        # Robustly extract the list of questions from the expected key
+        if not isinstance(data, dict) or "questions" not in data:
+            raise json.JSONDecodeError(
+                "AI response was not a dict or missing the 'questions' key.",
+                raw_response, 0
+            )
         
-        if isinstance(data, list):
-            return data
+        questions_list = data.get("questions")
         
-        raise json.JSONDecodeError("AI did not return a valid JSON list or object.", raw_response, 0)
+        if not isinstance(questions_list, list):
+             raise json.JSONDecodeError(
+                "AI response 'questions' key did not contain a list.",
+                raw_response, 0
+            )
 
+        return questions_list
 
     except json.JSONDecodeError as e:
-        return {"error": "AI returned invalid JSON", "details": str(e), "raw_response": raw_response}
+        return {"error": "AI returned invalid JSON or unexpected schema", "details": str(e), "raw_response": raw_response}
     except Exception as e:
-        # Handle API errors (e.g., auth, rate limits, network issues)
+        # Handle API errors (e.g., auth, rate limits, model not found)
         return {"error": "AI API request failed", "details": str(e)}
