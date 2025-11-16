@@ -23,7 +23,7 @@ def submit_result():
     }
     """
     data = request.get_json()
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
 
     if not data:
         return jsonify({"error": "Nincsenek adatok"}), 400
@@ -90,7 +90,7 @@ def get_results():
     - Admins get all results.
     - Regular users get only their own results.
     """
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
     user = User.query.get(current_user_id)
 
     try:
@@ -124,7 +124,7 @@ def get_result_by_id(result_id):
     Admins can see any result.
     Regular users can only see their own.
     """
-    current_user_id = get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
     user = User.query.get(current_user_id)
     
     result = Result.query.get(result_id)
