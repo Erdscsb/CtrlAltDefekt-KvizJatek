@@ -16,7 +16,7 @@ Flask-Marshmallow
 marshmallow-sqlalchemy
 
 # --- Külső API (K02) ---
-#openai
+openai
 
 # --- Produkciós WSGI Szerver (Telepítési terv) ---
 #gunicorn
