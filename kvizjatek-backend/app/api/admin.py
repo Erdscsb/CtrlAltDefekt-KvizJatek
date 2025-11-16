@@ -21,7 +21,6 @@ def get_all_users():
             "is_admin": user.is_admin
         })
     return jsonify(output), 200
-
 @admin_bp.route('/users/<int:user_id>', methods=['GET'])
 @admin_required
 def get_user_by_id(user_id):
