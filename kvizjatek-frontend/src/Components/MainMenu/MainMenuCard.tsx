@@ -4,8 +4,10 @@ import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import MenuButton from "./MenuButton";
 import ProfileIconMenu from "./ProfileMenuIcon";
+import { useNavigate } from "react-router-dom";
 
 const MainMenuCard: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="menu-panel">
       <Stack spacing={3}>
@@ -43,7 +45,10 @@ const MainMenuCard: React.FC = () => {
             size="small"
             variant="text"
             color="secondary"
-            onClick={() => (window.location.href = "/settings")}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/settings");
+            }}
           >
             Beállítások
           </Button>

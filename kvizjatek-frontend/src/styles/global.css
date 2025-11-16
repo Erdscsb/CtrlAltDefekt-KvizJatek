@@ -54,6 +54,27 @@ body[data-theme='red'] {
   --text: #fff0f4;
   --muted: #f1b7c9;
 }
+body[data-theme='teal'] {
+  --bg1: #071a1f;
+  --bg2: #0c2b33;
+  --glass-bg: rgba(40, 180, 200, 0.18);
+  --glass-border: rgba(90, 230, 240, 0.35);
+  --accent: #6fe7f0;
+  --accent-2: #2cc4cf;
+  --text: #e6fbff;
+  --muted: #b8e6ec;
+}
+
+body[data-theme='amber'] {
+  --bg1: #1a1406;
+  --bg2: #2c210a;
+  --glass-bg: rgba(220, 160, 70, 0.18);
+  --glass-border: rgba(255, 210, 120, 0.35);
+  --accent: #ffcf6f;
+  --accent-2: #f39b2c;
+  --text: #fff8ea;
+  --muted: #efe0b7;
+}
 
 /* ====== Globális reset a középre helyezéshez ====== */
 html,

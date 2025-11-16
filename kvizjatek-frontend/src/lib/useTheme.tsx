@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 
-export type AppTheme = 'purple' | 'green' | 'blue' | 'red';
+export type AppTheme = 'purple' | 'green' | 'blue' | 'red' | 'teal' | 'amber';
 
 type ThemeCtx = {
   theme: AppTheme;
@@ -15,25 +15,39 @@ type ThemeCtx = {
 };
 
 const STORAGE_KEY = 'quiz-theme';
-
 const ThemeCtxInternal = createContext<ThemeCtx | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<AppTheme>('purple');
+  const [theme, setThemeState] = useState<AppTheme>('purple');
 
+  // első betöltés: localStorage
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as AppTheme | null;
-    if (saved) setTheme(saved);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY) as AppTheme | null;
+      if (saved) setThemeState(saved);
+    } catch {
+      /* no-op */
+    }
   }, []);
 
+  // DOM + mentés
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch {
+      /* no-op */
+    }
   }, [theme]);
 
-  const value = useMemo<ThemeCtx>(() => ({ theme, setTheme }), [theme]);
+  const value = useMemo<ThemeCtx>(
+    () => ({
+      theme,
+      setTheme: (t: AppTheme) => setThemeState(t),
+    }),
+    [theme]
+  );
 
-  // NINCS JSX itt? Dehogynem, ez JSX. Ha így hagyod, fájl legyen .tsx!
   return (
     <ThemeCtxInternal.Provider value={value}>
       {children}
@@ -43,8 +57,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export function useAppTheme(): ThemeCtx {
   const ctx = useContext(ThemeCtxInternal);
-  if (!ctx) {
-    throw new Error('useAppTheme must be used within ThemeProvider');
-  }
+  if (!ctx) throw new Error('useAppTheme must be used within ThemeProvider');
   return ctx;
 }
