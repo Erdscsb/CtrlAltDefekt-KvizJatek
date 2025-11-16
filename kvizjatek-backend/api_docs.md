@@ -2,13 +2,13 @@
 
 This document outlines the API endpoints for the quiz application, including authentication, user management, topics, quizzes, and results.
 
-## Authentication (`/auth`)
+## Authentication
 
 ---
 
 ### 1. Register User
 
-* **Endpoint:** `POST /auth/register`
+* **Endpoint:** `POST /register`
 * **Description:** Creates a new user account.
 * **Permissions:** Public
 * **Request Body (JSON):**
@@ -33,7 +33,7 @@ This document outlines the API endpoints for the quiz application, including aut
 
 ### 2. Login User
 
-* **Endpoint:** `POST /auth/login`
+* **Endpoint:** `POST /login`
 * **Description:** Authenticates a user and returns access/refresh tokens.
 * **Permissions:** Public
 * **Request Body (JSON):**
@@ -64,7 +64,7 @@ This document outlines the API endpoints for the quiz application, including aut
 
 ### 3. Refresh Access Token
 
-* **Endpoint:** `POST /auth/refresh`
+* **Endpoint:** `POST /refresh`
 * **Description:** Issues a new access token using a valid refresh token.
 * **Permissions:** Logged-in User (Requires `Authorization: Bearer <refresh_token>` header)
 * **Request Body:** None
@@ -77,9 +77,49 @@ This document outlines the API endpoints for the quiz application, including aut
 * **Error Responses:**
     * **401 UNAUTHORIZED:** Invalid or expired refresh token.
 
+## Profile (`/`)
+
+---
+
+### 1. Get My Profile
+
+* **Endpoint:** `GET /`
+* **Description:** Gets the currently authenticated user's profile information.
+* **Permissions:** Logged-in User
+* **Request Body:** None
+* **Success Response (200 OK):**
+    ```json
+    {
+      "id": 1,
+      "username": "current_user",
+      "email": "user@example.com",
+      "is_admin": false
+    }
+    ```
+* **Error Responses:**
+    * **404 NOT FOUND:** User not found.
+
+---
+
+### 2. Delete My Profile
+
+* **Endpoint:** `DELETE /`
+* **Description:** Deletes the currently authenticated user's account and all their associated data (Results, Quizzes).
+* **Permissions:** Logged-in User
+* **Request Body:** None
+* **Success Response (200 OK):**
+    ```json
+    {
+      "message": "A fiókod sikeresen törölve."
+    }
+    ```
+* **Error Responses:**
+    * **404 NOT FOUND:** User not found.
+    * **500 INTERNAL SERVER ERROR:** Failed to delete account.
+
 ## Admin User Management (`/users`)
 
-*Note: These routes are defined in `admin_bp` but do not have a URL prefix, so they are at the root.*
+*Note: These routes are defined in `admin_bp`.*
 
 ---
 
@@ -448,7 +488,7 @@ This document outlines the API endpoints for the quiz application, including aut
 ### 5. Delete Quiz
 
 * **Endpoint:** `DELETE /quiz/<int:quiz_id>`
-* **Description:** Deletes a quiz and all its associated questions and results (due to cascading).
+* **Description:** Deletes a quiz and all its associated questions and results.
 * **Permissions:** Owner or Admin
 * **URL Parameters:**
     * `quiz_id` (int): The ID of the quiz to delete.
