@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from '../Pages/Home/HomePage';
-import LeaderboardPage from '../Pages/Leaderboard/LeaderboardPage';
+import LeaderboardPage from '../Pages/Leaderboard/LeaderBoard';
 import LoginPage from '../Pages/Authentication/LoginPage';
 import RegisterPage from '../Pages/Authentication/RegisterPage';
 import ProfilePage from '../Pages/Profile/ProfilePage';
-import NewGamePage from '../Pages/NewGame/NewGamePage';
+import NewGamePage from '../Pages/NewGame/NewGame';
 
 const Router: React.FC = () => {
   return (
