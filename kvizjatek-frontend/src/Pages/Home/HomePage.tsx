@@ -7,9 +7,6 @@ const HomePage: React.FC = () => {
   return (
     <CenterStage>
       <div className="page-wrap">
-        <div style={{ textAlign: "center", marginBottom: 18 }}>
-          <img src={"../../assets/logo.svg"} alt="Kvízjáték" height={56} />
-        </div>
         <GlassBackground className="menu-surface">
           <MainMenu />
         </GlassBackground>
