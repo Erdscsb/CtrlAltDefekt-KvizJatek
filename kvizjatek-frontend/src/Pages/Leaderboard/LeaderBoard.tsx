@@ -4,16 +4,19 @@ import {
   Button,
   IconButton,
   InputAdornment,
+  MenuItem,
   Paper,
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import Grid from '@mui/material/GridLegacy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import SearchIcon from '@mui/icons-material/Search';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useNavigate } from 'react-router-dom';
 
 type Row = {
@@ -34,12 +37,31 @@ const MOCK: Row[] = [
   { rank: 8, name: 'Delta', points: 8315, country: 'US' },
   { rank: 9, name: 'Nova', points: 8290, country: 'IT' },
   { rank: 10, name: 'Krypton', points: 8200, country: 'RO' },
+  { rank: 11, name: 'Echo', points: 8120, country: 'NL' },
+  { rank: 12, name: 'Quasar', points: 8065, country: 'AT' },
+  { rank: 13, name: 'Photon', points: 7990, country: 'CZ' },
+  { rank: 14, name: 'Hyperion', points: 7925, country: 'CH' },
+  { rank: 15, name: 'Lambda', points: 7880, country: 'SK' },
+  { rank: 16, name: 'Raven', points: 7810, country: 'NO' },
+  { rank: 17, name: 'Astra', points: 7750, country: 'FI' },
+  { rank: 18, name: 'Zenith', points: 7680, country: 'DK' },
+  { rank: 19, name: 'Nyx', points: 7625, country: 'BE' },
+  { rank: 20, name: 'Orion', points: 7590, country: 'PT' },
+];
+
+const CATEGORIES = [
+  { value: 'hu-history', label: 'Magyarország történelme' },
+  { value: 'world-history', label: 'Világtörténelem' },
+  { value: 'science', label: 'Tudomány' },
+  { value: 'geography', label: 'Földrajz' },
+  { value: 'literature', label: 'Irodalom' },
+  { value: 'sports', label: 'Sport' },
 ];
 
 const medalColor = (rank: number) => {
-  if (rank === 1) return '#ffd54f'; // arany
-  if (rank === 2) return '#cfd8dc'; // ezüst
-  if (rank === 3) return '#ffb74d'; // bronz
+  if (rank === 1) return '#ffd54f';
+  if (rank === 2) return '#cfd8dc';
+  if (rank === 3) return '#ffb74d';
   return 'transparent';
 };
 
@@ -49,20 +71,24 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: '56px 1fr 120px',
-        gap: 10,
+        gridTemplateColumns: {
+          xs: '52px 1fr auto',
+          sm: '56px 1fr 120px',
+        },
+        gap: { xs: 8, sm: 10 },
         alignItems: 'center',
-        padding: '8px 12px',
+        padding: { xs: '8px 10px', sm: '8px 12px' },
         borderRadius: 12,
         border: '1px solid rgba(255,255,255,0.06)',
         background: top3 ? 'rgba(255,255,255,0.03)' : 'transparent',
         position: 'relative',
+        boxSizing: 'border-box',
         ...(top3 && {
           boxShadow: `0 0 0 1px ${medalColor(row.rank)}22, 0 8px 24px rgba(0,0,0,0.25)`,
         }),
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ minWidth: 0 }}>
         {row.rank <= 3 ? (
           <EmojiEventsIcon
             sx={{
@@ -73,23 +99,22 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
         ) : (
           <MilitaryTechIcon sx={{ color: 'var(--muted)' }} />
         )}
-        <Typography
-          component="span"
-          sx={{ width: 24, textAlign: 'right', color: 'var(--text)' }}
-        >
+        <Typography component="span" sx={{ width: 24, textAlign: 'right', color: 'var(--text)' }}>
           {row.rank}
         </Typography>
       </Stack>
 
-      <Stack spacing={0}>
-        <Typography sx={{ fontWeight: 600 }}>{row.name}</Typography>
+      <Stack spacing={0} sx={{ minWidth: 0 }}>
+        <Typography noWrap sx={{ fontWeight: 600 }}>
+          {row.name}
+        </Typography>
         <Typography variant="caption" sx={{ color: 'var(--muted)' }}>
           {row.country ?? '—'}
         </Typography>
       </Stack>
 
       <Typography
-        sx={{ textAlign: 'right', fontWeight: 700, color: 'var(--text)' }}
+        sx={{ textAlign: 'right', fontWeight: 700, color: 'var(--text)', whiteSpace: 'nowrap' }}
       >
         {row.points.toLocaleString('hu-HU')} pt
       </Typography>
@@ -99,25 +124,25 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
 
 const LeaderboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width:640px)');
   const [q, setQ] = React.useState('');
+  const [category, setCategory] = React.useState<string>('hu-history'); // csak UI
 
   const rows = React.useMemo(() => {
     const term = q.trim().toLowerCase();
-    const filtered = term
-      ? MOCK.filter((r) => r.name.toLowerCase().includes(term))
-      : MOCK;
-    return filtered;
+    return term ? MOCK.filter((r) => r.name.toLowerCase().includes(term)) : MOCK;
   }, [q]);
 
   return (
-    <Stack
-      className="page-allow-scroll"
-      alignItems="center"
-      sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}
-    >
+    <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}>
       <Box
-        className="leaderboard-wrapper"
-        sx={{ width: '100%', maxWidth: 1040, px: { xs: 0, sm: 2 } }}
+        sx={{
+          width: '100%',
+          maxWidth: 1040,
+          px: { xs: 1.5, sm: 2 },
+          boxSizing: 'border-box',
+          margin: '0 auto',
+        }}
       >
         <Button
           startIcon={<ArrowBackIcon />}
@@ -134,18 +159,26 @@ const LeaderboardPage: React.FC = () => {
 
         <Grid container spacing={2}>
           <Grid item xs={12}>
+            {/* ETTŐL KEZDVE MINDEN A KÁRTYÁN BELÜL VAN */}
             <Paper
-              className="glass neon-border leaderboard-card"
+              className="glass neon-border"
               elevation={0}
-              sx={{}}
+              sx={{
+                p: { xs: 2, sm: 2.5 },
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 0,
+                maxHeight: { xs: 'calc(100vh - 120px)', sm: 'calc(100vh - 140px)' },
+                boxSizing: 'border-box',
+              }}
             >
-              {/* Fejléc */}
+              {/* Fejléc + szűrők */}
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
                 alignItems={{ xs: 'stretch', sm: 'center' }}
                 justifyContent="space-between"
-                spacing={1.5}
-                sx={{ mb: 1.5 }}
+                spacing={1.25}
+                sx={{ flex: '0 0 auto' }}
               >
                 <Stack direction="row" spacing={1} alignItems="center">
                   <EmojiEventsIcon color="primary" />
@@ -154,38 +187,77 @@ const LeaderboardPage: React.FC = () => {
                   </Typography>
                 </Stack>
 
-                <TextField
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  size="small"
-                  placeholder="Keresés játékos névre…"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <IconButton edge="start" tabIndex={-1}>
-                          <SearchIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: { xs: '100%', sm: 320 } }}
-                />
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={1}
+                  alignItems={{ xs: 'stretch', sm: 'center' }}
+                  sx={{ width: { xs: '100%', sm: 'auto' } }}
+                >
+                  <TextField
+                    select
+                    size="small"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    sx={{ minWidth: 240, width: { xs: '100%', sm: 260 } }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <FilterAltIcon fontSize="small" sx={{ color: 'var(--muted)' }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                  >
+                    {CATEGORIES.map((c) => (
+                      <MenuItem key={c.value} value={c.value}>
+                        {c.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+
+                  <TextField
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    size="small"
+                    placeholder="Keresés játékos névre…"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton edge="start" tabIndex={-1}>
+                            <SearchIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={{ width: { xs: '100%', sm: 300 } }}
+                  />
+                </Stack>
               </Stack>
 
-              {/* Lista */}
-              <Box className="menu-panel leaderboard-list-panel">
-                <Stack spacing={1.0}>
+              {/* Lista – SZIGORÚAN a kártyán belül, nincs absolute, csak flex */}
+              <Box
+                // fontos: NE legyen className="menu-panel" máshol az oldalon position/absolute.
+                className="leaderboard-scroll"
+                sx={{
+                  mt: 1,
+                  borderRadius: 2,
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  background: 'rgba(15, 10, 31, 0.40)',
+                  p: { xs: 1.25, sm: 1.5 },
+                  flex: '1 1 auto',
+                  minHeight: 0,
+                  overflow: 'auto',
+                  boxSizing: 'border-box',
+                }}
+              >
+                <Stack spacing={1}>
                   {rows.map((r) => (
                     <RowItem key={r.rank} row={r} />
                   ))}
                 </Stack>
               </Box>
 
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                sx={{ mt: 1.25 }}
-              >
+              {/* Lábléc */}
+              <Stack direction="row" justifyContent="space-between" sx={{ mt: 1, flex: '0 0 auto' }}>
                 <Typography variant="caption" className="subtle">
                   Összes játékos: {MOCK.length}
                 </Typography>
@@ -197,7 +269,7 @@ const LeaderboardPage: React.FC = () => {
           </Grid>
         </Grid>
 
-        <Box sx={{ height: 24 }} />
+        <Box sx={{ height: 12 }} />
       </Box>
     </Stack>
   );
