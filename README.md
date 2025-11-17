@@ -19,7 +19,7 @@ Egy modern, reszponzív AI quiz webalkalmazás React frontenddel, Flask backendd
 - Adatbázis: SQLite
 
 ## API dokumentáció
-  - Az API által kínált lehetőségek dokumentációja, az adatbázis felépítésének ábrázolása. Elérés: TODO
+  - Az API által kínált lehetőségek dokumentációja, az adatbázis felépítésének ábrázolása. Elérés: [api_docs.md](./kvizjatek-backend/api_docs.md)
 
 ## Teszt esetek elérése:
   - TODO
