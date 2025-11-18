@@ -58,76 +58,56 @@ const calcStats = (games: PlayedGame[]) => {
   return { totalGames, totalPoints, avg, best };
 };
 
-const AchievementChip: React.FC<{ active: boolean; label: string }> = ({
-  active,
-  label,
-}) => {
-  return (
-    <Chip
-      icon={<WorkspacePremiumIcon />}
-      label={label}
-      color={active ? 'primary' : 'default'}
-      variant={active ? 'filled' : 'outlined'}
-      sx={{
-        borderColor: active ? 'transparent' : 'rgba(255,255,255,0.25)',
-        bgcolor: active ? 'rgba(178,124,255,0.18)' : 'transparent',
-      }}
-    />
-  );
-};
+const AchievementChip: React.FC<{ active: boolean; label: string }> = ({ active, label }) => (
+  <Chip
+    icon={<WorkspacePremiumIcon />}
+    label={label}
+    variant={active ? 'filled' : 'outlined'}
+    sx={{
+      borderColor: active ? 'transparent' : 'var(--glass-border-light)',
+      bgcolor: active ? 'var(--accent-glow)' : 'transparent',
+      color: active ? '#fff' : 'var(--text-secondary)',
+      fontWeight: active ? 700 : 400,
+      boxShadow: active ? '0 0 10px var(--accent-glow)' : 'none',
+    }}
+  />
+);
 
-const GameRow: React.FC<{ game: PlayedGame; index: number }> = ({
-  game,
-  index,
-}) => {
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: { xs: '1fr auto', sm: '180px 1fr 120px' },
-        gap: { xs: 8, sm: 12 },
-        alignItems: 'center',
-        padding: { xs: '8px 10px', sm: '10px 12px' },
-        borderRadius: 12,
-        border: '1px solid rgba(255,255,255,0.06)',
-        background: 'rgba(255,255,255,0.02)',
-        boxSizing: 'border-box',
-      }}
-    >
-      <Stack
-        direction="row"
-        spacing={1}
-        alignItems="center"
-        sx={{ display: { xs: 'none', sm: 'flex' } }}
-      >
-        <SportsEsportsIcon sx={{ color: 'var(--muted)' }} />
-        <Typography variant="body2" className="subtle">
-          {game.id}
-        </Typography>
-      </Stack>
+const GameRow: React.FC<{ game: PlayedGame }> = ({ game }) => (
+  <Box
+    sx={{
+      display: 'grid',
+      gridTemplateColumns: { xs: '1fr auto', sm: '180px 1fr 120px' },
+      gap: { xs: 2, sm: 3 },
+      alignItems: 'center',
+      padding: '12px 16px',
+      borderRadius: 3,
+      borderTop: '1px solid var(--glass-border-light)',
+      borderBottom: '1px solid var(--glass-border-dark)',
+      background: 'rgba(255,255,255,0.02)',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        background: 'rgba(255,255,255,0.05)',
+        transform: 'translateX(4px)',
+        borderColor: 'var(--accent)',
+      }
+    }}
+  >
+    <Stack direction="row" spacing={1} alignItems="center" sx={{ display: { xs: 'none', sm: 'flex' } }}>
+      <SportsEsportsIcon sx={{ color: 'var(--text-secondary)', fontSize: 20 }} />
+      <Typography variant="body2" className="subtle">{game.id}</Typography>
+    </Stack>
 
-      <Stack spacing={0} sx={{ minWidth: 0 }}>
-        <Typography sx={{ fontWeight: 600 }} noWrap>
-          {game.topic}
-        </Typography>
-        <Typography variant="caption" className="subtle" sx={{ display: { sm: 'none' } }}>
-          {game.id}
-        </Typography>
-      </Stack>
+    <Stack spacing={0} sx={{ minWidth: 0 }}>
+      <Typography sx={{ fontWeight: 600 }} noWrap>{game.topic}</Typography>
+      <Typography variant="caption" className="subtle" sx={{ display: { sm: 'none' } }}>{game.id}</Typography>
+    </Stack>
 
-      <Typography
-        sx={{
-          textAlign: 'right',
-          fontWeight: 700,
-          color: 'var(--text)',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {game.points.toLocaleString('hu-HU')} pt
-      </Typography>
-    </Box>
-  );
-};
+    <Typography sx={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)' }}>
+      {game.points.toLocaleString('hu-HU')} pt
+    </Typography>
+  </Box>
+);
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -233,7 +213,7 @@ const ProfilePage: React.FC = () => {
               >
                 <Stack spacing={1}>
                   {data.games.map((g, i) => (
-                    <GameRow key={g.id} game={g} index={i} />
+                    <GameRow key={g.id} game={g} />
                   ))}
                 </Stack>
               </Box>
