@@ -71,20 +71,32 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: {
-          xs: '52px 1fr auto',
-          sm: '56px 1fr 120px',
-        },
-        gap: { xs: 8, sm: 10 },
+        gridTemplateColumns: { xs: '52px 1fr auto', sm: '56px 1fr 120px' },
+        gap: { xs: 2, sm: 3 },
         alignItems: 'center',
-        padding: { xs: '8px 10px', sm: '8px 12px' },
-        borderRadius: 12,
-        border: '1px solid rgba(255,255,255,0.06)',
-        background: top3 ? 'rgba(255,255,255,0.03)' : 'transparent',
+        padding: { xs: '12px', sm: '16px' },
+        borderRadius: 3, // Matches global radius-md
+        
+        borderTop: '1px solid var(--glass-border-light)',
+        borderBottom: '1px solid var(--glass-border-dark)',
+        borderLeft: '1px solid transparent',
+        borderRight: '1px solid transparent',
+   
+        background: top3 
+          ? 'linear-gradient(90deg, var(--accent-glow) 0%, transparent 100%)' 
+          : 'rgba(255,255,255,0.02)',
+          
         position: 'relative',
-        boxSizing: 'border-box',
+        transition: 'transform 0.2s ease, background 0.2s ease',
+        
+        '&:hover': {
+           background: 'rgba(255,255,255,0.05)',
+           transform: 'scale(1.01)'
+        },
+
         ...(top3 && {
-          boxShadow: `0 0 0 1px ${medalColor(row.rank)}22, 0 8px 24px rgba(0,0,0,0.25)`,
+          boxShadow: `0 4px 20px -5px var(--accent-glow)`,
+          borderColor: 'var(--accent)',
         }),
       }}
     >

@@ -166,86 +166,105 @@ const QuizGamePage: React.FC = () => {
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
-  return (
+ return (
     <CenterStage>
-      <GlassBackground className="menu-surface">
-        <Box sx={{ width: '100%', maxWidth: 700, p: { xs: 2, sm: 4 } }}>
-          <Stack spacing={3}>
-            <Box>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={1}
-              >
-                <Typography variant="h5" fontWeight={700}>
-                  {quiz.topic_name}
-                </Typography>
-                <Chip label={`Nehézség: ${quiz.difficulty}`} color="secondary" />
-              </Stack>
-              <Typography variant="body2" color="var(--muted)">
-                {`Kérdés ${currentQuestionIndex + 1} / ${quiz.questions.length}`}
-              </Typography>
-              <LinearProgress
-                variant="determinate"
-                value={progress}
-                color="primary"
-                sx={{ mt: 1 }}
-              />
-            </Box>
+      <Box sx={{ width: '100%', maxWidth: '44rem' }}>
+        <GlassBackground className="menu-surface">
+          <Box sx={{ width: '100%' }}>
+            
+            <Stack spacing={3}>
+              {/* Header Section */}
+              <Box>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                  <Typography variant="h5" fontWeight={800} className="gradient-text">
+                    {quiz.topic_name}
+                  </Typography>
+                  <Chip 
+                    label={quiz.difficulty} 
+                    sx={{ 
+                      bgcolor: 'var(--accent-glow)', 
+                      color: '#fff', 
+                      fontWeight: 'bold',
+                      border: '1px solid var(--accent)'
+                    }} 
+                  />
+                </Stack>
+                
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="body2" className="subtle">Haladás</Typography>
+                  <Typography variant="body2" fontWeight="bold" sx={{ color: 'var(--accent)' }}>
+                    {currentQuestionIndex + 1} / {quiz.questions.length}
+                  </Typography>
+                </Stack>
 
-            <Paper 
-                elevation={0}
-                sx={{ 
-                    p: 2, 
-                    background: 'rgba(15, 10, 31, 0.40)',
-                    border: '1px solid rgba(255,255,255,0.06)'
-                }}
-            >
-                <Typography variant="h6" sx={{ minHeight: '60px', textAlign: 'center' }}>
-                {currentQuestion.question_text}
-                </Typography>
-            </Paper>
-
-            <Stack spacing={1.5}>
-              {currentQuestion.options.map((option, index) => (
-                <Button
-                  key={index}
-                  variant={getButtonColor(option) === 'primary' ? 'contained' : 'outlined'}
-                  color={getButtonColor(option)}
-                  onClick={() => handleAnswer(option)}
-                  disabled={loading} // tiltsuk le, amíg a válasz mentése/következő kérdés tölt
-                  sx={{
-                    justifyContent: 'flex-start',
-                    padding: '0.75rem 1rem',
-                    textAlign: 'left',
-                    textTransform: 'none',
-                    fontSize: '1rem',
+                {/* Neon Progress Bar */}
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
+                  sx={{ 
+                    mt: 1, 
+                    height: 8, 
+                    borderRadius: 4,
+                    bgcolor: 'rgba(255,255,255,0.1)',
+                    '& .MuiLinearProgress-bar': {
+                      background: 'linear-gradient(90deg, var(--accent), var(--accent-2))',
+                      boxShadow: '0 0 10px var(--accent-glow)' 
+                    }
                   }}
+                />
+              </Box>
+
+              {/* Question Card - Uses the new Theme Paper automatically */}
+              <Paper elevation={0} sx={{ p: 3, textAlign: 'center', minHeight: 120, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  {currentQuestion.question_text}
+                </Typography>
+              </Paper>
+
+              {/* Answer Buttons */}
+              <Stack spacing={1.5}>
+                {currentQuestion.options.map((option, index) => (
+                  <Button
+                    key={index}
+                    variant={getButtonColor(option) === 'primary' ? 'contained' : 'outlined'}
+                    color={getButtonColor(option) as any}
+                    onClick={() => handleAnswer(option)}
+                    disabled={loading} 
+                    sx={{
+                      justifyContent: 'flex-start',
+                      padding: '1rem 1.5rem',
+                      textAlign: 'left',
+                      fontSize: '1rem',
+                      borderColor: isAnswered && option !== selectedAnswer ? 'transparent' : undefined,
+                      opacity: isAnswered && option !== selectedAnswer ? 0.5 : 1,
+                    }}
+                  >
+                    {option}
+                  </Button>
+                ))}
+              </Stack>
+              
+              {/* Action Bar */}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 1 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  disabled={!isAnswered || loading}
+                  size="large"
+                  sx={{ px: 4 }}
                 >
-                  {option}
+                  {loading 
+                    ? <CircularProgress size={24} color="inherit" />
+                    : (currentQuestionIndex === quiz.questions.length - 1 ? 'Befejezés' : 'Következő')
+                  }
                 </Button>
-              ))}
+              </Box>
+              
             </Stack>
-            
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
-              disabled={!isAnswered || loading}
-              sx={{ py: 1.5, fontWeight: 700, fontSize: '1.1rem' }}
-            >
-              {loading 
-                ? <CircularProgress size={24} color="inherit" />
-                : (currentQuestionIndex === quiz.questions.length - 1
-                  ? 'Kvíz befejezése'
-                  : 'Következő kérdés')
-              }
-            </Button>
-            
-          </Stack>
-        </Box>
-      </GlassBackground>
+          </Box>
+        </GlassBackground>
+      </Box>
     </CenterStage>
   );
 };
