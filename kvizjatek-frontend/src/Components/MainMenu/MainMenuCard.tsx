@@ -17,7 +17,7 @@ const MainMenuCard: React.FC = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h4" component="h1" fontWeight={700}>
+          <Typography variant="h4" component="h1" fontWeight={800} className="gradient-text">
             Kvízjáték
           </Typography>
           <ProfileIconMenu />

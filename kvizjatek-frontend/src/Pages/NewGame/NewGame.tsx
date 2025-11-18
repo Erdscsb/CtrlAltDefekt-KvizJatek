@@ -98,10 +98,11 @@ const NewGamePage: React.FC = () => {
     }
   };
 
-  return (
-    
+ return (
     <CenterStage>
-      <Button
+      {/* WRAPPER BOX: Ensures button aligns with the card */}
+      <Box sx={{ width: '100%', maxWidth: '44rem' }}>
+        <Button
           startIcon={<ArrowBackIcon />}
           variant="text"
           color="secondary"
@@ -109,132 +110,132 @@ const NewGamePage: React.FC = () => {
             e.preventDefault();
             navigate(-1);
           }}
-          sx={{ mb: { xs: 1, sm: 2 } }}
+          sx={{ mb: 2, paddingLeft: 0 }} // Removed left padding to align text with card edge
         >
           Vissza
         </Button>
-      <GlassBackground className="menu-surface">
-        <Box sx={{ width: '100%', maxWidth: 600, p: 2 }}>
-          <Typography variant="h4" fontWeight={700} mb={3} textAlign="center">
-            Új Játék Indítása
-          </Typography>
+        
+        <GlassBackground className="menu-surface">
+          {/* Removed max-width here as the parent handles it now */}
+          <Box sx={{ width: '100%', p: 0 }}> 
+            <Typography variant="h4" fontWeight={700} mb={3} textAlign="center" className="text-glow">
+              Új Játék Indítása
+            </Typography>
 
-          <Stack spacing={3}>
-            {/* Topic Selection */}
-            <TextField
-              select
-              label="Válassz témát"
-              value={selectedTopicId}
-              onChange={(e) => {
-                setSelectedTopicId(Number(e.target.value));
-                setCustomTopic(''); // Clear custom if existing selected
-              }}
-              fullWidth
-            >
-              <MenuItem value="">
-                <em>Egyedi téma megadása...</em>
-              </MenuItem>
-              {topics.map((t) => (
-                <MenuItem key={t.id} value={t.id}>
-                  {t.name}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            {/* Custom Topic Input (only if no preset topic selected) */}
-            <TextField
-              label="Egyedi téma (pl. 'Harry Potter varázsigék')"
-              value={customTopic}
-              onChange={(e) => {
-                setCustomTopic(e.target.value);
-                setSelectedTopicId(''); // Clear preset if typing custom
-              }}
-              disabled={selectedTopicId !== ''}
-              fullWidth
-              helperText={
-                selectedTopicId !== ''
-                  ? 'Előre definiált téma kiválasztva.'
-                  : 'Írj be bármit, az AI generálni fog belőle!'
-              }
-            />
-
-            <Stack direction="row" spacing={2}>
+            <Stack spacing={3}>
               <TextField
                 select
-                label="Nehézség"
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
+                label="Válassz témát"
+                value={selectedTopicId}
+                onChange={(e) => {
+                  setSelectedTopicId(Number(e.target.value));
+                  setCustomTopic('');
+                }}
                 fullWidth
               >
-                {DIFFICULTIES.map((d) => (
-                  <MenuItem key={d.value} value={d.value}>
-                    {d.label}
+                <MenuItem value="">
+                  <em>Egyedi téma megadása...</em>
+                </MenuItem>
+                {topics.map((t) => (
+                  <MenuItem key={t.id} value={t.id}>
+                    {t.name}
                   </MenuItem>
                 ))}
               </TextField>
 
-              <Box sx={{ width: '100%', px: 1 }}>
-                <Typography gutterBottom variant="caption">
-                  Kérdések száma: {numQuestions}
-                </Typography>
-                <Slider
-                  value={numQuestions}
-                  onChange={(_, v) => setNumQuestions(v as number)}
-                  min={3}
-                  max={10}
-                  step={1}
-                  marks
-                  valueLabelDisplay="auto"
-                />
-              </Box>
-            </Stack>
+              <TextField
+                label="Egyedi téma (pl. 'Harry Potter varázsigék')"
+                value={customTopic}
+                onChange={(e) => {
+                  setCustomTopic(e.target.value);
+                  setSelectedTopicId('');
+                }}
+                disabled={selectedTopicId !== ''}
+                fullWidth
+                helperText={
+                  selectedTopicId !== ''
+                    ? 'Előre definiált téma kiválasztva.'
+                    : 'Írj be bármit, az AI generálni fog belőle!'
+                }
+              />
 
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={aiGenerate}
-                  onChange={(e) => setAiGenerate(e.target.checked)}
-                  color="secondary"
-                />
-              }
-              label={
-                <Stack direction="row" alignItems="center" gap={1}>
-                  <AutoAwesomeIcon
-                    fontSize="small"
-                    sx={{ color: 'var(--accent)' }}
+              <Stack direction="row" spacing={2}>
+                <TextField
+                  select
+                  label="Nehézség"
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                  fullWidth
+                >
+                  {DIFFICULTIES.map((d) => (
+                    <MenuItem key={d.value} value={d.value}>
+                      {d.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <Box sx={{ width: '100%', px: 1 }}>
+                  <Typography gutterBottom variant="caption">
+                    Kérdések száma: {numQuestions}
+                  </Typography>
+                  <Slider
+                    value={numQuestions}
+                    onChange={(_, v) => setNumQuestions(v as number)}
+                    min={3}
+                    max={10}
+                    step={1}
+                    marks
+                    valueLabelDisplay="auto"
                   />
-                  <Typography>AI Generálás (ChatGPT)</Typography>
-                </Stack>
-              }
-            />
+                </Box>
+              </Stack>
 
-            {error && (
-              <Alert severity="error" variant="filled">
-                {error}
-              </Alert>
-            )}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={aiGenerate}
+                    onChange={(e) => setAiGenerate(e.target.checked)}
+                    color="secondary"
+                  />
+                }
+                label={
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <AutoAwesomeIcon
+                      fontSize="small"
+                      sx={{ color: 'var(--accent)' }}
+                    />
+                    <Typography>AI Generálás (ChatGPT)</Typography>
+                  </Stack>
+                }
+              />
 
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={handleStart}
-              disabled={loading}
-              startIcon={
-                loading ? <CircularProgress size={20} /> : <PlayArrowIcon />
-              }
-              sx={{
-                mt: 2,
-                py: 1.5,
-                fontSize: '1.1rem',
-                fontWeight: 'bold',
-              }}
-            >
-              {loading ? 'Generálás folyamatban...' : 'Kvíz Indítása'}
-            </Button>
-          </Stack>
-        </Box>
-      </GlassBackground>
+              {error && (
+                <Alert severity="error" variant="filled">
+                  {error}
+                </Alert>
+              )}
+
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                onClick={handleStart}
+                disabled={loading}
+                startIcon={
+                  loading ? <CircularProgress size={20} color="inherit"/> : <PlayArrowIcon />
+                }
+                sx={{
+                  mt: 2,
+                  py: 1.5,
+                  fontSize: '1.1rem',
+                }}
+              >
+                {loading ? 'Generálás...' : 'Kvíz Indítása'}
+              </Button>
+            </Stack>
+          </Box>
+        </GlassBackground>
+      </Box>
     </CenterStage>
   );
 };

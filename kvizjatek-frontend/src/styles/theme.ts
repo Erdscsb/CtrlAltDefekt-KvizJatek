@@ -24,6 +24,7 @@ const theme = createTheme({
   },
 
   components: {
+    // 1. Glass Effect for all Cards/Papers
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -43,16 +44,18 @@ const theme = createTheme({
     MuiAvatar: {
       styleOverrides: {
         root: {
+          // Force the background to the accent gradient
           background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
-          color: '#ffffff',
-          fontWeight: 700,
+          // Force text to be bold white for maximum readability
+          color: '#ffffff !important', 
+          fontWeight: 800,
           border: '1px solid rgba(255,255,255,0.2)',
           boxShadow: '0 0 10px var(--accent-glow)',
         },
       },
     },
 
-    // 3. Buttons with Glow
+    // 3. Buttons with Glow & Tactile Feel
     MuiButton: {
       styleOverrides: {
         root: {
@@ -60,6 +63,10 @@ const theme = createTheme({
           fontWeight: 600,
           borderRadius: 'var(--radius-sm)',
           padding: '10px 24px',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:active': {
+            transform: 'scale(0.96)', // Tactile press effect
+          },
         },
         containedPrimary: {
           background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
