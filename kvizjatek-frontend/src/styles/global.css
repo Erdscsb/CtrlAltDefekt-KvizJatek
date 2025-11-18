@@ -1,329 +1,108 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-/*
- * =========================================
- * 1. ROOT & DEFAULT THEME (Purple)
- * =========================================
- * - Sets the default "purple" theme as the fallback.
- * - This is what loads before React or the theme-switcher (useTheme.tsx) kicks in.
- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 :root {
+  /* --- CORE PALETTE --- */
   --bg1: #0f0a1f;
-  --bg2: #1a1233;
-  --glass-bg: rgba(120, 70, 180, 0.22);
-  --glass-border: rgba(180, 120, 240, 0.38);
+  --bg2: #1b1233;
+
+  /* --- GLASS SYSTEM --- */
+  --glass-bg: rgba(20, 14, 40, 0.65); 
+  --glass-border-light: rgba(255, 255, 255, 0.15);
+  --glass-border-dark: rgba(0, 0, 0, 0.25);
+  
+  /* --- THEME DEFAULTS (Purple) --- */
   --accent: #b27cff;
   --accent-2: #7a4df3;
+  --accent-glow: rgba(178, 124, 255, 0.5);
   --text: #f3eefc;
-  --muted: #bfb3e6;
+  --text-secondary: #bfb3e6;
+
+  /* --- DIMENSIONS --- */
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-md: 16px;
 }
 
-/*
- * =========================================
- * 2. THEME DEFINITIONS
- * =========================================
- * - Defines the variables for all available themes.
- * - These are applied by the useTheme.tsx hook via the <body> tag.
- */
-body[data-theme='purple'] {
-  --bg1: #0f0a1f;
-  --bg2: #1a1233;
-  --glass-bg: rgba(120, 70, 180, 0.22);
-  --glass-border: rgba(180, 120, 240, 0.38);
-  --accent: #b27cff;
-  --accent-2: #7a4df3;
-  --text: #f3eefc;
-  --muted: #bfb3e6;
-}
+/* --- THEME OVERRIDES --- */
+body[data-theme='green'] { --accent: #00ff9d; --accent-2: #00b871; --accent-glow: rgba(0, 255, 157, 0.4); --bg1: #02120b; --bg2: #0a241b; --text: #eafff8; }
+body[data-theme='blue']  { --accent: #4dabff; --accent-2: #0066cc; --accent-glow: rgba(77, 171, 255, 0.45); --bg1: #050b1c; --bg2: #0e1e45; }
+body[data-theme='red']   { --accent: #ff4d6d; --accent-2: #d90429; --accent-glow: rgba(255, 77, 109, 0.45); --bg1: #1a0508; --bg2: #330d14; }
+body[data-theme='teal']  { --accent: #22d3ee; --accent-2: #0891b2; --accent-glow: rgba(34, 211, 238, 0.45); --bg1: #041417; --bg2: #0b2e33; }
+body[data-theme='amber'] { --accent: #fbbf24; --accent-2: #d97706; --accent-glow: rgba(251, 191, 36, 0.45); --bg1: #1a1003; --bg2: #362106; }
 
-body[data-theme='green'] {
-  --bg1: #061a15;
-  --bg2: #0d2b24;
-  --glass-bg: rgba(70, 180, 140, 0.18);
-  --glass-border: rgba(70, 220, 170, 0.35);
-  --accent: #38e4a8;
-  --accent-2: #18b37f;
-  --text: #eafff8;
-  --muted: #b4e6d7;
-}
-
-body[data-theme='blue'] {
-  --bg1: #0a1330;
-  --bg2: #0e1e53;
-  --glass-bg: rgba(70, 120, 220, 0.18);
-  --glass-border: rgba(120, 170, 255, 0.35);
-  --accent: #7ab3ff;
-  --accent-2: #3a78ff;
-  --text: #eef5ff;
-  --muted: #b7c9ef;
-}
-
-body[data-theme='red'] {
-  --bg1: #1a0a0f;
-  --bg2: #2c0f1a;
-  --glass-bg: rgba(220, 70, 120, 0.18);
-  --glass-border: rgba(255, 140, 180, 0.35);
-  --accent: #ff7aa6;
-  --accent-2: #f34d7a;
-  --text: #fff0f4;
-  --muted: #f1b7c9;
-}
-
-body[data-theme='teal'] {
-  --bg1: #071a1f;
-  --bg2: #0c2b33;
-  --glass-bg: rgba(40, 180, 200, 0.18);
-  --glass-border: rgba(90, 230, 240, 0.35);
-  --accent: #6fe7f0;
-  --accent-2: #2cc4cf;
-  --text: #e6fbff;
-  --muted: #b8e6ec;
-}
-
-body[data-theme='amber'] {
-  --bg1: #1a1406;
-  --bg2: #2c210a;
-  --glass-bg: rgba(220, 160, 70, 0.18);
-  --glass-border: rgba(255, 210, 120, 0.35);
-  --accent: #ffcf6f;
-  --accent-2: #f39b2c;
-  --text: #fff8ea;
-  --muted: #efe0b7;
-}
-
-/*
- * =========================================
- * 3. GLOBAL RESETS & BODY
- * =========================================
- * - Applies modern CSS resets and sets up the global styles.
- */
-
-/* Modern box-sizing reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  /* Enables smooth scrolling for anchor links */
-  scroll-behavior: smooth;
-}
+/* --- RESET & BODY --- */
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
-  /* Layout: Full-height, grid-based centering */
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
   margin: 0;
-
-  /* Background */
-  background: radial-gradient(60% 60% at 50% 40%, var(--bg2), var(--bg1)) fixed;
-
-  /* Typography */
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg1);
+  background-image: 
+    radial-gradient(at 0% 0%, var(--bg2) 0px, transparent 50%),
+    radial-gradient(at 98% 1%, var(--bg2) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, var(--bg1) 0px, transparent 50%);
+  background-size: 100% 100%;
   color: var(--text);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-    Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol';
-
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Transitions: Smoothly fade colors on theme change */
-  transition: background 300ms ease-in-out, color 300ms ease-in-out;
+  transition: background-color 0.4s ease, color 0.2s ease;
+  overflow-x: hidden;
 }
 
-/*
- * =========================================
- * 4. LAYOUT COMPONENTS
- * =========================================
- * - Styles for high-level page structure.
- */
+/* --- LAYOUT CLASSES --- */
 
-/* The #root element shouldn't interfere with the body's grid centering */
-#root {
-  width: 100%;
-  display: contents;
-}
-
-/* A wrapper that ensures content is centered on the page */
 .center-stage {
-  width: 100%;
-  min-height: 100%;
-  display: grid;
-  place-items: center;
-  padding: 2rem; /* Use rem for flexible padding */
-}
-
-/* A container to set a max-width for content inside the center-stage */
-.page-wrap {
-  width: 100%;
-  max-width: 1040px;
-  padding: 0 0.5rem; /* 8px */
-  margin: 0 auto;
-}
-
-/*
- * =========================================
- * 5. THEME COMPONENTS
- * =========================================
- * - Reusable components that define the app's look.
- */
-
-/* The neon effect that sits "behind" the glass card */
-.neon-border {
-  position: relative;
-}
-
-.neon-border::after {
-  content: '';
-  position: absolute;
-  /* Inset by -3px to appear "outside" the border */
-  inset: -3px;
-  background: radial-gradient(
-    70% 110% at 50% 0%,
-    var(--accent)73, /* This is var(--accent) + 45% opacity */
-    var(--accent-2)47 40%, /* This is var(--accent-2) + 28% opacity */
-    transparent 72%
-  );
-  filter: blur(14px);
-  z-index: -1;
-  border-radius: 22px; /* Must be larger than .glass border-radius */
-  pointer-events: none;
-  transition: background 300ms ease;
-}
-
-/* The main menu "island" */
-.menu-surface {
-  width: 100%;
-  max-width: 44rem; /* 704px */
-  padding: 2rem; /* 32px */
-  display: grid;
-  place-items: center;
-  margin: 0 auto;
-}
-
-/* The inner panel inside the menu "island" */
-.menu-panel {
-  width: 100%;
-  max-width: 40rem; /* 640px */
-  padding: 2rem; /* 32px */
-  scrollbar-width: thin;
-  background: rgba(15, 10, 31, 0.46);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: 2rem; /* Increased padding for breathing room */
+}
+
+.menu-surface {
+  width: 100%;
+  max-width: 44rem; 
+  padding: 2.5rem; /* More internal padding for the "spacious" feel */
   margin: 0 auto;
-  scrollbar-color: var(--glass-border) transparent;
+  display: flex;
+  flex-direction: column;
+  /* Flex centering ensures children align properly if they don't have full width */
+  align-items: stretch; 
+  justify-content: center;
 }
 
-.menu-panel::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-.menu-panel::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(178,124,255,0.45) transparent;
-}
-.menu-panel::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-.menu-panel::-webkit-scrollbar-thumb {
-  background: rgba(178,124,255,0.45);
-  border-radius: 8px;
+.menu-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Consistent vertical spacing */
 }
 
-/*
- * =========================================
- * 6. UTILITY CLASSES
- * =========================================
- */
-
-/* For text that should be the "muted" color */
-.subtle {
-  color: var(--muted);
+.page-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.button-primary:hover {
-  filter: brightness(1.05);
-  transform: translateY(-1px);
+.subtle { color: var(--text-secondary); font-size: 0.95rem; }
+
+/* --- GLOW ANIMATION --- */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 10px var(--accent-glow); }
+  50% { box-shadow: 0 0 20px var(--accent-glow), 0 0 5px var(--accent); }
 }
 
-/*
- * =========================================
- * 7. RESPONSIVENESS
- * =========================================
- */
-@media (max-width: 768px) {
-  .center-stage {
-    padding: 1rem; /* Less padding on small screens */
-  }
-  
-  .menu-surface {
-    max-width: 92vw;
-    padding: 1.5rem; /* 24px */
-  }
-  
-  .menu-panel {
-    padding: 1.5rem; /* 24px */
-  }
+.neon-active {
+  animation: pulseGlow 3s infinite ease-in-out;
+  border-color: var(--accent) !important;
 }
 
-/* Finomhangolt scrollbar – csak a ranglétra belső listáján */
-.leaderboard-scroll {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: rgba(178, 124, 255, 0.45) transparent;
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; opacity: 0.7; }
 
-/* WebKit-alapú böngészők (Chrome, Edge, Safari) */
-.leaderboard-scroll::-webkit-scrollbar {
-  width: 10px;    /* függőleges sáv vastagsága */
-  height: 10px;   /* vízszintes sáv vastagsága, ha lenne */
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .center-stage { padding: 1rem; }
+  .menu-surface { padding: 1.5rem; }
 }
-
-.leaderboard-scroll::-webkit-scrollbar-track {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.02)
-  );
-  border-radius: 10px;
-}
-
-.leaderboard-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(178, 124, 255, 0.55),
-    rgba(122, 77, 243, 0.45)
-  );
-  border-radius: 10px;
-  border: 2px solid transparent;          /* “pill” hatás */
-  background-clip: padding-box;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
-}
-
-.leaderboard-scroll::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(178, 124, 255, 0.70),
-    rgba(122, 77, 243, 0.60)
-  );
-}
-
-/* Sötétebb felületen halványabb sáv opció (ha túl erősnek érzed) */
-/*
-.leaderboard-scroll::-webkit-scrollbar-thumb {
-  background: rgba(178,124,255,0.4);
-}
-*/

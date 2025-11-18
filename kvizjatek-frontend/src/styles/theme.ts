@@ -1,22 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 
-/**
- * Creates the Material-UI theme.
- *
- * This theme uses a STATIC color palette (based on the default purple theme)
- * to allow MUI's createTheme() function to build its color variants.
- *
- * We then apply DYNAMIC CSS variables (from global.css) in the
- * 'components' override section. This is the key to making the
- * components theme-aware.
- */
 const theme = createTheme({
   palette: {
     mode: 'dark',
-
-    // --- STATIC FALLBACK PALETTE (Based on Purple) ---
-    // These static colors are required by MUI to calculate
-    // hover/disabled/light/dark shades.
     primary: {
       main: '#b27cff',
     },
@@ -24,60 +10,120 @@ const theme = createTheme({
       main: '#7a4df3',
     },
     background: {
-      default: '#0f0a1f',
-      paper: 'rgba(20, 14, 40, 0.6)', // Fallback glass color
+      default: 'transparent',
+      paper: 'rgba(20, 14, 40, 0.6)',
     },
     text: {
       primary: '#f3eefc',
       secondary: '#bfb3e6',
     },
   },
-
-  // --- Global Component Shape ---
+  
   shape: {
-    borderRadius: 'var(--radius-md)',
+    borderRadius: 16,
   },
 
-  // --- DYNAMIC COMPONENT OVERRIDES ---
-  // This is where we use our CSS variables to make
-  // components change with the theme.
   components: {
-    // Override Paper components (used by GlassBackground, Cards, etc.)
     MuiPaper: {
       styleOverrides: {
         root: {
-          // Use the DYNAMIC variables from global.css
-          background: 'var(--glass-bg)',
-          border: '1px solid var(--glass-border)',
-          
-          backdropFilter: 'blur(16px) saturate(140%)',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-          transition: 'background 300ms ease, border 300ms ease',
+          backgroundImage: 'none',
+          backgroundColor: 'var(--glass-bg)',
+          backdropFilter: 'blur(16px) saturate(180%)',
+          borderTop: '1px solid var(--glass-border-light)',
+          borderLeft: '1px solid var(--glass-border-light)',
+          borderBottom: '1px solid var(--glass-border-dark)',
+          borderRight: '1px solid var(--glass-border-dark)',
+          boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.2)',
+          transition: 'background 0.3s ease, border 0.3s ease, transform 0.2s ease',
         },
       },
     },
-    // Override all Buttons
+
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
+          color: '#ffffff',
+          fontWeight: 700,
+          border: '1px solid rgba(255,255,255,0.2)',
+          boxShadow: '0 0 10px var(--accent-glow)',
+        },
+      },
+    },
+
+    // 3. Buttons with Glow
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: 'var(--radius-md)',
-          borderWidth: '1.5px',
+          fontWeight: 600,
+          borderRadius: 'var(--radius-sm)',
+          padding: '10px 24px',
+        },
+        containedPrimary: {
+          background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
+          color: '#ffffff',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
           '&:hover': {
-            borderWidth: '1.5px',
+            boxShadow: '0 0 20px var(--accent-glow)', 
+            filter: 'brightness(1.1)',
           },
         },
-        // Style for: <Button variant="contained" color="primary">
-        containedPrimary: {
-          // Use the DYNAMIC gradient from global.css
-          background: 'linear-gradient(120deg, var(--accent), var(--accent-2))',
-          color: '#fff',
+        outlinedSecondary: {
+          borderColor: 'var(--glass-border-light)',
+          color: 'var(--text-secondary)',
           '&:hover': {
-            filter: 'brightness(1.05)',
+            borderColor: 'var(--accent)',
+            color: 'var(--text)',
+            background: 'rgba(255,255,255,0.03)',
           },
         },
       },
     },
+
+    // 4. Inputs
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
+          borderRadius: 'var(--radius-sm)',
+          '& fieldset': { borderColor: 'var(--glass-border-light)' },
+          '&:hover fieldset': { borderColor: 'var(--accent)' },
+          '&.Mui-focused fieldset': {
+            borderColor: 'var(--accent)',
+            borderWidth: '1px',
+            boxShadow: '0 0 8px var(--accent-glow)',
+          },
+        },
+        input: { color: 'var(--text)' }
+      },
+    },
+    
+    // 5. Typography overrides
+    MuiTypography: {
+      styleOverrides: {
+        root: { color: 'inherit' },
+        h1: { textShadow: '0 2px 10px rgba(0,0,0,0.5)' },
+        h4: { textShadow: '0 2px 10px rgba(0,0,0,0.5)' },
+      }
+    },
+
+    // 6. Menu Items (Dropdowns)
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'var(--accent-glow)',
+            color: '#fff',
+          },
+          '&.Mui-selected': {
+            backgroundColor: 'var(--accent) !important',
+            color: '#fff',
+          }
+        }
+      }
+    }
   },
 });
 
