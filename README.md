@@ -22,4 +22,4 @@ Egy modern, reszponzív AI quiz webalkalmazás React frontenddel, Flask backendd
   - Az API által kínált lehetőségek dokumentációja, az adatbázis felépítésének ábrázolása. Elérés: [api_docs.md](./kvizjatek-backend/api_docs.md)
 
 ## Teszt esetek elérése:
-  - TODO
+  - [quiz_api_test_cases.md](./quiz_api_test_cases.md)
