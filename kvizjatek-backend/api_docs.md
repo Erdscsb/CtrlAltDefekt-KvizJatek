@@ -604,3 +604,40 @@ This document outlines the API endpoints for the quiz application, including aut
     ```
 * **Error Responses:**
     * **404 NOT FOUND:** User not found.
+
+## Leaderboard (`/leaderboard`)
+
+---
+
+### 1. Get Leaderboard
+
+* **Endpoint:** `GET /leaderboard/`
+* **Description:** Ranks all users by their total combined score from all quizzes they have taken. Returns the Top 10 users.
+* **Permissions:** Logged-in User
+* **Request Body:** None
+* **Success Response (200 OK):**
+    ```json
+    [
+      {
+        "rank": 1,
+        "user_id": 5,
+        "username": "quiz_master",
+        "total_score": 250
+      },
+      {
+        "rank": 2,
+        "user_id": 1,
+        "username": "test_user",
+        "total_score": 180
+      },
+      {
+        "rank": 3,
+        "user_id": 8,
+        "username": "new_challenger",
+        "total_score": 150
+      }
+    ]
+    ```
+* **Error Responses:**
+    * **401 UNAUTHORIZED:** Missing or invalid authentication token.
+    * **500 INTERNAL SERVER ERROR:** Failed to retrieve leaderboard data.
