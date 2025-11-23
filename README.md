@@ -24,3 +24,4 @@ Egy modern, reszponzív AI quiz webalkalmazás React frontenddel, Flask backendd
 ## Teszt esetek elérése:
   - [quiz_api_test_cases.md](./quiz_api_test_cases.md)
   - [results_and_leaderboard_api_test_cases.md](./results_and_leaderboard_api_test_cases.md)
+  - [profile_and_topics_api_test_cases.md](./profile_and_topics_api_test_cases.md)
