@@ -19,44 +19,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useNavigate } from 'react-router-dom';
 
-type Row = {
+
+import { useAuth } from '../../lib/useAuth';
+
+type ApiRow = {
+  rank: number;
+  user_id: number;
+  username: string;
+  total_score: number;
+};
+
+type UiRow = {
   rank: number;
   name: string;
   points: number;
   country?: string;
 };
-
-const MOCK: Row[] = [
-  { rank: 1, name: 'Aurora', points: 9820, country: 'HU' },
-  { rank: 2, name: 'NeonKnight', points: 9410, country: 'DE' },
-  { rank: 3, name: 'QuizMaster', points: 9105, country: 'PL' },
-  { rank: 4, name: 'ByteFox', points: 8800, country: 'FR' },
-  { rank: 5, name: 'Violet', points: 8610, country: 'ES' },
-  { rank: 6, name: 'StormCat', points: 8540, country: 'SE' },
-  { rank: 7, name: 'MindSpark', points: 8420, country: 'GB' },
-  { rank: 8, name: 'Delta', points: 8315, country: 'US' },
-  { rank: 9, name: 'Nova', points: 8290, country: 'IT' },
-  { rank: 10, name: 'Krypton', points: 8200, country: 'RO' },
-  { rank: 11, name: 'Echo', points: 8120, country: 'NL' },
-  { rank: 12, name: 'Quasar', points: 8065, country: 'AT' },
-  { rank: 13, name: 'Photon', points: 7990, country: 'CZ' },
-  { rank: 14, name: 'Hyperion', points: 7925, country: 'CH' },
-  { rank: 15, name: 'Lambda', points: 7880, country: 'SK' },
-  { rank: 16, name: 'Raven', points: 7810, country: 'NO' },
-  { rank: 17, name: 'Astra', points: 7750, country: 'FI' },
-  { rank: 18, name: 'Zenith', points: 7680, country: 'DK' },
-  { rank: 19, name: 'Nyx', points: 7625, country: 'BE' },
-  { rank: 20, name: 'Orion', points: 7590, country: 'PT' },
-];
-
-const CATEGORIES = [
-  { value: 'hu-history', label: 'Magyarország történelme' },
-  { value: 'world-history', label: 'Világtörténelem' },
-  { value: 'science', label: 'Tudomány' },
-  { value: 'geography', label: 'Földrajz' },
-  { value: 'literature', label: 'Irodalom' },
-  { value: 'sports', label: 'Sport' },
-];
 
 const medalColor = (rank: number) => {
   if (rank === 1) return '#ffd54f';
@@ -65,7 +43,7 @@ const medalColor = (rank: number) => {
   return 'transparent';
 };
 
-const RowItem: React.FC<{ row: Row }> = ({ row }) => {
+const RowItem: React.FC<{ row: UiRow }> = ({ row }) => {
   const top3 = row.rank <= 3;
   return (
     <Box
@@ -75,23 +53,23 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
         gap: { xs: 2, sm: 3 },
         alignItems: 'center',
         padding: { xs: '12px', sm: '16px' },
-        borderRadius: 3, // Matches global radius-md
-        
+        borderRadius: 3,
+
         borderTop: '1px solid var(--glass-border-light)',
         borderBottom: '1px solid var(--glass-border-dark)',
         borderLeft: '1px solid transparent',
         borderRight: '1px solid transparent',
-   
-        background: top3 
-          ? 'linear-gradient(90deg, var(--accent-glow) 0%, transparent 100%)' 
+
+        background: top3
+          ? 'linear-gradient(90deg, var(--accent-glow) 0%, transparent 100%)'
           : 'rgba(255,255,255,0.02)',
-          
+
         position: 'relative',
         transition: 'transform 0.2s ease, background 0.2s ease',
-        
+
         '&:hover': {
-           background: 'rgba(255,255,255,0.05)',
-           transform: 'scale(1.01)'
+          background: 'rgba(255,255,255,0.05)',
+          transform: 'scale(1.01)',
         },
 
         ...(top3 && {
@@ -137,13 +115,73 @@ const RowItem: React.FC<{ row: Row }> = ({ row }) => {
 const LeaderboardPage: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:640px)');
+  const { token } = useAuth(); // a saját AuthProvideredből
   const [q, setQ] = React.useState('');
-  const [category, setCategory] = React.useState<string>('hu-history'); // csak UI
+  const [category, setCategory] = React.useState<string>('hu-history'); // UI-only
 
-  const rows = React.useMemo(() => {
+  const [rows, setRows] = React.useState<UiRow[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  type Topic = { id: number; name: string };
+
+const [categories, setCategories] = React.useState<{ value: string; label: string }[]>([
+  { value: 'hu-history', label: 'Magyarország történelme' },
+  { value: 'world-history', label: 'Világtörténelem' },
+  { value: 'science', label: 'Tudomány' },
+  { value: 'geography', label: 'Földrajz' },
+  { value: 'literature', label: 'Irodalom' },
+  { value: 'sports', label: 'Sport' },
+]);
+
+React.useEffect(() => {
+  const fetchTopics = async () => {
+    try {
+      const res = await fetch('/api/topics/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok || !Array.isArray(data)) return;
+      const mapped = (data as Topic[]).map((t) => ({ value: String(t.id), label: t.name }));
+      if (mapped.length) setCategories(mapped);
+    } catch {}
+  };
+  if (token) fetchTopics();
+}, [token]);
+
+  React.useEffect(() => {
+    const fetchLeaderboard = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch('/api/leaderboard/', {
+         headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error || 'A ranglista betöltése sikertelen.');
+        }
+        const mapped: UiRow[] = (Array.isArray(data) ? (data as ApiRow[]) : []).map((r) => ({
+          rank: r.rank,
+          name: r.username,
+          points: r.total_score,
+        }));
+        setRows(mapped);
+      } catch (err: any) {
+        setError(err?.message || 'Ismeretlen hiba a ranglistánál.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (token) fetchLeaderboard();
+  }, [token]);
+
+  const filtered = React.useMemo(() => {
     const term = q.trim().toLowerCase();
-    return term ? MOCK.filter((r) => r.name.toLowerCase().includes(term)) : MOCK;
-  }, [q]);
+    return term ? rows.filter((r) => r.name.toLowerCase().includes(term)) : rows;
+  }, [rows, q]);
 
   return (
     <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}>
@@ -171,7 +209,6 @@ const LeaderboardPage: React.FC = () => {
 
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {/* ETTŐL KEZDVE MINDEN A KÁRTYÁN BELÜL VAN */}
             <Paper
               className="glass neon-border"
               elevation={0}
@@ -219,7 +256,7 @@ const LeaderboardPage: React.FC = () => {
                       ),
                     }}
                   >
-                    {CATEGORIES.map((c) => (
+                    {categories.map((c) => (
                       <MenuItem key={c.value} value={c.value}>
                         {c.label}
                       </MenuItem>
@@ -245,9 +282,8 @@ const LeaderboardPage: React.FC = () => {
                 </Stack>
               </Stack>
 
-              {/* Lista – SZIGORÚAN a kártyán belül, nincs absolute, csak flex */}
+              {/* Lista */}
               <Box
-                // fontos: NE legyen className="menu-panel" máshol az oldalon position/absolute.
                 className="leaderboard-scroll"
                 sx={{
                   mt: 1,
@@ -261,20 +297,36 @@ const LeaderboardPage: React.FC = () => {
                   boxSizing: 'border-box',
                 }}
               >
-                <Stack spacing={1}>
-                  {rows.map((r) => (
-                    <RowItem key={r.rank} row={r} />
-                  ))}
-                </Stack>
+                {loading && (
+                  <Typography className="subtle" sx={{ p: 1 }}>
+                    Betöltés…
+                  </Typography>
+                )}
+                {error && (
+                  <Typography color="error" sx={{ p: 1 }}>
+                    {error}
+                  </Typography>
+                )}
+                {!loading && !error && (
+                  <Stack spacing={1}>
+                    {filtered.length === 0 ? (
+                      <Typography className="subtle" sx={{ p: 1 }}>
+                        Még nincs adat a ranglistán.
+                      </Typography>
+                    ) : (
+                      filtered.map((r) => <RowItem key={`${r.rank}-${r.name}`} row={r} />)
+                    )}
+                  </Stack>
+                )}
               </Box>
 
               {/* Lábléc */}
               <Stack direction="row" justifyContent="space-between" sx={{ mt: 1, flex: '0 0 auto' }}>
                 <Typography variant="caption" className="subtle">
-                  Összes játékos: {MOCK.length}
+                  Összes játékos: {rows.length}
                 </Typography>
                 <Typography variant="caption" className="subtle">
-                  Demo adatok – később API-ból
+                  Adatok az API-ból
                 </Typography>
               </Stack>
             </Paper>
