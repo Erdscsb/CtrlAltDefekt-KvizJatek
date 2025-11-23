@@ -1,0 +1,5 @@
+[
+  { "id": 1, "user_id": 1, "quiz_id": 1, "score": 8, "total_questions": 10, "completed_at": "2025-11-16T18:05:00" },
+  { "id": 2, "user_id": 1, "quiz_id": 2, "score": 7, "total_questions": 10, "completed_at": "2025-11-17T18:05:00" },
+  { "id": 3, "user_id": 1, "quiz_id": 3, "score": 9, "total_questions": 10, "completed_at": "2025-11-18T18:05:00" }
+]

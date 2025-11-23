@@ -1,0 +1,6 @@
+[
+  { "rank": 1, "user_id": 5, "username": "quiz_master", "total_score": 250 },
+  { "rank": 2, "user_id": 1, "username": "test_user", "total_score": 180 },
+  { "rank": 3, "user_id": 8, "username": "new_challenger", "total_score": 150 },
+  { "rank": 4, "user_id": 9, "username": "violet", "total_score": 120 }
+]

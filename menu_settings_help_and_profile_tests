@@ -1,0 +1,60 @@
+# TESZT ESETEK – CtrlAltDefekt – Kvízjáték
+
+Általános információk
+- Projekt neve: CtrlAltDefekt – Kvízjáték
+- Prioritás: Magas
+- Leírás: Beállítások (színséma), Menü oldal (főmenü navigáció), Súgó (tartalom + navigáció), Profil nézet (eredmények és quiz meta) funkcionális és UX tesztelése.
+- Teszt célja: Kritikus felhasználói folyamatok, állapot- és tárolás-kezelés, API-integrációk ellenőrzése.
+
+Meta
+- Teszt eset szerzője: Jóni Attila Péter
+- Teszt eset felülvizsgálója: -
+- Teszt eset verziója: 1.0
+- Teszt végrehajtás dátuma: 2025.11.23
+
+---
+
+## Tesztadat-csomag (mock JSON-ok)
+
+- topics.json: ./testdata/topics.json
+- leaderboard.json: ./testdata/leaderboard.json
+- me.json (localStorage quiz-user példa): ./testdata/me.json
+- results.json (/api/result/ válasz): ./testdata/results.json
+- quiz_1.json (/api/quiz/1 válasz): ./testdata/quiz_1.json
+
+---
+
+## Tesztesetek
+
+| Teszt Eset ID | Teszt Lépések | Input Adat | Várható Eredmény | Aktuális Eredmény | Teszt Környezet | Végrehajtás Státusz | Bug Súlyossága | Bug Prioritása | Megjegyzések |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| TC-001 | Nyisd meg a Beállítások oldalt, válaszd ki a “Green” színsémát, frissítsd az oldalt. | Theme: green | A választott színséma marad (localStorage: quiz-theme=green). |  | Web, Chrome |  |  |  |  |
+| TC-002 | Válts gyorsan “Purple”→“Teal”→“Amber”. | Theme chain | UI azonnal frissül; nincs villanás, olvasható kontraszt. |  | Web, Chrome/Firefox |  |  |  |  |
+| TC-003 | Beállítások mobil (375px): preview kártyák elrendezése. | - | 1 oszlopos rács, kártyák klikkelhetők, fókusz jelzett. |  | Web Mobile |  |  |  |  |
+| TC-004 | Menü: “Új játék” gomb kattintása. | - | Navigáció megtörténik (ha be van kötve), nincs oldal reload. |  | Web |  |  |  |  |
+| TC-005 | Menü: “Ranglétra” gomb kattintása. | - | Ranglétra betölt, kártya középen, belső scroll működik. |  | Web |  |  |  |  |
+| TC-006 | Menü: profil ikon kijelentkezve. | - | Megjelenik Bejelentkezés/Regisztráció menü. |  | Web |  |  |  |  |
+| TC-007 | Súgó megnyitása menüből, accordionok működése. | - | Szekciók látszanak, GYIK nyitható/csukható, Vissza gomb működik. |  | Web |  |  |  |  |
+| TC-008 | Ranglétra sikeres adatlekérés. | GET /api/leaderboard/ + token | Lista feltölt, Top3 kiemelt, kereső szűr. |  | Web + Backend |  |  |  | Mock: leaderboard.json |
+| TC-009 | Ranglétra 401 eset. | lejárt/hibás token | Kezelt hibaüzenet, UI nem omlik össze. |  | Web + Backend |  |  |  |  |
+| TC-010 | Ranglétra: Topics szűrő API-ból. | GET /api/topics/ | Legördülő a szerver témáival; fallback esetén statikus lista. |  | Web + Backend |  |  |  | Mock: topics.json |
+| TC-011 | Profil megjelenítés localStorage-ből. | localStorage: quiz-user | Név, email, monogram helyes. |  | Web |  |  |  | Mock: me.json |
+| TC-012 | Profil eredmények betöltése. | GET /api/result/ | Lista feltölt; üres esetben “Még nincs lejátszott kvíz”. |  | Web + Backend |  |  |  | Mock: results.json |
+| TC-013 | Profil téma nevek lekérése. | GET /api/quiz/:id | Soronként helyes topic_name, cache csökkenti a kéréseket. |  | Web + Backend |  |  |  | Mock: quiz_1.json |
+| TC-014 | Profil pontszám számítás. | score/total_questions | Pont %-ban pontos; statok (összes, avg, best) konzisztens. |  | Web |  |  |  |  |
+| TC-015 | Profil achievements küszöbök. | összpont/játékszám | 10k/20k pont, 40/100 játék jelvények helyesen aktiválódnak. |  | Web |  |  |  |  |
+| TC-016 | Betöltés/hiba állapotok kezelése Profilon. | 500 / offline | “Betöltés…” vagy hibaüzenet jelenik meg; UI stabil. |  | Web |  |  |  |  |
+| TC-017 | Mobil elrendezés – Ranglétra/Profil listák. | ≤640px | Nincs horizontális overflow, kompakt paddings, scroll jó. |  | Web Mobile |  |  |  |  |
+| TC-018 | Vissza gomb működés minden oldalon. | - | History back, reload nélkül. |  | Web |  |  |  |  |
+| TC-019 | Token nélküli hozzáférés védett oldalakhoz. | nincs token | Barátságos üzenet; nincs redirect loop. |  | Web |  |  |  |  |
+| TC-020 | Dizájn konzisztencia (glass, neon, hover). | több téma | Stílusok egységesek minden oldalon és komponensen. |  | Web |  |  |  |  |
+
+---
+
+## Végrehajtási jegyzetek
+
+- Testadat injektálás:
+  - localStorage.setItem('quiz-user', tartalma: me.json)
+  - Dev szerver proxy vagy VITE_API_BASE beállítás a mock JSON-ok kiszolgálásához, vagy használj mock toolingot (pl. MSW).
+- A pontszámítás %-os; ha szerver oldali “összpont” kerül bevezetésre, a TC-014 és statok módosítandók.
+- A Ranglétra 401-es ágon ellenőrizd, hogy a hibaüzenet látható és UX-ben nem zavaró.
