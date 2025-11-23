@@ -10,100 +10,109 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/GridLegacy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../lib/useAuth';
 
-type PlayedGame = {
-  id: string;
-  topic: string;
-  points: number;
-  date?: string;
+type StoredUser = {
+  id: number;
+  username: string;
 };
 
-type ProfileData = {
-  name: string;
-  games: PlayedGame[];
+type ResultItem = {
+  id: number;
+  user_id: number;
+  quiz_id: number;
+  score: number;
+  total_questions: number;
+  completed_at: string;
 };
 
-const MOCK_PROFILE: ProfileData = {
-  name: 'Játékos',
-  games: [
-    { id: 'QZ-10231', topic: 'Magyarország történelme', points: 820 },
-    { id: 'QZ-10211', topic: 'Tudomány', points: 640 },
-    { id: 'QZ-10198', topic: 'Világtörténelem', points: 910 },
-    { id: 'QZ-10180', topic: 'Irodalom', points: 740 },
-    { id: 'QZ-10160', topic: 'Földrajz', points: 890 },
-    { id: 'QZ-10155', topic: 'Sport', points: 560 },
-    { id: 'QZ-10140', topic: 'Magyarország történelme', points: 990 },
-    { id: 'QZ-10135', topic: 'Irodalom', points: 720 },
-    { id: 'QZ-10120', topic: 'Tudomány', points: 880 },
-    { id: 'QZ-10110', topic: 'Földrajz', points: 770 },
-    { id: 'QZ-10105', topic: 'Világtörténelem', points: 930 },
-    { id: 'QZ-10090', topic: 'Sport', points: 610 },
-    { id: 'QZ-10075', topic: 'Irodalom', points: 780 },
-    { id: 'QZ-10070', topic: 'Tudomány', points: 845 },
-    { id: 'QZ-10065', topic: 'Földrajz', points: 695 },
-    { id: 'QZ-10050', topic: 'Magyarország történelme', points: 960 },
-  ],
-};
+type QuizMeta = { topic_name?: string; difficulty?: string };
 
-const calcStats = (games: PlayedGame[]) => {
-  const totalGames = games.length;
-  const totalPoints = games.reduce((s, g) => s + g.points, 0);
-  const best = games.reduce((m, g) => Math.max(m, g.points), 0);
-  const avg = totalGames ? Math.round(totalPoints / totalGames) : 0;
-  return { totalGames, totalPoints, avg, best };
-};
+const quizMetaCache = new Map<number, QuizMeta>();
 
-const AchievementChip: React.FC<{ active: boolean; label: string }> = ({ active, label }) => (
+const StatPill: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <Box
+    sx={{
+      px: 1.25,
+      py: 0.5,
+      borderRadius: 999,
+      border: '1px solid rgba(255,255,255,0.12)',
+      background: 'rgba(255,255,255,0.04)',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 0.75,
+    }}
+  >
+    <MilitaryTechIcon sx={{ fontSize: 16, color: 'var(--muted)' }} />
+    <Typography variant="caption" className="subtle">
+      {label}:
+    </Typography>
+    <Typography variant="caption" sx={{ color: 'var(--text)', fontWeight: 700 }}>
+      {value}
+    </Typography>
+  </Box>
+);
+
+const AchievementChip: React.FC<{ active: boolean; label: string }> = ({
+  active,
+  label,
+}) => (
   <Chip
     icon={<WorkspacePremiumIcon />}
     label={label}
+    color={active ? 'primary' : 'default'}
     variant={active ? 'filled' : 'outlined'}
     sx={{
-      borderColor: active ? 'transparent' : 'var(--glass-border-light)',
-      bgcolor: active ? 'var(--accent-glow)' : 'transparent',
-      color: active ? '#fff' : 'var(--text-secondary)',
-      fontWeight: active ? 700 : 400,
-      boxShadow: active ? '0 0 10px var(--accent-glow)' : 'none',
+      borderColor: active ? 'transparent' : 'rgba(255,255,255,0.25)',
+      bgcolor: active ? 'rgba(178,124,255,0.18)' : 'transparent',
     }}
   />
 );
 
-const GameRow: React.FC<{ game: PlayedGame }> = ({ game }) => (
+const GameRow: React.FC<{ game: { id: string; topic: string; points: number } }> = ({
+  game,
+}) => (
   <Box
     sx={{
       display: 'grid',
       gridTemplateColumns: { xs: '1fr auto', sm: '180px 1fr 120px' },
-      gap: { xs: 2, sm: 3 },
+      gap: { xs: 8, sm: 12 },
       alignItems: 'center',
-      padding: '12px 16px',
-      borderRadius: 3,
-      borderTop: '1px solid var(--glass-border-light)',
-      borderBottom: '1px solid var(--glass-border-dark)',
+      padding: { xs: '8px 10px', sm: '10px 12px' },
+      borderRadius: 12,
+      border: '1px solid rgba(255,255,255,0.06)',
       background: 'rgba(255,255,255,0.02)',
-      transition: 'all 0.2s ease',
-      '&:hover': {
-        background: 'rgba(255,255,255,0.05)',
-        transform: 'translateX(4px)',
-        borderColor: 'var(--accent)',
-      }
+      boxSizing: 'border-box',
     }}
   >
     <Stack direction="row" spacing={1} alignItems="center" sx={{ display: { xs: 'none', sm: 'flex' } }}>
-      <SportsEsportsIcon sx={{ color: 'var(--text-secondary)', fontSize: 20 }} />
-      <Typography variant="body2" className="subtle">{game.id}</Typography>
+      <SportsEsportsIcon sx={{ color: 'var(--muted)' }} />
+      <Typography variant="body2" className="subtle">
+        {game.id}
+      </Typography>
     </Stack>
 
     <Stack spacing={0} sx={{ minWidth: 0 }}>
-      <Typography sx={{ fontWeight: 600 }} noWrap>{game.topic}</Typography>
-      <Typography variant="caption" className="subtle" sx={{ display: { sm: 'none' } }}>{game.id}</Typography>
+      <Typography sx={{ fontWeight: 600 }} noWrap>
+        {game.topic}
+      </Typography>
+      <Typography variant="caption" className="subtle" sx={{ display: { sm: 'none' } }}>
+        {game.id}
+      </Typography>
     </Stack>
 
-    <Typography sx={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)' }}>
+    <Typography
+      sx={{
+        textAlign: 'right',
+        fontWeight: 700,
+        color: 'var(--text)',
+        whiteSpace: 'nowrap',
+      }}
+    >
       {game.points.toLocaleString('hu-HU')} pt
     </Typography>
   </Box>
@@ -111,26 +120,116 @@ const GameRow: React.FC<{ game: PlayedGame }> = ({ game }) => (
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  const data = MOCK_PROFILE;
-  const { totalGames, totalPoints, avg, best } = calcStats(data.games);
+  const { token } = useAuth();
 
-  // achievement küszöbök
+  const stored = React.useMemo<StoredUser | null>(() => {
+    try {
+      const raw = localStorage.getItem('quiz-user');
+      return raw ? (JSON.parse(raw) as StoredUser) : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const [results, setResults] = React.useState<ResultItem[]>([]);
+  const [games, setGames] = React.useState<{ id: string; topic: string; points: number }[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const loadResults = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('/api/result/', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || 'Eredmények betöltése sikertelen.');
+        setResults(Array.isArray(data) ? (data as ResultItem[]) : []);
+      } catch (e: any) {
+        setError(e?.message || 'Ismeretlen hiba a profilnál.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (token) loadResults();
+  }, [token]);
+
+  React.useEffect(() => {
+    let active = true;
+    const enrich = async () => {
+      const out: { id: string; topic: string; points: number }[] = [];
+      for (const r of results) {
+        let topic = 'Ismeretlen téma';
+        try {
+          if (quizMetaCache.has(r.quiz_id)) {
+            const cached = quizMetaCache.get(r.quiz_id)!;
+            topic = cached.topic_name || topic;
+          } else {
+            const qRes = await fetch(`/api/quiz/${r.quiz_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const qData = await qRes.json();
+            if (qRes.ok) {
+              const meta: QuizMeta = { topic_name: qData?.topic_name, difficulty: qData?.difficulty };
+              quizMetaCache.set(r.quiz_id, meta);
+              topic = meta.topic_name || topic;
+            }
+          }
+        } catch {}
+
+        const pct = Math.round((r.score / Math.max(1, r.total_questions)) * 100);
+        out.push({ id: `QZ-${r.quiz_id}`, topic, points: pct });
+      }
+      if (active) setGames(out);
+    };
+    if (results.length) enrich();
+    else setGames([]);
+    return () => {
+      active = false;
+    };
+  }, [results, token]);
+
+  const totalGames = games.length;
+  const totalPoints = games.reduce((s, g) => s + g.points, 0);
+  const best = games.reduce((m, g) => Math.max(m, g.points), 0);
+  const avg = totalGames ? Math.round((totalPoints / totalGames) * 10) / 10 : 0;
+
   const a10k = totalPoints >= 10000;
   const a20k = totalPoints >= 20000;
   const a40g = totalGames >= 40;
   const a100g = totalGames >= 100;
 
+  if (!token) {
+    return (
+      <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}>
+        <Box sx={{ width: '100%', maxWidth: 1040, px: { xs: 1.5, sm: 2 } }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            variant="text"
+            color="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(-1);
+            }}
+            sx={{ mb: { xs: 1, sm: 2 } }}
+          >
+            Vissza
+          </Button>
+          <Paper className="glass neon-border" elevation={0} sx={{ p: { xs: 2, sm: 2.5 } }}>
+            <Typography>Bejelentkezés szükséges a profil megtekintéséhez.</Typography>
+          </Paper>
+        </Box>
+      </Stack>
+    );
+  }
+
+  const displayName = stored?.username || 'Játékos';
+
   return (
     <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}>
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: 1040,
-          px: { xs: 1.5, sm: 2 },
-          boxSizing: 'border-box',
-          margin: '0 auto',
-        }}
-      >
+      <Box sx={{ width: '100%', maxWidth: 1040, px: { xs: 1.5, sm: 2 }, boxSizing: 'border-box' }}>
         <Button
           startIcon={<ArrowBackIcon />}
           variant="text"
@@ -158,7 +257,6 @@ const ProfilePage: React.FC = () => {
                 boxSizing: 'border-box',
               }}
             >
-              {/* Fejléc: név + statok */}
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
                 alignItems={{ xs: 'flex-start', sm: 'center' }}
@@ -168,18 +266,13 @@ const ProfilePage: React.FC = () => {
               >
                 <Stack direction="row" spacing={1.5} alignItems="center">
                   <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
-                    {data.name[0]?.toUpperCase()}
+                    {displayName[0]?.toUpperCase()}
                   </Avatar>
                   <Stack>
                     <Typography variant="h5" fontWeight={700}>
-                      {data.name}
+                      {displayName}
                     </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={1.5}
-                      sx={{ mt: 0.5, flexWrap: 'wrap' }}
-                      alignItems="center"
-                    >
+                    <Stack direction="row" spacing={1.5} sx={{ mt: 0.5, flexWrap: 'wrap' }} alignItems="center">
                       <StatPill label="Összes pont" value={totalPoints.toLocaleString('hu-HU')} />
                       <StatPill label="Összes játék" value={totalGames.toString()} />
                       <StatPill label="Átlag/játék" value={`${avg} pt`} />
@@ -188,7 +281,6 @@ const ProfilePage: React.FC = () => {
                   </Stack>
                 </Stack>
 
-                {/* Achievements */}
                 <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
                   <AchievementChip active={a10k} label="10 000 pont" />
                   <AchievementChip active={a20k} label="20 000 pont" />
@@ -197,8 +289,8 @@ const ProfilePage: React.FC = () => {
                 </Stack>
               </Stack>
 
-              {/* Lejátszott kvízek lista */}
               <Box
+                className="leaderboard-scroll"
                 sx={{
                   mt: 1,
                   borderRadius: 2,
@@ -209,22 +301,36 @@ const ProfilePage: React.FC = () => {
                   minHeight: 0,
                   overflow: 'auto',
                 }}
-                className="leaderboard-scroll"
               >
-                <Stack spacing={1}>
-                  {data.games.map((g, i) => (
-                    <GameRow key={g.id} game={g} />
-                  ))}
-                </Stack>
+                {loading && (
+                  <Typography className="subtle" sx={{ p: 1 }}>
+                    Betöltés…
+                  </Typography>
+                )}
+                {error && (
+                  <Typography color="error" sx={{ p: 1 }}>
+                    {error}
+                  </Typography>
+                )}
+                {!loading && !error && (
+                  <Stack spacing={1}>
+                    {games.length === 0 ? (
+                      <Typography className="subtle" sx={{ p: 1 }}>
+                        Még nincs lejátszott kvíz.
+                      </Typography>
+                    ) : (
+                      games.map((g) => <GameRow key={g.id} game={g} />)
+                    )}
+                  </Stack>
+                )}
               </Box>
 
-              {/* Lábléc */}
               <Stack direction="row" justifyContent="space-between" sx={{ mt: 1, flex: '0 0 auto' }}>
                 <Typography variant="caption" className="subtle">
                   Összes játék: {totalGames}
                 </Typography>
                 <Typography variant="caption" className="subtle">
-                  Demo profil – később API-ból
+                  Adatok az API-ból
                 </Typography>
               </Stack>
             </Paper>
@@ -238,29 +344,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-
-/* Kis belső komponens a stat pill-ekhez */
-const StatPill: React.FC<{ label: string; value: string }> = ({ label, value }) => {
-  return (
-    <Box
-      sx={{
-        px: 1.25,
-        py: 0.5,
-        borderRadius: 999,
-        border: '1px solid rgba(255,255,255,0.12)',
-        background: 'rgba(255,255,255,0.04)',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 0.75,
-      }}
-    >
-      <MilitaryTechIcon sx={{ fontSize: 16, color: 'var(--muted)' }} />
-      <Typography variant="caption" className="subtle">
-        {label}:
-      </Typography>
-      <Typography variant="caption" sx={{ color: 'var(--text)', fontWeight: 700 }}>
-        {value}
-      </Typography>
-    </Box>
-  );
-};
