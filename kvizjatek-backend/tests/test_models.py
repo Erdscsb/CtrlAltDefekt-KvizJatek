@@ -2,11 +2,20 @@ import pytest
 
 def test_user_creation_defaults(app):
     from app.models import User
-    user = User(username='testuser', email='test@test.com', password_hash='hash123')
+    from app.extensions import db
     
-    assert user.username == 'testuser'
-    assert user.email == 'test@test.com'
-    assert user.is_admin is False  # Default érték ellenőrzése
+    # Context szükséges az adatbázis művelethez
+    with app.app_context():
+        user = User(username='testuser', email='test@test.com', password_hash='hash123')
+        db.session.add(user)
+        db.session.commit()  # Itt kerül be a default érték az adatbázisba
+        
+        # Frissítjük az objektumot az adatbázisból
+        db.session.refresh(user)
+        
+        assert user.username == 'testuser'
+        assert user.email == 'test@test.com'
+        assert user.is_admin is False
 
 def test_user_representation():
     from app.models import User
