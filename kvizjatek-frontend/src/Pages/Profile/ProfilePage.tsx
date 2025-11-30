@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Avatar,
   Box,
@@ -7,14 +7,15 @@ import {
   Paper,
   Stack,
   Typography,
-} from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../lib/useAuth';
+} from "@mui/material";
+import Grid from "@mui/material/GridLegacy";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import SecurityIcon from "@mui/icons-material/Security";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../lib/useAuth";
 
 type StoredUser = {
   id: number;
@@ -34,24 +35,30 @@ type QuizMeta = { topic_name?: string; difficulty?: string };
 
 const quizMetaCache = new Map<number, QuizMeta>();
 
-const StatPill: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+const StatPill: React.FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => (
   <Box
     sx={{
       px: 1.25,
       py: 0.5,
       borderRadius: 999,
-      border: '1px solid rgba(255,255,255,0.12)',
-      background: 'rgba(255,255,255,0.04)',
-      display: 'inline-flex',
-      alignItems: 'center',
+      border: "1px solid rgba(255,255,255,0.12)",
+      background: "rgba(255,255,255,0.04)",
+      display: "inline-flex",
+      alignItems: "center",
       gap: 0.75,
     }}
   >
-    <MilitaryTechIcon sx={{ fontSize: 16, color: 'var(--muted)' }} />
+    <MilitaryTechIcon sx={{ fontSize: 16, color: "var(--muted)" }} />
     <Typography variant="caption" className="subtle">
       {label}:
     </Typography>
-    <Typography variant="caption" sx={{ color: 'var(--text)', fontWeight: 700 }}>
+    <Typography
+      variant="caption"
+      sx={{ color: "var(--text)", fontWeight: 700 }}
+    >
       {value}
     </Typography>
   </Box>
@@ -64,33 +71,38 @@ const AchievementChip: React.FC<{ active: boolean; label: string }> = ({
   <Chip
     icon={<WorkspacePremiumIcon />}
     label={label}
-    color={active ? 'primary' : 'default'}
-    variant={active ? 'filled' : 'outlined'}
+    color={active ? "primary" : "default"}
+    variant={active ? "filled" : "outlined"}
     sx={{
-      borderColor: active ? 'transparent' : 'rgba(255,255,255,0.25)',
-      bgcolor: active ? 'rgba(178,124,255,0.18)' : 'transparent',
+      borderColor: active ? "transparent" : "rgba(255,255,255,0.25)",
+      bgcolor: active ? "rgba(178,124,255,0.18)" : "transparent",
     }}
   />
 );
 
-const GameRow: React.FC<{ game: { id: string; topic: string; points: number } }> = ({
-  game,
-}) => (
+const GameRow: React.FC<{
+  game: { id: string; topic: string; points: number };
+}> = ({ game }) => (
   <Box
     sx={{
-      display: 'grid',
-      gridTemplateColumns: { xs: '1fr auto', sm: '180px 1fr 120px' },
+      display: "grid",
+      gridTemplateColumns: { xs: "1fr auto", sm: "180px 1fr 120px" },
       gap: { xs: 8, sm: 12 },
-      alignItems: 'center',
-      padding: { xs: '8px 10px', sm: '10px 12px' },
+      alignItems: "center",
+      padding: { xs: "8px 10px", sm: "10px 12px" },
       borderRadius: 12,
-      border: '1px solid rgba(255,255,255,0.06)',
-      background: 'rgba(255,255,255,0.02)',
-      boxSizing: 'border-box',
+      border: "1px solid rgba(255,255,255,0.06)",
+      background: "rgba(255,255,255,0.02)",
+      boxSizing: "border-box",
     }}
   >
-    <Stack direction="row" spacing={1} alignItems="center" sx={{ display: { xs: 'none', sm: 'flex' } }}>
-      <SportsEsportsIcon sx={{ color: 'var(--muted)' }} />
+    <Stack
+      direction="row"
+      spacing={1}
+      alignItems="center"
+      sx={{ display: { xs: "none", sm: "flex" } }}
+    >
+      <SportsEsportsIcon sx={{ color: "var(--muted)" }} />
       <Typography variant="body2" className="subtle">
         {game.id}
       </Typography>
@@ -100,31 +112,35 @@ const GameRow: React.FC<{ game: { id: string; topic: string; points: number } }>
       <Typography sx={{ fontWeight: 600 }} noWrap>
         {game.topic}
       </Typography>
-      <Typography variant="caption" className="subtle" sx={{ display: { sm: 'none' } }}>
+      <Typography
+        variant="caption"
+        className="subtle"
+        sx={{ display: { sm: "none" } }}
+      >
         {game.id}
       </Typography>
     </Stack>
 
     <Typography
       sx={{
-        textAlign: 'right',
+        textAlign: "right",
         fontWeight: 700,
-        color: 'var(--text)',
-        whiteSpace: 'nowrap',
+        color: "var(--text)",
+        whiteSpace: "nowrap",
       }}
     >
-      {game.points.toLocaleString('hu-HU')} pt
+      {game.points.toLocaleString("hu-HU")} pt
     </Typography>
   </Box>
 );
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { token, isAdmin } = useAuth();
 
   const stored = React.useMemo<StoredUser | null>(() => {
     try {
-      const raw = localStorage.getItem('quiz-user');
+      const raw = localStorage.getItem("quiz-user");
       return raw ? (JSON.parse(raw) as StoredUser) : null;
     } catch {
       return null;
@@ -132,7 +148,9 @@ const ProfilePage: React.FC = () => {
   }, []);
 
   const [results, setResults] = React.useState<ResultItem[]>([]);
-  const [games, setGames] = React.useState<{ id: string; topic: string; points: number }[]>([]);
+  const [games, setGames] = React.useState<
+    { id: string; topic: string; points: number }[]
+  >([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -141,14 +159,15 @@ const ProfilePage: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch('/api/result/', {
+        const res = await fetch("/api/result/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data?.error || 'Eredmények betöltése sikertelen.');
+        if (!res.ok)
+          throw new Error(data?.error || "Eredmények betöltése sikertelen.");
         setResults(Array.isArray(data) ? (data as ResultItem[]) : []);
       } catch (e: any) {
-        setError(e?.message || 'Ismeretlen hiba a profilnál.');
+        setError(e?.message || "Ismeretlen hiba a profilnál.");
       } finally {
         setLoading(false);
       }
@@ -161,7 +180,7 @@ const ProfilePage: React.FC = () => {
     const enrich = async () => {
       const out: { id: string; topic: string; points: number }[] = [];
       for (const r of results) {
-        let topic = 'Ismeretlen téma';
+        let topic = "Ismeretlen téma";
         try {
           if (quizMetaCache.has(r.quiz_id)) {
             const cached = quizMetaCache.get(r.quiz_id)!;
@@ -172,14 +191,18 @@ const ProfilePage: React.FC = () => {
             });
             const qData = await qRes.json();
             if (qRes.ok) {
-              const meta: QuizMeta = { topic_name: qData?.topic_name, difficulty: qData?.difficulty };
+              const meta: QuizMeta = {
+                topic_name: qData?.topic_name,
+                difficulty: qData?.difficulty,
+              };
               quizMetaCache.set(r.quiz_id, meta);
               topic = meta.topic_name || topic;
             }
           }
         } catch {}
-
-        const pct = Math.round((r.score / Math.max(1, r.total_questions)) * 100);
+        const pct = Math.round(
+          (r.score / Math.max(1, r.total_questions)) * 100
+        );
         out.push({ id: `QZ-${r.quiz_id}`, topic, points: pct });
       }
       if (active) setGames(out);
@@ -203,8 +226,8 @@ const ProfilePage: React.FC = () => {
 
   if (!token) {
     return (
-      <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}>
-        <Box sx={{ width: '100%', maxWidth: 1040, px: { xs: 1.5, sm: 2 } }}>
+      <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: "100%" }}>
+        <Box sx={{ width: "100%", maxWidth: 1040, px: { xs: 1.5, sm: 2 } }}>
           <Button
             startIcon={<ArrowBackIcon />}
             variant="text"
@@ -217,19 +240,32 @@ const ProfilePage: React.FC = () => {
           >
             Vissza
           </Button>
-          <Paper className="glass neon-border" elevation={0} sx={{ p: { xs: 2, sm: 2.5 } }}>
-            <Typography>Bejelentkezés szükséges a profil megtekintéséhez.</Typography>
+          <Paper
+            className="glass neon-border"
+            elevation={0}
+            sx={{ p: { xs: 2, sm: 2.5 } }}
+          >
+            <Typography>
+              Bejelentkezés szükséges a profil megtekintéséhez.
+            </Typography>
           </Paper>
         </Box>
       </Stack>
     );
   }
 
-  const displayName = stored?.username || 'Játékos';
+  const displayName = stored?.username || "Játékos";
 
   return (
-    <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: '100%' }}>
-      <Box sx={{ width: '100%', maxWidth: 1040, px: { xs: 1.5, sm: 2 }, boxSizing: 'border-box' }}>
+    <Stack alignItems="center" sx={{ mt: { xs: 2, sm: 4 }, width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 1040,
+          px: { xs: 1.5, sm: 2 },
+          boxSizing: "border-box",
+        }}
+      >
         <Button
           startIcon={<ArrowBackIcon />}
           variant="text"
@@ -250,42 +286,74 @@ const ProfilePage: React.FC = () => {
               elevation={0}
               sx={{
                 p: { xs: 2, sm: 2.5 },
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 gap: 0,
-                maxHeight: { xs: 'calc(100vh - 120px)', sm: 'calc(100vh - 140px)' },
-                boxSizing: 'border-box',
+                maxHeight: {
+                  xs: "calc(100vh - 120px)",
+                  sm: "calc(100vh - 140px)",
+                },
+                boxSizing: "border-box",
               }}
             >
               <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                alignItems={{ xs: 'flex-start', sm: 'center' }}
+                direction={{ xs: "column", sm: "row" }}
+                alignItems={{ xs: "flex-start", sm: "center" }}
                 justifyContent="space-between"
                 spacing={1.5}
-                sx={{ flex: '0 0 auto' }}
+                sx={{ flex: "0 0 auto" }}
               >
                 <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
+                  <Avatar
+                    sx={{ bgcolor: "primary.main", width: 48, height: 48 }}
+                  >
                     {displayName[0]?.toUpperCase()}
                   </Avatar>
                   <Stack>
                     <Typography variant="h5" fontWeight={700}>
                       {displayName}
                     </Typography>
-                    <Stack direction="row" spacing={1.5} sx={{ mt: 0.5, flexWrap: 'wrap' }} alignItems="center">
-                      <StatPill label="Összes pont" value={totalPoints.toLocaleString('hu-HU')} />
-                      <StatPill label="Összes játék" value={totalGames.toString()} />
+                    <Stack
+                      direction="row"
+                      spacing={1.5}
+                      sx={{ mt: 0.5, flexWrap: "wrap" }}
+                      alignItems="center"
+                    >
+                      <StatPill
+                        label="Összes pont"
+                        value={totalPoints.toLocaleString("hu-HU")}
+                      />
+                      <StatPill
+                        label="Összes játék"
+                        value={totalGames.toString()}
+                      />
                       <StatPill label="Átlag/játék" value={`${avg} pt`} />
                       <StatPill label="Legjobb pont" value={`${best} pt`} />
                     </Stack>
                   </Stack>
                 </Stack>
 
-                <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ flexWrap: "wrap", alignItems: "center" }}
+                >
                   <AchievementChip active={a10k} label="10 000 pont" />
                   <AchievementChip active={a20k} label="20 000 pont" />
                   <AchievementChip active={a40g} label="40 játék" />
                   <AchievementChip active={a100g} label="100 játék" />
+
+                  {isAdmin && (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      startIcon={<SecurityIcon />}
+                      onClick={() => navigate("/admin")}
+                      sx={{ ml: { xs: 0, sm: 1 }, mt: { xs: 1, sm: 0 } }}
+                    >
+                      Admin felület
+                    </Button>
+                  )}
                 </Stack>
               </Stack>
 
@@ -294,12 +362,12 @@ const ProfilePage: React.FC = () => {
                 sx={{
                   mt: 1,
                   borderRadius: 2,
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  background: 'rgba(15, 10, 31, 0.40)',
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "rgba(15, 10, 31, 0.40)",
                   p: { xs: 1.25, sm: 1.5 },
-                  flex: '1 1 auto',
+                  flex: "1 1 auto",
                   minHeight: 0,
-                  overflow: 'auto',
+                  overflow: "auto",
                 }}
               >
                 {loading && (
@@ -325,7 +393,11 @@ const ProfilePage: React.FC = () => {
                 )}
               </Box>
 
-              <Stack direction="row" justifyContent="space-between" sx={{ mt: 1, flex: '0 0 auto' }}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                sx={{ mt: 1, flex: "0 0 auto" }}
+              >
                 <Typography variant="caption" className="subtle">
                   Összes játék: {totalGames}
                 </Typography>
