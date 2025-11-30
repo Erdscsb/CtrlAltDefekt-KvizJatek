@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import patch
 from flask_jwt_extended import create_access_token
-from app.models import User, Quiz, Question
-from app.extensions import db
+from models import User, Quiz, Question
+from extensions import db
 
 # Helper to create a user and get headers
 def get_auth_header(user_id=1, is_admin=False):
