@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "qa:quick": "node scripts/joni_attila_run_test.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -1,0 +1,155 @@
+[
+  "Teszt adatok, készítette: Jóni Attila Péter. Teszteléshez használt script elérhetőség: /scripts/joni_attila_run_test.mjs",
+  "Teszteléshez használt tokenek és a backend api elérés biztonsági okból eltávolítva, ismételt teszteléshez kitöltendő.",
+  {
+    "name": "TC-001 theme default fallback",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-002 percent compute 8/10",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-003 percent compute edge 0/10",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-004 avg stat",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-005 best stat",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-006 leaderboard reachable (auth may be required)",
+    "status": "PASS",
+    "ms": 30
+  },
+  {
+    "name": "TC-007 topics reachable",
+    "status": "PASS",
+    "ms": 5
+  },
+  {
+    "name": "TC-008 results reachable",
+    "status": "PASS",
+    "ms": 3
+  },
+  {
+    "name": "TC-009 quiz detail 1 (may 404)",
+    "status": "PASS",
+    "ms": 4
+  },
+  {
+    "name": "TC-010 profile root (may be 401)",
+    "status": "PASS",
+    "ms": 3
+  },
+  {
+    "name": "TC-011 grid xs layout no overflow",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-012 theme chain switch",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-013 fallback categories merge",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-014 cache works (quiz meta)",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-015 achievements thresholds",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-016 admin visibility",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-017 no-admin visibility",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-018 results empty state",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-019 results huge list memory sanity",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-020 percent rounding 7/9",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-021 admin users list (may 403)",
+    "status": "FAIL",
+    "error": "unexpected status 404",
+    "ms": 4
+  },
+  {
+    "name": "TC-022 admin topics list (may 200)",
+    "status": "PASS",
+    "ms": 3
+  },
+  {
+    "name": "TC-023 admin quizzes list (meta)",
+    "status": "PASS",
+    "ms": 4
+  },
+  {
+    "name": "TC-024 admin results list",
+    "status": "PASS",
+    "ms": 3
+  },
+  {
+    "name": "TC-025 search filter insensitive",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-026 loader state toggling",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-027 error state set",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-028 topic name fallback",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-029 avg no divide by zero",
+    "status": "PASS",
+    "ms": 0
+  },
+  {
+    "name": "TC-030 admin guard",
+    "status": "PASS",
+    "ms": 0
+  }
+]
