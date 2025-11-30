@@ -20,3 +20,6 @@ openai
 
 # --- Produkciós WSGI Szerver (Telepítési terv) ---
 #gunicorn
+
+# --- Tesztelés ---
+pytest
