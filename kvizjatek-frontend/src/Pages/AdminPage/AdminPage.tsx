@@ -119,7 +119,7 @@ const AdminPage: React.FC = () => {
   );
 
   const loadUsers = React.useCallback(async () => {
-    const data = await apiGet('/users');
+    const data = await apiGet('/admin/users');
     setUsers(Array.isArray(data) ? data : []);
   }, [apiGet]);
 
@@ -176,14 +176,14 @@ const AdminPage: React.FC = () => {
         throw new Error('Hiányzó mező(k).');
       }
       if (userEdit) {
-        await apiSend(`/users/${userEdit.id}`, 'PUT', {
+        await apiSend(`/admin/users/${userEdit.id}`, 'PUT', {
           username: userForm.username,
           email: userForm.email,
           password: userForm.password || undefined,
           is_admin: !!userForm.is_admin,
         });
       } else {
-        await apiSend('/users', 'POST', {
+        await apiSend('/admin/users', 'POST', {
           username: userForm.username,
           email: userForm.email,
           password: userForm.password,
@@ -200,7 +200,7 @@ const AdminPage: React.FC = () => {
   const deleteUser = async (u: User) => {
     if (!confirm(`Biztos törlöd a felhasználót? (${u.username})`)) return;
     try {
-      await apiSend(`/users/${u.id}`, 'DELETE');
+      await apiSend(`/admin/users/${u.id}`, 'DELETE');
       await loadUsers();
     } catch (e: any) {
       setError(e?.message || 'Felhasználó törlése sikertelen');
